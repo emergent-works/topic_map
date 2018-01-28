@@ -1,0 +1,100 @@
+#map_container {
+  width: 900px;
+  height: 900px;
+  overflow: hidden;
+  position: relative;
+
+  /* not selectable - so people don't select text by mistake when dragging, and get confused */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.nodes .hovering {
+  cursor: pointer;
+  fill-opacity: 1
+}
+
+.texts .hovering {
+  cursor: pointer;
+  text-decoration: underline;
+  fill: #000;
+}
+
+.nodes .related_child, .texts .related_child{
+  fill: #2d5593;
+}
+
+#legend p {
+  padding-left: 14px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+#legend ul {
+  padding-left: 100px;
+}
+
+#legend .parents {
+  font-weight: bold;
+  color: #2c8ccc;
+}
+
+#legend .children {
+  font-weight: bold;
+  color: #2d5593;
+}
+
+#legend .siblings {
+  font-weight: bold;
+  color: #cb535c;
+}
+
+
+.nodes .related_parent, .texts .related_parent{
+  fill: #2c8ccc;
+}
+
+.links line.related_parent {
+  stroke: #2c8ccc;
+}
+.links line.related_child {
+  stroke: #2d5593;
+}
+
+.nodes .unrelated, .texts .unrelated, .links .unrelated {
+  fill-opacity: 0.2;
+  stroke-opacity: 0.2;
+}
+
+.links line {
+  stroke-opacity: 0.6;
+}
+
+.links .link_parent {
+  stroke-width: 2.5px;
+  stroke: gray;
+}
+
+.nodes .related_sibling, .texts .related_sibling {
+  fill: #cb535c;
+}
+
+.links .link_sibling {
+  stroke: #cb535c;
+}
+
+.texts, .nodes circle {
+  fill: #4c4444;
+}
+
+.nodes circle {
+  fill-opacity: 0.8;
+}
+
+.texts {
+  font-family: "Source Sans Pro", "Lucida Grande", Verdana, sans-serif;
+}

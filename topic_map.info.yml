@@ -1,0 +1,7 @@
+name: Topic Map
+description: Interactive graph showing topics and their relationships 
+package: Custom
+type: module
+version: 1.0
+core: 8.x
+project: "topic_map"

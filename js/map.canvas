@@ -1,0 +1,136 @@
+var canvas, width, height, simulation 
+
+window.onload = function() {
+  
+  function loadCanvas(id) {
+      canvas = document.createElement('canvas');
+      div = document.getElementById(id); 
+      width = canvas.width  = 900;
+      height = canvas.height = 450;
+      context = canvas.getContext("2d"),
+      div.appendChild(canvas)
+  }
+
+  loadCanvas("map_container");
+
+  simulation = d3.forceSimulation(nodes)
+      .force("charge", d3.forceManyBody().strength(function(d) {if (d.central) return -1000; else if (d.related) return -500; else return -100}))
+      .force("link", d3.forceLink(links).id(function(d) {return d.id; }).distance(20).strength(0.5))
+      .force("collide",d3.forceCollide( function(d){return d.r + 100 }).iterations(16) )
+      .force("x", d3.forceX())
+      .force("y", d3.forceY())
+      .on("tick", ticked);
+
+  d3.select(canvas)
+      .call(d3.drag()
+          .container(canvas)
+          .subject(dragsubject)
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended));
+}
+
+function ticked() {
+  context.clearRect(0, 0, width, height);
+  context.save();
+  context.translate(width / 2, height / 2);
+
+  context.beginPath();
+  links.forEach(drawLink);
+  context.strokeStyle = "#aaa";
+  context.stroke();
+
+  context.beginPath();
+  nodes.forEach(drawNode);
+ 
+ // context.strokeStyle = "#fff";
+//  context.stroke();
+
+  context.scale(2,2);
+  context.restore();
+}
+
+function dragsubject() {
+  return simulation.find(d3.event.x - width / 2, d3.event.y - height / 2);
+}
+
+function decentre(node) {
+  node.fx = node.fy = null;
+  node.central = false;
+  node.related = false;
+}
+
+function dragstarted() {
+  nodes.forEach(decentre);
+  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+  d3.event.subject.fx = d3.event.subject.x;
+  d3.event.subject.fy = d3.event.subject.y;
+}
+
+function dragged() {
+  d3.event.subject.fx = d3.event.x;
+  d3.event.subject.fy = d3.event.y;
+}
+
+
+function isInMiddle(node) {
+    //return node.x > width * 0.4 && node.x < width * 0.6 && node.y > height * 0.4 && node.y < height * 0.6 
+    return node.x > -100 && node.x < 100 && node.y > -60 && node.y < 60
+}
+
+function setRelated(centralNode) {
+  var relatedNodes =  [];
+  links.forEach(function(link) {
+    if (link.source.id == centralNode.id) {
+      link.target.related = true;
+    }
+    if (link.target.id == centralNode.id) {
+      link.source.related = true;
+    }
+  })
+}
+
+function dragended() {
+  if (!d3.event.active) simulation.alphaTarget(0);
+  // if it's near the centre, move it to the center and stick it there
+  if (isInMiddle(d3.event.subject)) {
+    d3.event.subject.central = true;
+    d3.event.subject.fx = 0;
+    d3.event.subject.fy = 0;
+    setRelated(d3.event.subject);
+    simulation.nodes(nodes);
+    simulation.alpha(1).restart();
+  } else {
+  // if not, leave it unfixed and it will spring back to where it was
+    d3.event.subject.fx = d3.event.subject.fy = null;
+  }
+}
+
+function drawLink(d) {
+  context.moveTo(d.source.x, d.source.y);
+  context.lineTo(d.target.x, d.target.y);
+}
+
+function drawNode(d) {
+  var radius, colour;
+  if (d.central) {
+    radius = 10;
+    colour = "red";
+  } else if (d.related) {
+    radius = 7;
+    colour = "black";
+  } else {
+    radius = 3;
+    colour = "grey";
+  }
+  context.moveTo(d.x + radius, d.y);
+  context.font = "10pt Arial";
+  //context.fillStyle = "black";
+  var url = '/taxonomy/term/' + d.id 
+  context.fillText(d.name, d.x - 30, d.y - 10);
+  context.arc(d.x, d.y, radius, 0, 2 * Math.PI);
+  //context.strokeStyle = colour;
+  context.stroke();
+  //context.fillStyle = colour;
+  context.fill();
+}

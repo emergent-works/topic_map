@@ -1,0 +1,12 @@
+map:
+  js:
+    js/d3.v4.min.js : {}
+    js/map.js : {}
+  css:
+    theme:
+      css/map.css: {}
+
+relations:
+  css:
+    theme:
+      css/relations.css: {}
