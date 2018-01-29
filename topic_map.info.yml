@@ -1,7 +1,9 @@
 name: Topic Map
-description: Interactive graph showing topics and their relationships 
-package: Custom
+description: Create and visualise complex hierarchies of terms 
 type: module
 version: 1.0
 core: 8.x
 project: "topic_map"
+dependencies:
+  - field
+  - taxonomy

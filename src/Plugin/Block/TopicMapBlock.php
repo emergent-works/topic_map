@@ -37,9 +37,9 @@ class TopicMapBlock extends BlockBase {
                               <div class="panel-heading">Visual representation of the topic space</div>
                               <p>Hover over a topic to see its relationships to other topics: </p>
                                 <ul>
-                                  <li class="parents">its parents</li> 
-                                  <li class="children">its children</li>  
-                                  <li class="neighbours">its neighbours</li>
+                                  <li class="parents">topics that contain it</li> 
+                                  <li class="children">topics that are parts of it</li>  
+                                  <li class="neighbours">related topics</li>
                                 </ul>
                               <p>Click on a topic to view a list of content and resources pertaining to it.</p>
                             </div>

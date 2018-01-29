@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\topic_relations;
+namespace Drupal\topic_map;
 
 class TopicRelations {
 
   private $topic_relations = array(
-    array("base"=> "field_topicmap_neighbour", "opposite"=>"field_topicmap_neighbour"),
-    array("base"=> "field_topicmap_parent", "opposite"=>"field_topicmap_child"),
-    array("base"=> "field_topicmap_child", "opposite"=>"field_topicmap_parent"),
+    array("base"=> "field_neighbours", "opposite"=>"field_neighbours"),
+    array("base"=> "field_parents", "opposite"=>"field_children"),
+    array("base"=> "field_children", "opposite"=>"field_parents"),
   );
 
   public function onInsert($term) {
