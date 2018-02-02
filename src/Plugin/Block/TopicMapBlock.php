@@ -27,8 +27,10 @@ class TopicMapBlock extends BlockBase {
 
         $nodes = $query->execute()->fetchAll();
 
-        $links = db_query("select concat(`taxonomy_term__field_parents`.`entity_id`,'p',`taxonomy_term__field_parents`.`field_parents_target_id`) AS `id`,`taxonomy_term__field_parents`.`entity_id` AS `source`,`taxonomy_term__field_parents`.`field_parents_target_id` AS `target`,'parent' AS `relation` from `taxonomy_term__field_parents` where (`taxonomy_term__field_parents`.`entity_id` in (select `taxonomy_term_data`.`tid` from `taxonomy_term_data`) and `taxonomy_term__field_parents`.`field_parents_target_id` in (select `taxonomy_term_data`.`tid` from `taxonomy_term_data`)) union select concat(`taxonomy_term__field_neighbours`.`entity_id`,'n',`taxonomy_term__field_neighbours`.`field_neighbours_target_id`) AS `id`,`taxonomy_term__field_neighbours`.`entity_id` AS `source`,`taxonomy_term__field_neighbours`.`field_neighbours_target_id` AS `target`,'neighbour' AS `relation` from `taxonomy_term__field_neighbours` where (`taxonomy_term__field_neighbours`.`entity_id` in (select `taxonomy_term_data`.`tid` from `taxonomy_term_data`) and `taxonomy_term__field_neighbours`.`field_neighbours_target_id` in (select `taxonomy_term_data`.`tid` from `taxonomy_term_data`))")->fetchAll();
-
+        // The links are parent-to-child and neighbour-to-neighbour. 
+        // In the table, if a and b are neighbours there will be two rows - one in each direction. So we filter on source > target (as they cannot be the same node; this is ensured by the topic relations code.
+        $sql = "select concat(`entity_id`,'p',`field_parents_target_id`) AS `id`,`entity_id` AS `source`,`field_parents_target_id` AS `target`,'parent' AS `relation` from `taxonomy_term__field_parents` union select concat(`taxonomy_term__field_neighbours`.`entity_id`,'n',`taxonomy_term__field_neighbours`.`field_neighbours_target_id`) AS `id`, `entity_id` AS `source`, `field_neighbours_target_id` AS `target`,'neighbour' AS `relation` from `taxonomy_term__field_neighbours` where entity_id > field_neighbours_target_id";
+        $links = db_query($sql)->fetchAll();
         $container_size = sqrt(sizeof($nodes)) * 170;
         $output =  array (
             '#type' => 'inline_template',
