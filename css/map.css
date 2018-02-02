@@ -1,6 +1,4 @@
 #map_container {
-  width: 900px;
-  height: 900px;
   overflow: hidden;
   position: relative;
 
@@ -48,7 +46,7 @@
   color: #2d5593;
 }
 
-#legend .siblings {
+#legend .neighbours {
   font-weight: bold;
   color: #cb535c;
 }
@@ -79,11 +77,11 @@
   stroke: gray;
 }
 
-.nodes .related_sibling, .texts .related_sibling {
+.nodes .related_neighbour, .texts .related_neighbour {
   fill: #cb535c;
 }
 
-.links .link_sibling {
+.links .link_neighbour {
   stroke: #cb535c;
 }
 

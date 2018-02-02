@@ -46,8 +46,8 @@ function getLinkClass(link) {
 }
 
 var svg = d3.select('svg')
-var width = 900 
-var height = 900
+var width = svg.attr('width'); 
+var height = svg.attr('height');
 var node_radius = 15;
 
 const gravity = 0.05
