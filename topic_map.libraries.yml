@@ -1,6 +1,7 @@
 map:
   js:
     js/d3.v4.min.js : {}
+    js/map-functions.js: {}
     js/map.js : {}
   css:
     theme:

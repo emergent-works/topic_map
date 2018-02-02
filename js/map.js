@@ -1,12 +1,16 @@
-const svg = d3.select('svg')
-const width = svg.attr('width'); 
+const svg = d3.select('svg') // the container element #map_container
+const width = svg.attr('width');  
 const height = svg.attr('height');
+
+// These are d3 force-related graph parameters
 const gravity = 0.05
 const forceX = d3.forceX(width / 2).strength(gravity + 0.02)
 const forceY = d3.forceY(height / 2).strength(gravity)
 
-var dragging;
+var dragging; // state variable to indicated whether dragging is in progress
 
+// Set the size of each node depending on how many children it has
+// and the label length depending on the number of characters (label length is used when constraining nodes to the container).
 nodes.forEach(function(node) {
   node.childCount = 0;
   links.forEach(function(link) {
@@ -18,8 +22,7 @@ nodes.forEach(function(node) {
   node.labelLength = decodeEntities(node.name).length * 4
 })
 
-
-// simulation setup with all forces
+// set up the force simulation parameters 
 var linkForce = d3
   .forceLink()
   .id(function (link) { return link.id })
@@ -33,6 +36,8 @@ var simulation = d3
   .force('x', forceX)
   .force('y',  forceY)
   .force('collide', d3.forceCollide(d => d.labelLength).strength(1))
+
+// Add the links, nodes and text elements (labels)
 var linkElements = svg.append("g")
   .attr("class", "links")
   .selectAll("line")
@@ -53,7 +58,6 @@ var nodeElements = svg.append("g")
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended));
-
 var textElements = svg.append("g")
   .attr("class", "texts")
   .selectAll("text")
@@ -68,115 +72,13 @@ var textElements = svg.append("g")
     .on("mouseover", hover)
     .on("mouseout", unhover)
 
+// This runs in a loop moving things around until it settles down.
+// It starts again if you drag and drop a node.
+// It puts parent nodes above their children as much as it can, keeps everything in the container and fitting together properly.
 simulation.nodes(nodes).on('tick', () => {
-  if (!dragging) doVerticality();
+  if (!dragging) tryToPutParentsAboveChildren(); 
   constrainNodesToSVGContainer();
   positionLinksAndTextRelativeToNodes();
 })
 
 simulation.force("link").links(links)
-
-function decodeEntities(encodedString) {
-      var textArea = document.createElement('textarea');
-          textArea.innerHTML = encodedString;
-              return textArea.value;
-}
-
-function constrainNodesToSVGContainer() {
-  nodeElements
-    .attr('cx', function(node) {return node.x = Math.max(node.labelLength + 10, Math.min(width - node.labelLength + 10, node.x));})
-    .attr('cy', function(node) {return node.y = Math.max(node.radius + 20, Math.min(height - node.radius - 20, node.y))})   
-}
-
-function positionLinksAndTextRelativeToNodes() {
-  linkElements
-    .attr('x1', function (link) { return link.source.x })
-    .attr('y1', function (link) { return link.source.y })
-    .attr('x2', function (link) { return link.target.x })
-    .attr('y2', function (link) { return link.target.y })
-  textElements
-    .attr('x', function (node) { return node.x })
-    .attr('y', function (node) { return node.y })
-}
-
-function getNodeClass(node) {
-  return "node_" + node.id
-}
-
-function showRelationships(node) {
-  d3.selectAll('.nodes circle').classed("unrelated", true)
-  d3.selectAll('.links line').classed("unrelated", true)
-  d3.selectAll('.texts text').classed("unrelated", true)
-  d3.selectAll('.node_' + node.id).classed("unrelated", false)
-  links.forEach(function(link) {
-    if (link.target == node) {
-      if (link.relation == "parent") {
-        d3.selectAll('.node_' + link.source.id).classed("related_child", true)
-        d3.selectAll('.link_' + link.id).classed("related_child", true)
-      } else {
-        d3.selectAll('.node_' + link.source.id).classed("related_neighbour", true)
-      }
-      d3.selectAll('.node_' + link.source.id).classed("unrelated", false)
-      d3.selectAll('.link_' + link.id).classed("unrelated", false)
-    } else if (link.source == node) {
-      if (link.relation == "parent") {
-        d3.selectAll('.node_' + link.target.id).classed("related_parent", true)
-        d3.selectAll('.link_' + link.id).classed("related_parent", true)
-      } else {
-        d3.selectAll('.node_' + link.target.id).classed("related_neighbour", true)
-      }
-      d3.selectAll('.node_' + link.target.id).classed("unrelated", false)
-      d3.selectAll('.link_' + link.id).classed("unrelated", false)
-    }
-  })
-}
-
-function getLinkClass(link) {
-  return "link_" + link.relation + " link_" + link.id
-}
-
-function dragstarted(d) {
-  dragging = true;
-  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-}
-
-function dragged(d) {
-  d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
-}
-
-function dragended(d) {
-  if (!d3.event.active) simulation.alphaTarget(0);
-  d3.event.subject.fx = null
-  d3.event.subject.fy = null
-  dragging = false;
-}
-
-function doVerticality() {
-  linkElements.each(function(d) {
-    if (d.relation == "parent")  {
-      if (d.source.y < d.target.y) {
-        targy = d.target.y
-        d.target.y = d.source.y
-        d.source.y = targy
-      }
-      while (d.source.y < d.target.y + 30) {
-        d.source.y += 1
-        d.target.y -= 1
-      }
-    }
- })
-}
-
-function hover(d) {
-    d3.selectAll('.node_' + d.id).classed("hovering", true);
-    showRelationships(d);
-}
-
-function unhover(d) {
-    d3.selectAll('.hovering').classed("hovering", false);
-    d3.selectAll('.related_parent').classed("related_parent", false)    
-    d3.selectAll('.related_child').classed("related_child", false)    
-    d3.selectAll('.related_neighbour').classed("related_neighbour", false)    
-    d3.selectAll('.unrelated').classed("unrelated", false)    
-}
-
