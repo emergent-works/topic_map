@@ -1,3 +1,13 @@
+var svg = d3.select('svg')
+var width = svg.attr('width'); 
+var height = svg.attr('height');
+var node_radius = 15;
+var dragging;
+
+const gravity = 0.05
+const forceX = d3.forceX(width / 2).strength(gravity + 0.02)
+const forceY = d3.forceY(height / 2).strength(gravity)
+
 nodes.forEach(function(node) {
   node.childCount = 0;
   links.forEach(function(link) {
@@ -9,63 +19,6 @@ nodes.forEach(function(node) {
   node.labelLength = decodeEntities(node.name).length * 4
 })
 
-function getNodeClass(node) {
-  return "node_" + node.id
-}
-
-function showRelationships(node) {
-  d3.selectAll('.nodes circle').classed("unrelated", true)
-  d3.selectAll('.links line').classed("unrelated", true)
-  d3.selectAll('.texts text').classed("unrelated", true)
-  d3.selectAll('.node_' + node.id).classed("unrelated", false)
-  links.forEach(function(link) {
-    if (link.target == node) {
-      if (link.relation == "parent") {
-        d3.selectAll('.node_' + link.source.id).classed("related_child", true)
-        d3.selectAll('.link_' + link.id).classed("related_child", true)
-      } else {
-        d3.selectAll('.node_' + link.source.id).classed("related_neighbour", true)
-      }
-      d3.selectAll('.node_' + link.source.id).classed("unrelated", false)
-      d3.selectAll('.link_' + link.id).classed("unrelated", false)
-    } else if (link.source == node) {
-      if (link.relation == "parent") {
-        d3.selectAll('.node_' + link.target.id).classed("related_parent", true)
-        d3.selectAll('.link_' + link.id).classed("related_parent", true)
-      } else {
-        d3.selectAll('.node_' + link.target.id).classed("related_neighbour", true)
-      }
-      d3.selectAll('.node_' + link.target.id).classed("unrelated", false)
-      d3.selectAll('.link_' + link.id).classed("unrelated", false)
-    }
-  })
-}
-
-function getLinkClass(link) {
-  return "link_" + link.relation + " link_" + link.id
-}
-
-var svg = d3.select('svg')
-var width = svg.attr('width'); 
-var height = svg.attr('height');
-var node_radius = 15;
-
-const gravity = 0.05
-const forceX = d3.forceX(width / 2).strength(gravity + 0.02)
-const forceY = d3.forceY(height / 2).strength(gravity)
-
-function hover(d) {
-    d3.selectAll('.node_' + d.id).classed("hovering", true);
-    showRelationships(d);
-}
-
-function unhover(d) {
-    d3.selectAll('.hovering').classed("hovering", false);
-    d3.selectAll('.related_parent').classed("related_parent", false)    
-    d3.selectAll('.related_child').classed("related_child", false)    
-    d3.selectAll('.related_neighbour').classed("related_neighbour", false)    
-    d3.selectAll('.unrelated').classed("unrelated", false)    
-}
 
 // simulation setup with all forces
 var linkForce = d3
@@ -116,7 +69,72 @@ var textElements = svg.append("g")
     .on("mouseover", hover)
     .on("mouseout", unhover)
 
-var dragging;
+simulation.nodes(nodes).on('tick', () => {
+  if (!dragging) doVerticality();
+  constrainNodesToSVGContainer();
+  positionLinksAndTextRelativeToNodes();
+})
+
+simulation.force("link").links(links)
+
+function decodeEntities(encodedString) {
+      var textArea = document.createElement('textarea');
+          textArea.innerHTML = encodedString;
+              return textArea.value;
+}
+
+function constrainNodesToSVGContainer() {
+  nodeElements
+    .attr('cx', function(node) {return node.x = Math.max(node.labelLength + 10, Math.min(width - node.labelLength + 10, node.x));})
+    .attr('cy', function(node) {return node.y = Math.max(node_radius + 20, Math.min(height - node_radius - 20, node.y))})   
+}
+
+function positionLinksAndTextRelativeToNodes() {
+  linkElements
+    .attr('x1', function (link) { return link.source.x })
+    .attr('y1', function (link) { return link.source.y })
+    .attr('x2', function (link) { return link.target.x })
+    .attr('y2', function (link) { return link.target.y })
+  textElements
+    .attr('x', function (node) { return node.x })
+    .attr('y', function (node) { return node.y })
+}
+
+function getNodeClass(node) {
+  return "node_" + node.id
+}
+
+function showRelationships(node) {
+  d3.selectAll('.nodes circle').classed("unrelated", true)
+  d3.selectAll('.links line').classed("unrelated", true)
+  d3.selectAll('.texts text').classed("unrelated", true)
+  d3.selectAll('.node_' + node.id).classed("unrelated", false)
+  links.forEach(function(link) {
+    if (link.target == node) {
+      if (link.relation == "parent") {
+        d3.selectAll('.node_' + link.source.id).classed("related_child", true)
+        d3.selectAll('.link_' + link.id).classed("related_child", true)
+      } else {
+        d3.selectAll('.node_' + link.source.id).classed("related_neighbour", true)
+      }
+      d3.selectAll('.node_' + link.source.id).classed("unrelated", false)
+      d3.selectAll('.link_' + link.id).classed("unrelated", false)
+    } else if (link.source == node) {
+      if (link.relation == "parent") {
+        d3.selectAll('.node_' + link.target.id).classed("related_parent", true)
+        d3.selectAll('.link_' + link.id).classed("related_parent", true)
+      } else {
+        d3.selectAll('.node_' + link.target.id).classed("related_neighbour", true)
+      }
+      d3.selectAll('.node_' + link.target.id).classed("unrelated", false)
+      d3.selectAll('.link_' + link.id).classed("unrelated", false)
+    }
+  })
+}
+
+function getLinkClass(link) {
+  return "link_" + link.relation + " link_" + link.id
+}
 
 function dragstarted(d) {
   dragging = true;
@@ -150,34 +168,16 @@ function doVerticality() {
  })
 }
 
-function constrainNodesToBox() {
-  nodeElements
-    .attr('cx', function(node) {return node.x = Math.max(node.labelLength + 10, Math.min(width - node.labelLength + 10, node.x));})
-    .attr('cy', function(node) {return node.y = Math.max(node_radius + 20, Math.min(height - node_radius - 20, node.y))})   
+function hover(d) {
+    d3.selectAll('.node_' + d.id).classed("hovering", true);
+    showRelationships(d);
 }
 
-function fitLinksAndTextToNodes() {
-  linkElements
-    .attr('x1', function (link) { return link.source.x })
-    .attr('y1', function (link) { return link.source.y })
-    .attr('x2', function (link) { return link.target.x })
-    .attr('y2', function (link) { return link.target.y })
-  textElements
-    .attr('x', function (node) { return node.x })
-    .attr('y', function (node) { return node.y })
-}
-
-simulation.nodes(nodes).on('tick', () => {
-  if (!dragging) doVerticality();
-  constrainNodesToBox();
-  fitLinksAndTextToNodes();
-})
-
-simulation.force("link").links(links)
-
-function decodeEntities(encodedString) {
-      var textArea = document.createElement('textarea');
-          textArea.innerHTML = encodedString;
-              return textArea.value;
+function unhover(d) {
+    d3.selectAll('.hovering').classed("hovering", false);
+    d3.selectAll('.related_parent').classed("related_parent", false)    
+    d3.selectAll('.related_child').classed("related_child", false)    
+    d3.selectAll('.related_neighbour').classed("related_neighbour", false)    
+    d3.selectAll('.unrelated').classed("unrelated", false)    
 }
 
