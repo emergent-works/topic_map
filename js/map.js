@@ -1,12 +1,11 @@
-var svg = d3.select('svg')
-var width = svg.attr('width'); 
-var height = svg.attr('height');
-var node_radius = 15;
-var dragging;
-
+const svg = d3.select('svg')
+const width = svg.attr('width'); 
+const height = svg.attr('height');
 const gravity = 0.05
 const forceX = d3.forceX(width / 2).strength(gravity + 0.02)
 const forceY = d3.forceY(height / 2).strength(gravity)
+
+var dragging;
 
 nodes.forEach(function(node) {
   node.childCount = 0;
@@ -86,7 +85,7 @@ function decodeEntities(encodedString) {
 function constrainNodesToSVGContainer() {
   nodeElements
     .attr('cx', function(node) {return node.x = Math.max(node.labelLength + 10, Math.min(width - node.labelLength + 10, node.x));})
-    .attr('cy', function(node) {return node.y = Math.max(node_radius + 20, Math.min(height - node_radius - 20, node.y))})   
+    .attr('cy', function(node) {return node.y = Math.max(node.radius + 20, Math.min(height - node.radius - 20, node.y))})   
 }
 
 function positionLinksAndTextRelativeToNodes() {
