@@ -83,6 +83,7 @@
 
 .links .link_neighbour {
   stroke: #cb535c;
+  stroke-width: 1.7px;
 }
 
 .texts, .nodes circle {

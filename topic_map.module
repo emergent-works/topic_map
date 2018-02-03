@@ -5,6 +5,14 @@ require_once "src/TopicRelations.php";
 //require_once "topic_map.views_execution.inc";    // Doesn't work https://drupal.stackexchange.com/questions/245447
 use Drupal\topic_map\TopicRelations;
 
+// Implement hook_form_alter.
+// We assume that if these fields are present, it's a topic map vocabulary and we want to ensure terms don't get related to themselves.
+function topic_map_form_alter(&$form,  &$form_state, $form_id) {
+  if (array_key_exists('field_children', $form) && array_key_exists('field_parents', $form) && array_key_exists('field_neighbours', $form) ) {
+    $form['#validate'][] = 'TopicRelations_validate';
+  }
+}
+
 // Implements hook_taxonomy_term_insert.
 function topic_map_taxonomy_term_insert($term) {
   $tr = new TopicRelations();
@@ -32,10 +40,33 @@ function topic_map_module_implements_alter(&$implementations, $hook) {
   }
 }
 
-// Alters the help text so that it does not say the stuff
-// relating to the built-in hierarchy functionality
+// Places this help text on all vocabulary overview pages. Whether this or the default text is shown is governed by condtionally-loaded CSS
 function topic_map_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
   if  ($route_name == "entity.taxonomy_vocabulary.overview_form") {
-    return "<p id='replacement_taxonomy_help'>The default functionality for arranging terms into a hierarchy has been overridden by the custom module 'Topic Relations'. </p>";
+    return "<p id='replacement_taxonomy_help'>This vocabulary uses the Topic Map module and therefore the default hierarchical relationships between terms are disabled. You can use the fields to create relationships between terms. The topic map for this vocabulary is available as a block.</p>";
   }
 }
+
+// Stops the user from relating a term to itself
+function TopicRelations_validate($form, $form_state) {
+  $term_id = $form_state->getFormObject()->getEntity()->id();
+  $children = $form_state->getValue('field_children');
+  for($i = 0; $i < sizeof($children); $i++) {
+    if(is_array($children[$i]) && $children[$i]['target_id'] == $term_id) {
+      $form_state->setErrorByName("field_children][$i", t('A term cannot be its own child'));
+    }
+  }
+  $parents = $form_state->getValue('field_parents');
+  for($i = 0; $i < sizeof($parents); $i++) {
+    if(is_array($parents[$i]) && $parents[$i]['target_id'] == $term_id) {
+      $form_state->setErrorByName("field_parents][$i", t('A term cannot be its own parent'));
+    }
+  }
+  $neighbours = $form_state->getValue('field_neighbours');
+  for($i = 0; $i < sizeof($neighbours); $i++) {
+    if(is_array($neighbours[$i]) && $neighbours[$i]['target_id'] == $term_id) {
+      $form_state->setErrorByName("field_neighbours][$i", t('A term cannot be its own neighbour'));
+    }
+  }
+}
+
