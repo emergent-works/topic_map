@@ -1,6 +1,6 @@
 # Topic Map
 ## What it does
-Three basic relationships for any categorisation project are **parent**, **child** and **neighbour** (or to use the [Dublin Core](https://en.wikipedia.org/wiki/Dublin_Core) terminology, [hasPart](http://dublincore.org/documents/2008/01/14/dcmi-terms/#terms-hasPart), [isPartOf](http://dublincore.org/documents/2008/01/14/dcmi-terms/#terms-isPartOf) and [relation](http://dublincore.org/documents/2008/01/14/dcmi-terms/#terms-relation).
+Three basic relationships for any categorisation project are **parent**, **child** and **neighbour** (or to use the [Dublin Core](https://en.wikipedia.org/wiki/Dublin_Core) terminology, [hasPart](http://dublincore.org/documents/2008/01/14/dcmi-terms/#terms-hasPart), [isPartOf](http://dublincore.org/documents/2008/01/14/dcmi-terms/#terms-isPartOf) and [relation](http://dublincore.org/documents/2008/01/14/dcmi-terms/#terms-relation)).
 This module makes it easy for you to create and these relationships between taxonomy terms and it creates visual maps and makes them available as blocks to be used anywhere on your site.
 ### Relations
 Out of the box, Drupal allows you to create hierarchies of taxonomy terms within a vocabulary, but it only provides "parent-child" relationships. You can use entity reference fields to create other relationships, but there is no way to make these symmetrical (i.e. if A is B's neighbour, then B is A's neighbour). 
