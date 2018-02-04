@@ -6,7 +6,12 @@
 
 /* Another interface for the built-in relation functionality
    is drag-and-drop on the vocabulary pages. This removes the
-   dragability and hides the edit and cancel buttons and the help text */
-#taxonomy .tabledrag-handle, #taxonomy-overview-terms #edit-actions, #replacement_taxonomy_help ~ p {
+   dragability and hides the edit and cancel buttons and the default help text */
+#taxonomy .tabledrag-handle, #taxonomy-overview-terms #edit-actions, .help p:first-of-type {
   display: none;
+}
+
+/* Shows the topic-map-specific help text.*/
+#replacement_taxonomy_help {
+  display: block;
 }

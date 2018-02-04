@@ -6,10 +6,24 @@ require_once "src/TopicRelations.php";
 use Drupal\topic_map\TopicRelations;
 
 // Implement hook_form_alter.
-// We assume that if these fields are present, it's a topic map vocabulary and we want to ensure terms don't get related to themselves.
 function topic_map_form_alter(&$form,  &$form_state, $form_id) {
+  if ($form_id == "taxonomy_overview_terms") {
+    $vocab_id = \Drupal::routeMatch()->getParameters()->get('taxonomy_vocabulary')->id();
+    $field_definitions = \Drupal::entityManager()->getFieldDefinitions('taxonomy_term', $vocab_id);
+    $field_names = array();
+    foreach($field_definitions as $def) {
+      $field_names[] = $def->getName();
+    }
+    // If these fields are present on the vocabulary definition then it is a topic map vocabulary so load the approproate CSS.
+    if (in_array('field_children', $field_names) && in_array('field_parents', $field_names) && in_array('field_neighbours', $field_names)) {
+      $form['#attached']['library'][] = 'topic_map/relations';
+    }
+  }
+  // If these fields are present, we are on the edit form for a term belonging to a topic map vocabulary.
+  // so load the appropriate validation and CSS.
   if (array_key_exists('field_children', $form) && array_key_exists('field_parents', $form) && array_key_exists('field_neighbours', $form) ) {
     $form['#validate'][] = 'TopicRelations_validate';
+    $form['#attached']['library'][] = 'topic_map/relations';
   }
 }
 
@@ -25,31 +39,17 @@ function topic_map_taxonomy_term_update($term) {
   $tr->onUpdate($term);
 }
 
-// Attaches css to the relevant pages so that the built-in taxonomy
-// hierarchy functionality is not visible
-function topic_map_page_attachments(array &$attachments) {
-  $attachments['#attached']['library'][] = 'topic_map/relations';
-}
-
-// Causes our help text to generated before the standard taxonomy help.
-// This allows us to use the sibling selector in the css to remove the
-// standard help text.
-function topic_map_module_implements_alter(&$implementations, $hook) {
- if ($hook == 'help') {
-    $implementations = array('topic_map' => $implementations['topic_map']) + $implementations;
-  }
-}
-
 // Places this help text on all vocabulary overview pages. Whether this or the default text is shown is governed by condtionally-loaded CSS
 function topic_map_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
   if  ($route_name == "entity.taxonomy_vocabulary.overview_form") {
-    return "<p id='replacement_taxonomy_help'>This vocabulary uses the Topic Map module and therefore the default hierarchical relationships between terms are disabled. You can use the fields to create relationships between terms. The topic map for this vocabulary is available as a block.</p>";
+    return "<p class='hidden' id='replacement_taxonomy_help'>This vocabulary uses the Topic Map module and therefore the default hierarchical relationships between terms are disabled. You can use the fields to create relationships between terms. The topic map for this vocabulary is available as a block. </p>";
   }
 }
 
 // Stops the user from relating a term to itself
 function TopicRelations_validate($form, $form_state) {
   $term_id = $form_state->getFormObject()->getEntity()->id();
+  if (!$term_id) return; // this is empty when creating a new term
   $children = $form_state->getValue('field_children');
   for($i = 0; $i < sizeof($children); $i++) {
     if(is_array($children[$i]) && $children[$i]['target_id'] == $term_id) {
