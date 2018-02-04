@@ -34,7 +34,7 @@ The purpose of this module is not just to create the relationships but to provid
 * The blocks should now appear on the relevant pages, looking like the illustration above. If you don't see all the terms and links that you expect, ensure you have cleared the Drupal cache since you last added or edited any terms.
 
 ## Important note:
-**If you have created vocabularies with the fields on but then you delete them, the fields will no longer be available in the "Reuse existing field" dropdown.** If this happens, simply disable and re-enable the module, and the fields will reappear.
+**If you have created vocabularies with the fields on but then you delete them, the fields will no longer be available in the "Reuse existing field" dropdown.** If this happens, simply uninstall and reinstall the module (just via the GUI), and the fields will reappear.
 
 ## Feedback and further development
 IKM are very happy to listen to any feedback you may have about this module and suggestions for further development. You can contact us via our website, [IKM Emergent](https://www.ikmemergent.net)
