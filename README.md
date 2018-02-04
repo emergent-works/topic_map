@@ -10,9 +10,7 @@ The purpose of this module is not just to create the relationships but to provid
 
 ![Map with "Apple" selected](https://github.com/hoegrammer/topic_map/blob/master/docs/apple.png)
 
-The same map when hovering over a different term:
 ![Map with "Colour" selected](https://github.com/hoegrammer/topic_map/blob/master/docs/colour.png)
-
 
 ## Installation
 * Install as you would any Drupal module.
