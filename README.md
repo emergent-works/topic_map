@@ -1,4 +1,5 @@
 # Topic Map
+# A Drupal module for creating and visualising relationships between taxonomy terms
 ## What it does
 Three basic relationships for any categorisation project are **parent**, **child** and **neighbour** (or to use the [Dublin Core](https://en.wikipedia.org/wiki/Dublin_Core) terminology, [hasPart](http://dublincore.org/documents/2008/01/14/dcmi-terms/#terms-hasPart), [isPartOf](http://dublincore.org/documents/2008/01/14/dcmi-terms/#terms-isPartOf) and [relation](http://dublincore.org/documents/2008/01/14/dcmi-terms/#terms-relation)).
 This module makes it easy for you to create these relationships between taxonomy terms, and it makes visual maps of them available as blocks to be used anywhere on your site.
