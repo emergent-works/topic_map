@@ -35,6 +35,7 @@ class TopicMapBlock extends BlockBase {
     $output =  array (
         '#type' => 'inline_template',
         '#template' => '<div id="legend" class="panel-default panel">
+                          <div class="panel-heading">Visual representation of the topic space</div>
                           <p>Hover over a topic to see its relationships to other topics: </p>
                             <ul>
                               <li class="parents">topics that contain it</li> 
