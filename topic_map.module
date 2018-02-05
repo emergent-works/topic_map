@@ -9,19 +9,19 @@ use Drupal\topic_map\TopicRelations;
 function topic_map_form_alter(&$form,  &$form_state, $form_id) {
   if ($form_id == "taxonomy_overview_terms") {
     $vocab_id = \Drupal::routeMatch()->getParameters()->get('taxonomy_vocabulary')->id();
-    $field_topicmap_definitions = \Drupal::entityManager()->getFieldDefinitions('taxonomy_term', $vocab_id);
-    $field_topicmap_names = array();
-    foreach($field_topicmap_definitions as $def) {
-      $field_topicmap_names[] = $def->getName();
+    $field_definitions = \Drupal::entityManager()->getFieldDefinitions('taxonomy_term', $vocab_id);
+    $field_names = array();
+    foreach($field_definitions as $def) {
+      $field_names[] = $def->getName();
     }
     // If these fields are present on the vocabulary definition then it is a topic map vocabulary so load the approproate CSS.
-    if (in_array('field_topicmap_children', $field_topicmap_names) && in_array('field_topicmap_parents', $field_topicmap_names) && in_array('field_topicmap_neighbours', $field_topicmap_names)) {
+    if (in_array('field_children', $field_names) && in_array('field_parents', $field_names) && in_array('field_neighbours', $field_names)) {
       $form['#attached']['library'][] = 'topic_map/relations';
     }
   }
   // If these fields are present, we are on the edit form for a term belonging to a topic map vocabulary.
   // so load the appropriate validation and CSS.
-  if (array_key_exists('field_topicmap_children', $form) && array_key_exists('field_topicmap_parents', $form) && array_key_exists('field_topicmap_neighbours', $form) ) {
+  if (array_key_exists('field_children', $form) && array_key_exists('field_parents', $form) && array_key_exists('field_neighbours', $form) ) {
     $form['#validate'][] = 'TopicRelations_validate';
     $form['#attached']['library'][] = 'topic_map/relations';
   }
@@ -53,22 +53,22 @@ function topic_map_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $r
 function TopicRelations_validate($form, $form_state) {
   $term_id = $form_state->getFormObject()->getEntity()->id();
   if (!$term_id) return; // this is empty when creating a new term
-  $children = $form_state->getValue('field_topicmap_children');
+  $children = $form_state->getValue('field_children');
   for($i = 0; $i < sizeof($children); $i++) {
     if(is_array($children[$i]) && $children[$i]['target_id'] == $term_id) {
-      $form_state->setErrorByName("field_topicmap_children][$i", t('A term cannot be its own child'));
+      $form_state->setErrorByName("field_children][$i", t('A term cannot be its own child'));
     }
   }
-  $parents = $form_state->getValue('field_topicmap_parents');
+  $parents = $form_state->getValue('field_parents');
   for($i = 0; $i < sizeof($parents); $i++) {
     if(is_array($parents[$i]) && $parents[$i]['target_id'] == $term_id) {
-      $form_state->setErrorByName("field_topicmap_parents][$i", t('A term cannot be its own parent'));
+      $form_state->setErrorByName("field_parents][$i", t('A term cannot be its own parent'));
     }
   }
-  $neighbours = $form_state->getValue('field_topicmap_neighbours');
+  $neighbours = $form_state->getValue('field_neighbours');
   for($i = 0; $i < sizeof($neighbours); $i++) {
     if(is_array($neighbours[$i]) && $neighbours[$i]['target_id'] == $term_id) {
-      $form_state->setErrorByName("field_topicmap_neighbours][$i", t('A term cannot be its own neighbour'));
+      $form_state->setErrorByName("field_neighbours][$i", t('A term cannot be its own neighbour'));
     }
   }
 }

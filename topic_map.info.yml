@@ -1,7 +1,7 @@
 name: Topic Map
 description: Create and visualise relationships between taxonomy terms 
 type: module
-version: 1.0
+version: 1.0-emergent-works 
 core: 8.x
 project: "topic_map"
 dependencies:
