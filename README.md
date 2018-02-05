@@ -37,4 +37,4 @@ The purpose of this module is not just to create the relationships but to provid
 **If you have created vocabularies with the fields on but then you delete them, the fields will no longer be available in the "Reuse existing field" dropdown.** If this happens, simply uninstall and reinstall the module (just via the GUI), and the fields will reappear.
 
 ## Feedback and further development
-IKM are very happy to listen to any feedback you may have about this module and suggestions for further development. You can contact us via our website, [IKM Emergent](https://www.ikmemergent.net) (or log an issue on here of course).
+Emergent Works are very happy to listen to any feedback you may have about this module and suggestions for further development. You can contact us via [our website](https://www.emergentworks.net/) (or log an issue on here of course).
