@@ -5,7 +5,7 @@ namespace Drupal\topic_map;
 class TopicRelations {
 
   private $topic_relations = array(
-    array("base"=> "field_neighbours", "opposite"=>"field_neighbours"),
+    array("base"=> "field_siblings", "opposite"=>"field_siblings"),
     array("base"=> "field_parents", "opposite"=>"field_children"),
     array("base"=> "field_children", "opposite"=>"field_parents"),
   );

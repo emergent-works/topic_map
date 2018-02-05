@@ -22,7 +22,7 @@ class TopicMapBlock extends DeriverBase implements DeriverInterface {
         $field_names[] = $def->getName();
       }   
       // If these fields are present on the vocabulary definition then it is a topic map vocabulary.
-      if (in_array('field_children', $field_names) && in_array('field_parents', $field_names) && in_array('field_neighbours', $field_names)) {
+      if (in_array('field_children', $field_names) && in_array('field_parents', $field_names) && in_array('field_siblings', $field_names)) {
         $this->derivatives[$id] = $base_plugin_definition;
         $this->derivatives[$id]['admin_label'] = "Topic Map: $id";
       }   

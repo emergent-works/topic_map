@@ -29,7 +29,7 @@ class TopicMapBlock extends BlockBase {
 
     // The links are parent-to-child and neighbour-to-neighbour. 
     // In the table, if a and b are neighbours there will be two rows - one in each direction. So we filter on source > target (as they cannot be the same node; this is ensured by the topic relations code.
-    $sql = "select concat(`entity_id`,'p',`field_parents_target_id`) AS `id`,`entity_id` AS `source`,`field_parents_target_id` AS `target`,'parent' AS `relation` from `taxonomy_term__field_parents` where bundle = '" . $block_id . "' union select concat(`taxonomy_term__field_neighbours`.`entity_id`,'n',`taxonomy_term__field_neighbours`.`field_neighbours_target_id`) AS `id`, `entity_id` AS `source`, `field_neighbours_target_id` AS `target`,'neighbour' AS `relation` from `taxonomy_term__field_neighbours` where entity_id > field_neighbours_target_id and bundle = '" . $block_id . "'";
+    $sql = "select concat(`entity_id`,'p',`field_parents_target_id`) AS `id`,`entity_id` AS `source`,`field_parents_target_id` AS `target`,'parent' AS `relation` from `taxonomy_term__field_parents` where bundle = '" . $block_id . "' union select concat(`taxonomy_term__field_siblings`.`entity_id`,'n',`taxonomy_term__field_siblings`.`field_siblings_target_id`) AS `id`, `entity_id` AS `source`, `field_siblings_target_id` AS `target`,'neighbour' AS `relation` from `taxonomy_term__field_siblings` where entity_id > field_siblings_target_id and bundle = '" . $block_id . "'";
     $links = db_query($sql)->fetchAll();
     $container_size = sqrt(sizeof($nodes)) * 170;
     $output =  array (
