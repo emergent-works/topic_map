@@ -141,7 +141,7 @@ ____
 ____
 
 
-![Block menu](https://github.com/hoegrammer/topic_map/blob/master/docs/blockmenu.png)
+![Block menu](https://github.com/hoegrammer/topic_map/blob/master/docs/blockmenu1.png)
 
 ____
 
