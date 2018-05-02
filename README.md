@@ -40,7 +40,7 @@ ____
 * Next you need to add the fields. If you have just created a new vocabulary, there will be a tab on the page to **Manage Fields**. Click this. 
 ____
 
-![Manage fields](https://github.com/hoegrammer/topic_map/blob/master/docs/managefields.png)
+![Manage fields](https://github.com/hoegrammer/topic_map/blob/master/docs/managefields1.png)
 ____
 
 * Otherwise if you are using an existing vocabulary, you can find **Manage Fields** in the dropdown next to each vocabulary on the overview page
