@@ -16,7 +16,7 @@ ____
 ## Installation
 * Install as you would any Drupal module.
 
-## Configuration
+## Creating and displaying topic maps
 ### Vocabularies
 * Each topic map is bound to a vocabulary. In Drupal, a vocabulary is a list of terms that are related to each other. The terms that will be shown on the topic map have to all belong to the same vocabulary.
 * You can create a topic map from an existing vocabulary or you can add a new one. (If you are using an existing vocabulary, **remove any existing hierarchical structure from the vocabulary first**. The topic map does hierarchy in its own way and will give unintended results if you attempt to use it alongside another.)
