@@ -8,11 +8,11 @@ Out of the box, Drupal allows you to create hierarchies of taxonomy terms within
 This module solves these problems by disabling the standard parent-child hierarchy, providing entity reference fields for all three relationships (thus providing a consistent GUI) and automatically creating the inverse and symmetrical relationships as you would intuitively expect.
 ### Visualisation
 The purpose of this module is not just to create the relationships but to provide a visual overview of them in the form of blocks containing interactive maps. Each vocabulary that you enable will automatically yield a block looking like the example below (the two images are the same map shown in different hover states).
-
+____
 ![Map with "Apple" selected](https://github.com/hoegrammer/topic_map/blob/master/docs/apple.png)
-
+____
 ![Map with "Colour" selected](https://github.com/hoegrammer/topic_map/blob/master/docs/colour.png)
-
+____
 ## Installation
 * Install as you would any Drupal module.
 
