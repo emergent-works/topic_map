@@ -85,14 +85,11 @@ ____
 
 ____
 
-
-![List terms - tab](https://github.com/hoegrammer/topic_map/blob/master/docs/list.png)
+![List terms - dropdown](https://github.com/hoegrammer/topic_map/blob/master/docs/listdropdown.png)
 
 ____
 
-
-![List terms - dropdown](https://github.com/hoegrammer/topic_map/blob/master/docs/listdropdown.png)
-
+![List terms - tab](https://github.com/hoegrammer/topic_map/blob/master/docs/list.png)
 
 ____
 
