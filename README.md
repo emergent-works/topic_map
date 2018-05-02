@@ -19,27 +19,84 @@ The purpose of this module is not just to create the relationships but to provid
 ## Configuration
 ### Vocabularies
 * Each topic map is bound to a vocabulary. In Drupal, a vocabulary is a list of terms that are related to each other. The terms that will be shown on the topic map have to all belong to the same vocabulary.
-* You can create a topic map from an existing vocabulary or you can add a new one. 
-* To add a new one, start by going to **Structure->Taxonomy->Vocabulary** and click **Add Vocabulary**. Give the vocabulary a name and description, and save it.
-* If you are using an existing vocabulary, **remove any existing hierarchical structure from the vocabulary first**. The topic map does hierarchy in its own way and will give unintended results if you attempt to use it alongside another.
+* You can create a topic map from an existing vocabulary or you can add a new one. (If you are using an existing vocabulary, **remove any existing hierarchical structure from the vocabulary first**. The topic map does hierarchy in its own way and will give unintended results if you attempt to use it alongside another.)
+
+* To add a new vocabulary, go **Structure->Taxonomy->Vocabulary** and click **Add Vocabulary**. 
+
+![Add Vocabulary](https://github.com/hoegrammer/topic_map/blob/master/docs/addvocab.png)
+
+* Give the vocabulary a name and description, and save it.
+
+![New vocabulary name and descri](https://github.com/hoegrammer/topic_map/blob/master/docs/cheese.png)
+
+
 ### Fields
-* Next you need to add the fields. If you have just created a new vocabulary, there will be a tab on the page to **Manage Fields**. Click this. Otherwise if you are using an existing vocabulary, you can find **Manage Fields** in the dropdown next to each vocabulary on the overview page
-* Once you are on the page for managing fields, you can add the fields by using the "Reuse an existing field" dropdown. The fields you need to add are `field_topicmap_parents`, `field_topicmap_children` and `field_topicmap_neighbours`.
-* When you add each field it will give you an option to change the field label. You can change it to whatever you like.
+
+
+* Next you need to add the fields. If you have just created a new vocabulary, there will be a tab on the page to **Manage Fields**. Click this. 
+
+![New vocabulary name and descri](https://github.com/hoegrammer/topic_map/blob/master/docs/managefields.png)
+
+* Otherwise if you are using an existing vocabulary, you can find **Manage Fields** in the dropdown next to each vocabulary on the overview page
+
+![New vocabulary name and descri](https://github.com/hoegrammer/topic_map/blob/master/docs/managedropdown.png)
+
+* Click **Add field**.
+
+![add field](https://github.com/hoegrammer/topic_map/blob/master/docs/addfield.png)
+
+
+* Add the fields by using the "Reuse an existing field" dropdown. The fields you need to add are `field_topicmap_parents`, `field_topicmap_children` and `field_topicmap_neighbours`.
+
+![Reuse existing field](https://github.com/hoegrammer/topic_map/blob/master/docs/reuse.png)
+
+
+* When you add each field it will give you an option to change the field label. You can change it to whatever you like, or use the default labels which are the Dublin Core relationships.
+
 * After clicking **save and continue**, you will see a config page. Scroll down to the *REFERENCE TYPE* section. Under *Available Vocabularies*, make sure that you tick the name of the same vocabulary that you are currently configuring.
+
+![Adding the fields](https://github.com/hoegrammer/topic_map/blob/master/docs/reftype.png)
+
 * After adding all the fields, go to **Configuration -> Performance** to clear the Drupal cache. 
 
-### Terms
-* To create relationships between terms simply fill in the relevant fields when creating or editing the terms.
-* After adding, deleting or editing any relationships go to **Configuration -> Performance_** to clear the Drupal cache. 
+### Adding topics (terms)
+* The topics are called "terms" in Drupal. To add terms to a vocabulary, go to **List Terms** from the vocabulary overview page or click the **List** tab on the page for the vocabulary.
+
+![List terms - tab](https://github.com/hoegrammer/topic_map/blob/master/docs/list.png)
+
+![List terms - dropdown](https://github.com/hoegrammer/topic_map/blob/master/docs/listdropdown.png)
+
+
+* When you add terms you will have the option to fill in which terms are related to them as parents, children or neigbours. (Obviously not for the first term you add, as no others will exist to link to). E.g. here I have already added a term "Cheddar", so when I now add the term "English Cheese" I can fill in "Cheddar" as a child topic:
+
+![Creating a term with relationships](https://github.com/hoegrammer/topic_map/blob/master/docs/cheddar.png)
+
+* You can add, remove and change relationships at a later date, by editing the term.
+![Edit term](https://github.com/hoegrammer/topic_map/blob/master/docs/editterm.png)
+
+* After adding, deleting or editing any relationships go to **Configuration -> Performance** to clear the Drupal cache, so that they appear on the topic map.
+
+![Clear the cache](https://github.com/hoegrammer/topic_map/blob/master/docs/cache.png)
 
 ### Map blocks
-* Decide where you want to place topic maps on your site. **You cannot put more than one topic map on the same page**, as they will interfere and give unintended results.
-* Go to **Structure -> Block Layout** and place the blocks. You should see topic maps for all enabled vocabularies in the list of available blocks. If you don't, ensure that you have cleared the Drupal cache since creating the vocabularies.
-* The blocks should now appear on the relevant pages, looking like the illustration above. If you don't see all the terms and links that you expect, ensure you have cleared the Drupal cache since you last added or edited any terms.
+* Decide where you want to place topic maps on your site. **You cannot put more than one topic map on the same page**, as they will interfere and give unintended results. 
+* Go to **Structure -> Block Layout** and place the blocks. Suppose you want to place the "Varieties of Cheese" topic map in the secondary (right-hand) sidebar on the "About Us" page. You would find the secondary sidebar section and click **Place Block**
+
+![Place block in secondary sidebar](https://github.com/hoegrammer/topic_map/blob/master/docs/secondary.png)
+
+
+* You should see topic maps for all enabled vocabularies in the list of available blocks. If you don't, ensure that you have cleared the Drupal cache since creating the vocabularies.
+
+![Block menu](https://github.com/hoegrammer/topic_map/blob/master/docs/blockmenu.png)
+
+* Select the block you want, click **Place Block** and then you can say which page you want it to appear on by clicking the **pages** tab and filling it in:
+
+![Block page config](https://github.com/hoegrammer/topic_map/blob/master/docs/pages.png)
+
+* Click **Save Block** and now you will see the topic map on the page in the area you selected. If you don't see all the terms and links that you expect, ensure you have cleared the Drupal cache since you last added or edited any terms.
 
 ## Important note:
-**If you have created vocabularies with the fields on but then you delete them, the fields will no longer be available in the "Reuse existing field" dropdown.** If this happens, simply uninstall and reinstall the module (just via the GUI), and the fields will reappear.
+**If you have created vocabularies with the fields on but then you delete all of them, the fields will no longer be available in the "Reuse existing field" dropdown.** If this happens, simply uninstall and reinstall the module (just via the GUI), and the fields will reappear.
 
 ## Feedback and further development
 Emergent Works are very happy to listen to any feedback you may have about this module and suggestions for further development. You can contact us via [our website](https://www.emergentworks.net/) (or log an issue on here of course).
