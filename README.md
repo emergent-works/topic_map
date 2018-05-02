@@ -27,15 +27,15 @@ The purpose of this module is not just to create the relationships but to provid
 * Once you are on the page for managing fields, you can add the fields by using the "Reuse an existing field" dropdown. The fields you need to add are `field_topicmap_parents`, `field_topicmap_children` and `field_topicmap_neighbours`.
 * When you add each field it will give you an option to change the field label. You can change it to whatever you like.
 * After clicking **save and continue**, you will see a config page. Scroll down to the *REFERENCE TYPE* section. Under *Available Vocabularies*, make sure that you tick the name of the same vocabulary that you are currently configuring.
-* After adding all the fields, go to _Configuration -> Performance_ to clear the Drupal cache. 
+* After adding all the fields, go to **Configuration -> Performance** to clear the Drupal cache. 
 
 ### Terms
 * To create relationships between terms simply fill in the relevant fields when creating or editing the terms.
-* After adding, deleting or editing any relationships go to _Configuration -> Performance_ to clear the Drupal cache. 
+* After adding, deleting or editing any relationships go to **Configuration -> Performance_** to clear the Drupal cache. 
 
 ### Map blocks
 * Decide where you want to place topic maps on your site. **You cannot put more than one topic map on the same page**, as they will interfere and give unintended results.
-* Go to  _Structure -> Block Layout_ and place the blocks. You should see topic maps for all enabled vocabularies in the list of available blocks. If you don't, ensure that you have cleared the Drupal cache since creating the vocabularies.
+* Go to **Structure -> Block Layout** and place the blocks. You should see topic maps for all enabled vocabularies in the list of available blocks. If you don't, ensure that you have cleared the Drupal cache since creating the vocabularies.
 * The blocks should now appear on the relevant pages, looking like the illustration above. If you don't see all the terms and links that you expect, ensure you have cleared the Drupal cache since you last added or edited any terms.
 
 ## Important note:
