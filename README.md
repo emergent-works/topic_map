@@ -130,7 +130,7 @@ ____
 ____
 
 
-![Place block in secondary sidebar](https://github.com/hoegrammer/topic_map/blob/master/docs/secondary.png)
+![Place block in secondary sidebar](https://github.com/hoegrammer/topic_map/blob/master/docs/secondary1.png)
 
 
 ____
