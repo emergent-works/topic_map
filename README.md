@@ -18,10 +18,15 @@ The purpose of this module is not just to create the relationships but to provid
 
 ## Configuration
 ### Vocabularies
-* The module provides 3 fields - `field_topicmap_parents`, `field_topicmap_children` and `field_topicmap_neighbours`.
-* Any vocabulary containing all 3 of these fields will be treated as a topic map vocabulary. You can have as many topic map vocabularies as you like. You can make new vocabularies for this purpose or use existing ones.
-* Add the fields by using the "Reuse an existing field" dropdown. You can change the field labels to whatever you like. **Under "Available Vocabularies", tick only the vocabulary itself.** The topic map does not support relationships between terms of different vocabularies.  
-* If you are adding them to an existing vocabulary, **remove any existing hierarchical structure from the vocabulary first**. The topic map does hierarchy in its own way and will give unintended results if you attempt to use it alongside another.
+* Each topic map is bound to a vocabulary. In Drupal, a vocabulary is a list of terms that are related to each other. The terms that will be shown on the topic map have to all belong to the same vocabulary.
+* You can create a topic map from an existing vocabulary or you can add a new one. 
+* To add a new one, start by going to **Structure->Taxonomy->Vocabulary** and click **Add Vocabulary**. Give the vocabulary a name and description, and save it.
+* If you are using an existing vocabulary, **remove any existing hierarchical structure from the vocabulary first**. The topic map does hierarchy in its own way and will give unintended results if you attempt to use it alongside another.
+### Fields
+* Next you need to add the fields. If you have just created a new vocabulary, there will be a tab on the page to **Manage Fields**. Click this. Otherwise if you are using an existing vocabulary, you can find **Manage Fields** in the dropdown next to each vocabulary on the overview page
+* Once you are on the page for managing fields, you can add the fields by using the "Reuse an existing field" dropdown. The fields you need to add are `field_topicmap_parents`, `field_topicmap_children` and `field_topicmap_neighbours`.
+* When you add each field it will give you an option to change the field label. You can change it to whatever you like.
+* After clicking **save and continue**, you will see a config page. Scroll down to the *REFERENCE TYPE* section. Under *Available Vocabularies*, make sure that you tick the name of the same vocabulary that you are currently configuring.
 * After adding all the fields, go to _Configuration -> Performance_ to clear the Drupal cache. 
 
 ### Terms
