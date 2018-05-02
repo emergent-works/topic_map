@@ -158,6 +158,9 @@ ____
 
 * Click **Save Block** and now you will see the topic map on the page in the area you selected. If you don't see all the terms and links that you expect, ensure you have cleared the Drupal cache since you last added or edited any terms.
 
+## Deleting topic maps
+* If you no longer want to show a block, go to **Structure->Block Layout** and disable it. If you want to remove the whole set of interrelated terms, delete the vocabulary.
+
 ## Important note:
 **If you have created vocabularies with the fields on but then you delete all of them, the fields will no longer be available in the "Reuse existing field" dropdown.** If this happens, simply uninstall and reinstall the module (just via the GUI), and the fields will reappear.
 
