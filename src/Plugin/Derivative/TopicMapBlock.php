@@ -17,7 +17,7 @@ class TopicMapBlock extends DeriverBase implements DeriverInterface {
     $topic_maps =\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree("topic_maps");
     foreach($topic_maps as $id => $term) {
         $this->derivatives[$id] = $base_plugin_definition;
-        $this->derivatives[$id]['admin_label'] = "Topic Map: $id";
+        $this->derivatives[$id]['admin_label'] = "Topic Map: " . $term->name;
     }
     return $this->derivatives;
   }
