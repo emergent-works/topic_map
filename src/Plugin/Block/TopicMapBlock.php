@@ -19,11 +19,11 @@ class TopicMapBlock extends BlockBase {
 
   public function build() {
     $block_id = $this->getDerivativeId();
-    error_log($block_id);
     $query = db_select('taxonomy_term_field_data', 't');
     $query->addField('t', 'tid', 'id');
     $query->addField('t', 'name');
-    $query->condition('vid', $block_id);
+    $query->join("taxonomy_term__field_topics", "f", "f.field_topics_target_id = t.tid");    
+    $query->condition("f.entity_id", $block_id);
 
     $nodes = $query->execute()->fetchAll();
 
