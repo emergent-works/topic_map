@@ -5,8 +5,13 @@ require_once "src/TopicRelations.php";
 //require_once "topic_map.views_execution.inc";    // Doesn't work https://drupal.stackexchange.com/questions/245447
 use Drupal\topic_map\TopicRelations;
 
-// Implement hook_form_alter.
+/*
+ * Loads CSS and/or validation. Does not alter the form in any other way. 
+ */
 function topic_map_form_alter(&$form,  &$form_state, $form_id) {
+  /**
+   * Form for editing a vocabulary 
+   */
   if ($form_id == "taxonomy_overview_terms") {
     $vocab_id = \Drupal::routeMatch()->getParameters()->get('taxonomy_vocabulary')->id();
     $field_topicmap_definitions = \Drupal::entityManager()->getFieldDefinitions('taxonomy_term', $vocab_id);
@@ -14,16 +19,19 @@ function topic_map_form_alter(&$form,  &$form_state, $form_id) {
     foreach($field_topicmap_definitions as $def) {
       $field_topicmap_names[] = $def->getName();
     }
-    // If these fields are present on the vocabulary definition then it is a topic map vocabulary so load the approproate CSS.
+    // If these fields are present on the vocabulary definition, then that means it is a topic map enabled vocabulary.
     if (in_array('field_topicmap_children', $field_topicmap_names) && in_array('field_topicmap_parents', $field_topicmap_names) && in_array('field_topicmap_neighbours', $field_topicmap_names)) {
-      $form['#attached']['library'][] = 'topic_map/relations';
+      TopicRelations::add_css($form);
     }
   }
-  // If these fields are present, we are on the edit form for a term belonging to a topic map vocabulary.
-  // so load the appropriate validation and CSS.
+  /**
+   * Form for editing a term belonging to a topic map vocabulary.
+   * If these fields are present, we are on such a form. 
+   */
   if (array_key_exists('field_topicmap_children', $form) && array_key_exists('field_topicmap_parents', $form) && array_key_exists('field_topicmap_neighbours', $form) ) {
+    TopicRelations::add_css($form);
+    // Validation function, see bottom of this file.
     $form['#validate'][] = 'TopicRelations_validate';
-    $form['#attached']['library'][] = 'topic_map/relations';
   }
 }
 
@@ -41,7 +49,7 @@ function topic_map_taxonomy_term_update($term) {
 
 function topic_map_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
   if  ($route_name == "entity.taxonomy_vocabulary.overview_form") {
-     // Places this text on all vocabulary overview pages. Whether it is shown is governed by condtionally-loaded CSS
+    // Places this text on all vocabulary overview pages. Whether it is shown is governed by condtionally-loaded CSS
     return "<p class='hidden' id='replacement_taxonomy_help'>This vocabulary uses the Topic Map module and therefore the default hierarchical relationships between terms are disabled. You can use the fields to create relationships between terms. The topic map for this vocabulary is available as a block. </p>";
   }
   if ($route_name == 'help.page.topic_map') {

@@ -4,33 +4,46 @@ namespace Drupal\topic_map;
 
 class TopicRelations {
 
-  private $topic_relations = array(
+  /**
+   * This CSS removes the GUI elements associated with the native term hierarchy, e.g. drag-and-drop
+   * Also, due to not finding a better way to do it, the help text specific to topic-map-enabled vocabularies is added to all
+   * vocabulary edit forms, but with "display: none". This CSS shows it. 
+   */
+  static addCSS($form) {
+    $form['#attached']['library'][] = 'topic_map/relations';
+  }
+
+  private $relationshipTypes = array(
     array("base"=> "field_topicmap_neighbours", "opposite"=>"field_topicmap_neighbours"),
     array("base"=> "field_topicmap_parents", "opposite"=>"field_topicmap_children"),
     array("base"=> "field_topicmap_children", "opposite"=>"field_topicmap_parents"),
   );
 
   public function onInsert($term) {
-    foreach($this->topic_relations as $topic_relation) {
-      $target_ids = $this->getTargetIds($term, $topic_relation["base"]); 
+    foreach($this->relationshipTypes as $relationshipType) {
+      // Get the other terms that the term being created is related to in one direction
+      $target_ids = $this->getTargetIds($term, $relationshipType["base"]); 
       if ($target_ids) {
-        $this->addRelationships($target_ids, $topic_relation["opposite"], $term->id());
+        // And give those terms relationships to it, in the other direction
+        $this->addRelationships($target_ids, $relationshipType["opposite"], $term->id());
       }
     }
   }
 
   public function onUpdate($term) {
-    foreach($this->topic_relations as $topic_relation) {
-      $new_target_ids = $this->getTargetIds($term, $topic_relation["base"]); 
-      $old_target_ids = $this->getTargetIds($term->original, $topic_relation["base"]);
+    foreach($this->relationshipTypes as $relationshipType) {
+      // Get the terms to which the term in question is related to now, in one direction
+      $new_target_ids = $this->getTargetIds($term, $relationshipType["base"]); 
+      // and the ones it was related to before and is no longer
+      $old_target_ids = $this->getTargetIds($term->original, $relationshipType["base"]);
+      // add and remove the opposite relationships on those terms accordingly
       $added_target_ids = array_diff($new_target_ids, $old_target_ids);
       $removed_target_ids = array_diff($old_target_ids, $new_target_ids);
       if ($added_target_ids) {
-        $this->addRelationships($added_target_ids, $topic_relation["opposite"], $term->id());
+        $this->addRelationships($added_target_ids, $relationshipType["opposite"], $term->id());
       }
-      
       if ($removed_target_ids) {
-        $this->removeRelationships($removed_target_ids, $topic_relation["opposite"], $term->id());
+        $this->removeRelationships($removed_target_ids, $relationshipType["opposite"], $term->id());
       }
     }
   }
