@@ -9,7 +9,7 @@ class TopicRelations {
    * Also, due to not finding a better way to do it, the help text specific to topic-map-enabled vocabularies is added to all
    * vocabulary edit forms, but with "display: none". This CSS shows it. 
    */
-  static addCSS($form) {
+  static function addCSS($form) {
     $form['#attached']['library'][] = 'topic_map/relations';
   }
 
