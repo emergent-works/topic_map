@@ -37,12 +37,25 @@ ____
 * Now that you have some topics to map, you can create a topic map. Go to **Structure->Taxonomy**, and click **List Terms** against the vocabulary called "Topic Maps". Then click **Add Term** and enter the name of your map. 
 
 ![Creating a topic map](https://github.com/hoegrammer/topic_map/blob/master/docs/create-map.png)
+____
+
 
 Scroll down to the "Topics" field to add topics to your map. 
+____
 
 ![Adding topics to a map](https://github.com/hoegrammer/topic_map/blob/master/docs/add-topics-to-map.png)
+____
 
-### Displaying the map blocks
+
+### Displaying the map
+
+* After creating a new map, go to **Configuration -> Performance** to clear the Drupal cache. Otherwise your changes will not take effect immediately and it will appear not to have worked.
+____
+
+
+![Clear the cache](https://github.com/hoegrammer/topic_map/blob/master/docs/cache.png)
+
+
 * Decide where you want to place topic maps on your site. **You cannot put more than one topic map on the same page**, as they will interfere and give unintended results. 
 * Go to **Structure -> Block Layout** and place the blocks. Suppose you want to place the "Varieties of Cheese" topic map in the secondary (right-hand) sidebar on the "About Us" page. You would find the secondary sidebar section and click **Place Block**
 
@@ -51,11 +64,6 @@ ____
 
 ![Place block in secondary sidebar](https://github.com/hoegrammer/topic_map/blob/master/docs/secondary1.png)
 
-
-____
-
-
-* You should see topic maps for all enabled vocabularies in the list of available blocks. If you don't, ensure that you have cleared the Drupal cache since creating the vocabularies.
 
 ____
 
@@ -87,16 +95,13 @@ ____
 
 ____
 
-* After adding, deleting or editing any relationships go to **Configuration -> Performance** to clear the Drupal cache. Otherwise you may find that existing topic maps do not immediately update with new relationships.
-
-____
+* After adding, deleting or editing any relationships go to **Configuration -> Performance** to clear the Drupal cache. Otherwise you will not see your changes appear and it will seem not to have worked.
 
 
-![Clear the cache](https://github.com/hoegrammer/topic_map/blob/master/docs/cache.png)
-
-
-## Deleting topic maps
-* If you no longer want to show a block, go to **Structure->Block Layout** and disable it. If you want to remove the whole set of interrelated terms, delete the vocabulary.
+## Deleting topics and topic maps
+* If you no longer want to show a block, go to **Structure->Block Layout** and disable it. 
+* If you actually want to delete a map, you can do that on the edit screen for the map. 
+* If you want to delete some topics you can do that on the edit screens for the topics.
 
 ## Feedback and further development
 Emergent Works are very happy to listen to any feedback you may have about this module and suggestions for further development. You can contact us via [our website](https://www.emergentworks.net/) (or log an issue on here of course).
