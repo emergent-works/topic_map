@@ -50,7 +50,7 @@ function topic_map_taxonomy_term_update($term) {
 function topic_map_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
   if  ($route_name == "entity.taxonomy_vocabulary.overview_form") {
     // Places this text on all vocabulary overview pages. Whether it is shown is governed by condtionally-loaded CSS
-    return "<p class='hidden' id='replacement_taxonomy_help'>This vocabulary uses the Topic Map module and therefore the default hierarchical relationships between terms are disabled. You can use the fields to create relationships between terms. The topic map for this vocabulary is available as a block. </p>";
+    return "<p class='hidden' id='replacement_taxonomy_help'>This vocabulary uses the Topic Map module and therefore the default hierarchical relationships between terms are disabled. You can use the fields on each term to create relationships between terms.</p>";
   }
   if ($route_name == 'help.page.topic_map') {
     return "For documentation please see <a href='https://github.com/hoegrammer/topic_map/blob/master/README.md'>the detailed README on github</a>";

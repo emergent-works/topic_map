@@ -19,17 +19,16 @@ class TopicMapBlock extends BlockBase {
 
   public function build() {
     $block_id = $this->getDerivativeId();
-    error_log($block_id);
     $query = db_select('taxonomy_term_field_data', 't');
     $query->addField('t', 'tid', 'id');
     $query->addField('t', 'name');
-    $query->condition('vid', $block_id);
+    $query->join("taxonomy_term__field_topics", "f", "f.field_topics_target_id = t.tid");    
+    $query->condition("f.entity_id", $block_id);
 
     $nodes = $query->execute()->fetchAll();
-
     // The links are parent-to-child and neighbour-to-neighbour. 
     // In the table, if a and b are neighbours there will be two rows - one in each direction. So we filter on source > target (as they cannot be the same node; this is ensured by the topic relations code.
-    $sql = "select concat(`entity_id`,'p',`field_topicmap_parents_target_id`) AS `id`,`entity_id` AS `source`,`field_topicmap_parents_target_id` AS `target`,'parent' AS `relation` from `taxonomy_term__field_topicmap_parents` where bundle = '" . $block_id . "' union select concat(`taxonomy_term__field_topicmap_neighbours`.`entity_id`,'n',`taxonomy_term__field_topicmap_neighbours`.`field_topicmap_neighbours_target_id`) AS `id`, `entity_id` AS `source`, `field_topicmap_neighbours_target_id` AS `target`,'neighbour' AS `relation` from `taxonomy_term__field_topicmap_neighbours` where entity_id > field_topicmap_neighbours_target_id and bundle = '" . $block_id . "'";
+    $sql = "select concat(p.entity_id,'p',field_topicmap_parents_target_id) AS id,p.entity_id AS source,field_topicmap_parents_target_id AS target,'parent' AS relation from taxonomy_term__field_topicmap_parents p join taxonomy_term__field_topics t on (p.entity_id = t.field_topics_target_id or p.field_topicmap_parents_target_id = t.field_topics_target_id) where t.entity_id =  '" . $block_id . "' union select concat(n.entity_id,'n', field_topicmap_neighbours_target_id) AS id, n.entity_id AS source, field_topicmap_neighbours_target_id AS target,'neighbour' AS relation from taxonomy_term__field_topicmap_neighbours n join taxonomy_term__field_topics t on (n.entity_id = t.field_topics_target_id or n.field_topicmap_neighbours_target_id = t.field_topics_target_id) where t.entity_id  = '" . $block_id . "' and n.entity_id > field_topicmap_neighbours_target_id";
     $links = db_query($sql)->fetchAll();
     $container_size = sqrt(sizeof($nodes)) * 170;
     $output =  array (
