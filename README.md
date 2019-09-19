@@ -20,7 +20,6 @@ ____
 
 ### Adding topics
 * The first thing you need to do is create some topics, and relate those topics to one another. To add topics, go to **Structure->Taxonomy**, and click **List Terms** against the vocabulary called "Topics".
-____
 
 * When you add terms you will have the option to fill in which terms are related to them as parents, children or neigbours. (Obviously not for the first term you add, as no others will exist to link to). E.g. here I have already added a term "Cheddar", so when I now add the term "English Cheese" I can fill in "Cheddar" as a topic which forms part of that category.
 
@@ -35,7 +34,7 @@ ____
 ### Creating maps
 
 * Now that you have some topics to map, you can create a topic map. Go to **Structure->Taxonomy**, and click **List Terms** against the vocabulary called "Topic Maps". Then click **Add Term** and enter the name of your map. 
-
+____
 ![Creating a topic map](https://github.com/hoegrammer/topic_map/blob/master/docs/create-map.png)
 ____
 
@@ -55,7 +54,7 @@ ____
 
 ![Clear the cache](https://github.com/hoegrammer/topic_map/blob/master/docs/cache.png)
 
-
+____
 * Decide where you want to place topic maps on your site. **You cannot put more than one topic map on the same page**, as they will interfere and give unintended results. 
 * Go to **Structure -> Block Layout** and place the blocks. Suppose you want to place the "Varieties of Cheese" topic map in the secondary (right-hand) sidebar on the "About Us" page. You would find the secondary sidebar section and click **Place Block**
 
