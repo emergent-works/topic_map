@@ -17,79 +17,12 @@ ____
 * Install as you would any Drupal module.
 
 ## Creating and displaying topic maps
-### Vocabularies
-* Each topic map is bound to a vocabulary. In Drupal, a vocabulary is a list of terms that are related to each other. The terms that will be shown on the topic map have to all belong to the same vocabulary.
-* You can create a topic map from an existing vocabulary or you can add a new one. (If you are using an existing vocabulary, **remove any existing hierarchical structure from the vocabulary first**. The topic map does hierarchy in its own way and will give unintended results if you attempt to use it alongside another.)
 
-* To add a new vocabulary, go **Structure->Taxonomy->Vocabulary** and click **Add Vocabulary**. 
-____
-
-![Add Vocabulary](https://github.com/hoegrammer/topic_map/blob/master/docs/addvocab.png)
-____
-
-* Give the vocabulary a name and description, and save it.
-____
-
-![New vocabulary name and descri](https://github.com/hoegrammer/topic_map/blob/master/docs/cheese.png)
-____
-
-
-### Fields
-
-
-* Next you need to add the fields. If you have just created a new vocabulary, there will be a tab on the page to **Manage Fields**. Click this. 
-____
-
-![Manage fields](https://github.com/hoegrammer/topic_map/blob/master/docs/managefields1.png)
-____
-
-* Otherwise if you are using an existing vocabulary, you can find **Manage Fields** in the dropdown next to each vocabulary on the overview page
-____
-
-![New vocabulary name and descri](https://github.com/hoegrammer/topic_map/blob/master/docs/managedropdown.png)
-____
-
-* Click **Add field**.
-____
-
-![add field](https://github.com/hoegrammer/topic_map/blob/master/docs/addfield.png)
-____
-
-
-* Add the fields by using the "Reuse an existing field" dropdown. The fields you need to add are `field_topicmap_parents`, `field_topicmap_children` and `field_topicmap_neighbours`.
-
-____
-
-![Reuse existing field](https://github.com/hoegrammer/topic_map/blob/master/docs/reuse.png)
-
-____
-
-
-
-* When you add each field it will give you an option to change the field label. You can change it to whatever you like, or use the default labels which are the Dublin Core relationships.
-
-* After clicking **save and continue**, you will see a config page. Scroll down to the *REFERENCE TYPE* section. Under *Available Vocabularies*, make sure that you tick the name of the same vocabulary that you are currently configuring.
-
-____
-
-
-![Adding the fields](https://github.com/hoegrammer/topic_map/blob/master/docs/reftype.png)
-
-____
-
-
-* After adding all the fields, go to **Configuration -> Performance** to clear the Drupal cache. 
-
-### Adding topics (terms)
-* The topics are called "terms" in Drupal. To add terms to a vocabulary, go to **List Terms** from the vocabulary overview page or click the **List** tab on the page for the vocabulary.
-
+### Adding topics
+* To add topics, go to **Structure->Taxonomy**, and click **List Terms** against the vocabulary called "Topics".
 ____
 
 ![List terms - dropdown](https://github.com/hoegrammer/topic_map/blob/master/docs/listdropdown.png)
-
-____
-
-![List terms - tab](https://github.com/hoegrammer/topic_map/blob/master/docs/list.png)
 
 ____
 
@@ -104,26 +37,11 @@ ____
 ____
 
 
-* You can add, remove and change relationships at a later date, by editing the term.
-____
+### Creating maps
 
+* Now that you have some topics to map, you can create a topic map. Go to **Structure->Taxonomy**, and click **List Terms** against the vocabulary called "Topic Maps". Then click **Add Term** and enter the name of your map. Scroll down to the "Topics" field to add topics to your map. You can edit the map to add or remove topics at any time.
 
-![Edit term](https://github.com/hoegrammer/topic_map/blob/master/docs/editterm.png)
-
-____
-
-
-* After adding, deleting or editing any relationships go to **Configuration -> Performance** to clear the Drupal cache, so that they appear on the topic map.
-
-____
-
-
-![Clear the cache](https://github.com/hoegrammer/topic_map/blob/master/docs/cache.png)
-
-____
-
-
-### Map blocks
+### Displaying the map blocks
 * Decide where you want to place topic maps on your site. **You cannot put more than one topic map on the same page**, as they will interfere and give unintended results. 
 * Go to **Structure -> Block Layout** and place the blocks. Suppose you want to place the "Varieties of Cheese" topic map in the secondary (right-hand) sidebar on the "About Us" page. You would find the secondary sidebar section and click **Place Block**
 
@@ -158,11 +76,26 @@ ____
 
 * Click **Save Block** and now you will see the topic map on the page in the area you selected. If you don't see all the terms and links that you expect, ensure you have cleared the Drupal cache since you last added or edited any terms.
 
+## Making changes to existing maps
+
+* You can edit topic maps or topics themselves and the relations between them at any time. Just load the **Topics** or **Topic Maps** vocabularies and click **Edit** next to the topic or topic map that you wish to edit. 
+____
+
+
+![Edit term](https://github.com/hoegrammer/topic_map/blob/master/docs/editterm.png)
+
+____
+
+* After adding, deleting or editing any relationships go to **Configuration -> Performance** to clear the Drupal cache. Otherwise you may find that existing topic maps do not immediately update with new relationships.
+
+____
+
+
+![Clear the cache](https://github.com/hoegrammer/topic_map/blob/master/docs/cache.png)
+
+
 ## Deleting topic maps
 * If you no longer want to show a block, go to **Structure->Block Layout** and disable it. If you want to remove the whole set of interrelated terms, delete the vocabulary.
-
-## Important note:
-**If you have created vocabularies with the fields on but then you delete all of them, the fields will no longer be available in the "Reuse existing field" dropdown.** If this happens, simply uninstall and reinstall the module (just via the GUI), and the fields will reappear.
 
 ## Feedback and further development
 Emergent Works are very happy to listen to any feedback you may have about this module and suggestions for further development. You can contact us via [our website](https://www.emergentworks.net/) (or log an issue on here of course).
