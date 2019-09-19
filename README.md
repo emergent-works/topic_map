@@ -22,12 +22,7 @@ ____
 * To add topics, go to **Structure->Taxonomy**, and click **List Terms** against the vocabulary called "Topics".
 ____
 
-![List terms - dropdown](https://github.com/hoegrammer/topic_map/blob/master/docs/listdropdown.png)
-
-____
-
-
-* When you add terms you will have the option to fill in which terms are related to them as parents, children or neigbours. (Obviously not for the first term you add, as no others will exist to link to). E.g. here I have already added a term "Cheddar", so when I now add the term "English Cheese" I can fill in "Cheddar" as a child topic:
+* When you add terms you will have the option to fill in which terms are related to them as parents, children or neigbours. (Obviously not for the first term you add, as no others will exist to link to). E.g. here I have already added a term "Cheddar", so when I now add the term "English Cheese" I can fill in "Cheddar" as a topic which forms part of that category.
 
 ____
 
@@ -39,7 +34,13 @@ ____
 
 ### Creating maps
 
-* Now that you have some topics to map, you can create a topic map. Go to **Structure->Taxonomy**, and click **List Terms** against the vocabulary called "Topic Maps". Then click **Add Term** and enter the name of your map. Scroll down to the "Topics" field to add topics to your map. You can edit the map to add or remove topics at any time.
+* Now that you have some topics to map, you can create a topic map. Go to **Structure->Taxonomy**, and click **List Terms** against the vocabulary called "Topic Maps". Then click **Add Term** and enter the name of your map. 
+
+![Creating a topic map](https://github.com/hoegrammer/topic_map/blob/master/docs/create-map.png)
+
+Scroll down to the "Topics" field to add topics to your map. 
+
+![Adding topics to a map](https://github.com/hoegrammer/topic_map/blob/master/docs/add-topics-to-map.png)
 
 ### Displaying the map blocks
 * Decide where you want to place topic maps on your site. **You cannot put more than one topic map on the same page**, as they will interfere and give unintended results. 
