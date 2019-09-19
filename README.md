@@ -19,7 +19,7 @@ ____
 ## Creating and displaying topic maps
 
 ### Adding topics
-* To add topics, go to **Structure->Taxonomy**, and click **List Terms** against the vocabulary called "Topics".
+* The first thing you need to do is create some topics, and relate those topics to one another. To add topics, go to **Structure->Taxonomy**, and click **List Terms** against the vocabulary called "Topics".
 ____
 
 * When you add terms you will have the option to fill in which terms are related to them as parents, children or neigbours. (Obviously not for the first term you add, as no others will exist to link to). E.g. here I have already added a term "Cheddar", so when I now add the term "English Cheese" I can fill in "Cheddar" as a topic which forms part of that category.
