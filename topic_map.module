@@ -50,19 +50,19 @@ function TopicRelations_validate($form, $form_state) {
   if (!$term_id) return; // this is empty when creating a new term
   $children = $form_state->getValue('field_topicmap_children');
   for($i = 0; $i < sizeof($children); $i++) {
-    if(is_array($children[$i]) && $children[$i]['target_id'] == $term_id) {
+    if(isset($children[$i]) && is_array($children[$i]) && $children[$i]['target_id'] == $term_id) {
       $form_state->setErrorByName("field_topicmap_children][$i", t('A term cannot be its own child'));
     }
   }
   $parents = $form_state->getValue('field_topicmap_parents');
   for($i = 0; $i < sizeof($parents); $i++) {
-    if(is_array($parents[$i]) && $parents[$i]['target_id'] == $term_id) {
+    if(isset($parents[$i]) && is_array($parents[$i]) && $parents[$i]['target_id'] == $term_id) {
       $form_state->setErrorByName("field_topicmap_parents][$i", t('A term cannot be its own parent'));
     }
   }
   $neighbours = $form_state->getValue('field_topicmap_neighbours');
   for($i = 0; $i < sizeof($neighbours); $i++) {
-    if(is_array($neighbours[$i]) && $neighbours[$i]['target_id'] == $term_id) {
+    if(isset($neighbours[$i]) && is_array($neighbours[$i]) && $neighbours[$i]['target_id'] == $term_id) {
       $form_state->setErrorByName("field_topicmap_neighbours][$i", t('A term cannot be its own neighbour'));
     }
   }
