@@ -19,15 +19,9 @@ ____
 ## Creating and displaying topic maps
 
 ### Adding topics
-* To add topics, go to **Structure->Taxonomy**, and click **List Terms** against the vocabulary called "Topics".
-____
+* The first thing you need to do is create some topics, and relate those topics to one another. To add topics, go to **Structure->Taxonomy**, and click **List Terms** against the vocabulary called "Topics".
 
-![List terms - dropdown](https://github.com/hoegrammer/topic_map/blob/master/docs/listdropdown.png)
-
-____
-
-
-* When you add terms you will have the option to fill in which terms are related to them as parents, children or neigbours. (Obviously not for the first term you add, as no others will exist to link to). E.g. here I have already added a term "Cheddar", so when I now add the term "English Cheese" I can fill in "Cheddar" as a child topic:
+* When you add terms you will have the option to fill in which terms are related to them as parents, children or neigbours. (Obviously not for the first term you add, as no others will exist to link to). E.g. here I have already added a term "Cheddar", so when I now add the term "English Cheese" I can fill in "Cheddar" as a topic which forms part of that category.
 
 ____
 
@@ -39,9 +33,28 @@ ____
 
 ### Creating maps
 
-* Now that you have some topics to map, you can create a topic map. Go to **Structure->Taxonomy**, and click **List Terms** against the vocabulary called "Topic Maps". Then click **Add Term** and enter the name of your map. Scroll down to the "Topics" field to add topics to your map. You can edit the map to add or remove topics at any time.
+* Now that you have some topics to map, you can create a topic map. Go to **Structure->Taxonomy**, and click **List Terms** against the vocabulary called "Topic Maps". Then click **Add Term** and enter the name of your map. 
+____
+![Creating a topic map](https://github.com/hoegrammer/topic_map/blob/master/docs/create-map.png)
+____
 
-### Displaying the map blocks
+
+Scroll down to the "Topics" field to add topics to your map. 
+____
+
+![Adding topics to a map](https://github.com/hoegrammer/topic_map/blob/master/docs/add-topics-to-map.png)
+____
+
+
+### Displaying the map
+
+* After creating a new map, go to **Configuration -> Performance** to clear the Drupal cache. Otherwise your changes will not take effect immediately and it will appear not to have worked.
+____
+
+
+![Clear the cache](https://github.com/hoegrammer/topic_map/blob/master/docs/cache.png)
+
+____
 * Decide where you want to place topic maps on your site. **You cannot put more than one topic map on the same page**, as they will interfere and give unintended results. 
 * Go to **Structure -> Block Layout** and place the blocks. Suppose you want to place the "Varieties of Cheese" topic map in the secondary (right-hand) sidebar on the "About Us" page. You would find the secondary sidebar section and click **Place Block**
 
@@ -50,11 +63,6 @@ ____
 
 ![Place block in secondary sidebar](https://github.com/hoegrammer/topic_map/blob/master/docs/secondary1.png)
 
-
-____
-
-
-* You should see topic maps for all enabled vocabularies in the list of available blocks. If you don't, ensure that you have cleared the Drupal cache since creating the vocabularies.
 
 ____
 
@@ -86,16 +94,13 @@ ____
 
 ____
 
-* After adding, deleting or editing any relationships go to **Configuration -> Performance** to clear the Drupal cache. Otherwise you may find that existing topic maps do not immediately update with new relationships.
-
-____
+* After adding, deleting or editing any relationships go to **Configuration -> Performance** to clear the Drupal cache. Otherwise you will not see your changes appear and it will seem not to have worked.
 
 
-![Clear the cache](https://github.com/hoegrammer/topic_map/blob/master/docs/cache.png)
-
-
-## Deleting topic maps
-* If you no longer want to show a block, go to **Structure->Block Layout** and disable it. If you want to remove the whole set of interrelated terms, delete the vocabulary.
+## Deleting topics and topic maps
+* If you no longer want to show a block, go to **Structure->Block Layout** and disable it. 
+* If you actually want to delete a map, you can do that on the edit screen for the map. 
+* If you want to delete some topics you can do that on the edit screens for the topics.
 
 ## Feedback and further development
 Emergent Works are very happy to listen to any feedback you may have about this module and suggestions for further development. You can contact us via [our website](https://www.emergentworks.net/) (or log an issue on here of course).
