@@ -18,6 +18,7 @@ use Drupal\Core\Block\BlockBase;
 class TopicMapBlock extends BlockBase {
 
   public function build() {
+    $output = ['#type' => 'inline_template'];
     $block_id = $this->getDerivativeId();
     $query = db_select('taxonomy_term_field_data', 't');
     $query->addField('t', 'tid', 'id');
@@ -27,6 +28,10 @@ class TopicMapBlock extends BlockBase {
 
     $topics = $query->execute()->fetchAll();
 
+    if (empty($topics)) {
+      $output['#template'] = '<h1>There are no topics in this topic map yet. Edit it to add some.</h1>';
+      return $output;
+    }
     // Get a list of topic ids to plug into the query to get the links between them
     foreach($topics as $topic) {
       $tids[] = $topic->id;
@@ -38,9 +43,7 @@ class TopicMapBlock extends BlockBase {
     $sql = "select concat(p.entity_id,'p',field_topicmap_parents_target_id) AS id,p.entity_id AS source,field_topicmap_parents_target_id AS target,'parent' AS relation from taxonomy_term__field_topicmap_parents p where p.entity_id in ($tids) and field_topicmap_parents_target_id in ($tids) union select concat(n.entity_id,'n', field_topicmap_neighbours_target_id) AS id, n.entity_id AS source, field_topicmap_neighbours_target_id AS target,'neighbour' AS relation from taxonomy_term__field_topicmap_neighbours n where n.entity_id in ($tids) and field_topicmap_neighbours_target_id in ($tids) and n.entity_id > field_topicmap_neighbours_target_id";
     $links = db_query($sql)->fetchAll();
     $container_size = sqrt(sizeof($topics)) * 170;
-    $output =  array (
-        '#type' => 'inline_template',
-        '#template' => '<div id="legend" class="panel-default panel">
+    $output['#template'] = '<div id="legend" class="panel-default panel">
                           <div class="panel-heading">Visual representation of the topic space</div>
                           <p>Hover over a topic to see its relationships to other topics: </p>
                             <ul>
@@ -50,8 +53,7 @@ class TopicMapBlock extends BlockBase {
                             </ul>
                           <p>Click on a topic to see information about it.</p>
                         </div>
-                        <svg id="map_container" width="' . $container_size . '" height="' . $container_size . '"></svg>'
-    );
+                        <svg id="map_container" width="' . $container_size . '" height="' . $container_size . '"></svg>';
     $output[]['#attached']['library'][] = 'topic_map/d3';
     $output[]['#attached']['library'][] = 'topic_map/map';
     $output[]['#attached']['html_head'][] = [[

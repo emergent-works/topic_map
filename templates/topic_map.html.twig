@@ -1,3 +1,1 @@
-{% set blockid = 'topic_map_block:' ~ elements['#taxonomy_term'].tid.0.value %}
-{{ blockid }}
-{{ drupal_block(blockid) }}
+{{ drupal_block('topic_map_block:' ~ elements['#taxonomy_term'].tid.0.value) }}
