@@ -22,11 +22,14 @@ function topic_map_form_alter(&$form,  &$form_state, $form_id) {
       $form['#attached']['library'][] = 'topic_map/relations';
     }
   }
-  // If these fields are present, we are on the edit form for a topic or a topic map.
-  // so load the appropriate validation and CSS.
-  if (array_key_exists('field_topicmap_children', $form) && array_key_exists('field_topicmap_parents', $form) && array_key_exists('field_topicmap_neighbours', $form) || array_key_exists('field_topics', $form)) {
-    $form['#validate'][] = 'TopicRelations_validate';
+  // Add the appropriate CSS and validation to edit forms
+  $is_topic_map = array_key_exists('field_topics', $form);
+  $is_topic = array_key_exists('field_topicmap_children', $form) && array_key_exists('field_topicmap_parents', $form) && array_key_exists('field_topicmap_neighbours', $form);
+  if ($is_topic_map || $is_topic) {
     $form['#attached']['library'][] = 'topic_map/relations';
+  }
+  if ($is_topic) {
+    $form['#validate'][] = 'TopicRelations_validate';
   }
 }
 
