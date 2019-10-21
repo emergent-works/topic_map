@@ -24,6 +24,8 @@ class TopicMapBlock extends BlockBase {
     $query->addField('t', 'tid', 'id');
     $query->addField('t', 'name');
     $query->join("taxonomy_term__field_topics", "f", "f.field_topics_target_id = t.tid");    
+    $query->join("taxonomy_term__field_type_of_topic", "ty", "ty.entity_id = t.tid");    
+    $query->addField('ty', 'field_type_of_topic_value');
     $query->condition("f.entity_id", $block_id);
 
     $topics = $query->execute()->fetchAll();

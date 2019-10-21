@@ -110,6 +110,6 @@ function getLinkClass(link) {
 
 // gives each node a distinct css class
 function getNodeClass(node) {
-  return "node_" + node.id
+  return "node_" + node.id + " " + node.field_type_of_topic_value;
 }
 

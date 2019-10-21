@@ -98,3 +98,11 @@
 .texts {
   font-family: "Source Sans Pro", "Lucida Grande", Verdana, sans-serif;
 }
+
+.Subject {
+  font-weight: bold;
+}
+
+.Process {
+  font-style: oblique;
+}
