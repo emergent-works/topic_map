@@ -1,5 +1,13 @@
 <?php
 
+function topic_map_theme($existing, $type, $theme, $path) {
+  return array(
+    'taxonomy_term__topic_maps' => [
+      'template' => 'topic_map',
+      'variables' => NULL,
+    ]
+  );
+}
 
 require_once "src/TopicRelations.php";
 //require_once "topic_map.views_execution.inc";    // Doesn't work https://drupal.stackexchange.com/questions/245447
