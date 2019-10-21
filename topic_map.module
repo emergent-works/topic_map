@@ -5,6 +5,10 @@ function topic_map_theme($existing, $type, $theme, $path) {
     'taxonomy_term__topic_maps' => [
       'template' => 'topic_map',
       'variables' => NULL,
+    ],
+    'taxonomy_term__topic' => [
+      'template' => 'topic',
+      'variables' => NULL,
     ]
   );
 }
