@@ -99,8 +99,8 @@
   font-family: "Source Sans Pro", "Lucida Grande", Verdana, sans-serif;
 }
 
-.Subject {
-  font-weight: bold;
+.Relationship {
+  text-decoration: wavy underline;
 }
 
 .Process {
