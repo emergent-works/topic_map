@@ -3,6 +3,7 @@
 
 namespace Drupal\topic_map\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Provides a Custom block.
@@ -45,7 +46,7 @@ class TopicMapBlock extends BlockBase {
     $sql = "select concat(p.entity_id,'p',field_topicmap_parents_target_id) AS id,p.entity_id AS source,field_topicmap_parents_target_id AS target,'parent' AS relation from taxonomy_term__field_topicmap_parents p where p.entity_id in ($tids) and field_topicmap_parents_target_id in ($tids) union select concat(n.entity_id,'n', field_topicmap_neighbours_target_id) AS id, n.entity_id AS source, field_topicmap_neighbours_target_id AS target,'neighbour' AS relation from taxonomy_term__field_topicmap_neighbours n where n.entity_id in ($tids) and field_topicmap_neighbours_target_id in ($tids) and n.entity_id > field_topicmap_neighbours_target_id";
     $links = db_query($sql)->fetchAll();
     $container_size = sqrt(sizeof($topics)) * 170;
-    $output['#template'] = '<div id="legend" class="panel-default panel">
+    $output['#template'] = Term::load($block_id)->getDescription() . '<div id="legend" class="panel-default panel">
                           <div class="panel-heading">Visual representation of the topic space</div>
                           <p>Hover over a topic to see its relationships to other topics: </p>
                             <ul>
