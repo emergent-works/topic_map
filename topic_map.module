@@ -43,14 +43,18 @@ function topic_map_form_alter(&$form,  &$form_state, $form_id) {
 
 // Implements hook_taxonomy_term_insert.
 function topic_map_taxonomy_term_insert($term) {
-  $tr = new TopicRelations();
-  $tr->onInsert($term);
+  if ($term->bundle == "topics") {
+    $tr = new TopicRelations();
+    $tr->onInsert($term);
+  }
 }
 
 // Implements hook_taxonomy_term_update.
 function topic_map_taxonomy_term_update($term) {
-  $tr = new TopicRelations();
-  $tr->onUpdate($term);
+  if ($term->bundle == "topics") {
+    $tr = new TopicRelations();
+    $tr->onUpdate($term);
+  }
 }
 
 function topic_map_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
