@@ -53,6 +53,12 @@ class TopicMapBlock extends BlockBase {
                               <li class="children">topics that are parts of it</li>  
                               <li class="neighbours">related topics</li>
                             </ul>
+                          <p>There are three types of topics: </p>
+                            <ul>
+                              <li><span class="Subject">Subjects</span></li> 
+                              <li><span class="Process">Processes</span></li>  
+                              <li><span class="Relationship">Relationships</span></li>
+                            </ul>
                           <p>Click on a topic to see information about it.</p>
                         </div>
                         <svg id="map_container" width="' . $container_size . '" height="' . $container_size . '"></svg>';

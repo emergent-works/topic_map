@@ -100,7 +100,8 @@
 }
 
 .Relationship {
-  text-decoration: wavy underline;
+  font-size: 1.3em;
+  font-family: URW Chancery L, cursive
 }
 
 .Process {

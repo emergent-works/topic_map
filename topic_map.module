@@ -6,8 +6,12 @@ function topic_map_theme($existing, $type, $theme, $path) {
       'template' => 'topic_map',
       'variables' => NULL,
     ],
-    'taxonomy_term__topic' => [
-      'template' => 'topic',
+    'taxonomy_term__collection' => [
+      'template' => 'collection',
+      'variables' => NULL,
+    ],
+    'taxonomy_term' => [
+      'template' => 'other_taxonomy_term',
       'variables' => NULL,
     ]
   );
