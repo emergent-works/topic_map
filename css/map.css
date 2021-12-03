@@ -1,5 +1,4 @@
 #map_container {
-  overflow: hidden;
   position: relative;
 
   /* not selectable - so people don't select text by mistake when dragging, and get confused */
