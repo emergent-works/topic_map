@@ -21,7 +21,7 @@ class TopicMapBlock extends BlockBase {
   public function build() {
     $output = ['#type' => 'inline_template'];
     $block_id = $this->getDerivativeId();
-    $query = db_select('taxonomy_term_field_data', 't');
+    $query = \Drupal::database()->select('taxonomy_term_field_data', 't');
     $query->addField('t', 'tid', 'id');
     $query->addField('t', 'name');
     $query->join("taxonomy_term__field_topics", "f", "f.field_topics_target_id = t.tid");    
@@ -39,12 +39,12 @@ class TopicMapBlock extends BlockBase {
     foreach($topics as $topic) {
       $tids[] = $topic->id;
     }
-    $tids = join($tids, ',');
+    $tids = join(',', $tids);
 
     // The links are parent-to-child and neighbour-to-neighbour. 
     // In the table, if a and b are neighbours there will be two rows - one in each direction. So we filter on source > target (as they cannot be the same node; this is ensured by the topic relations code.
     $sql = "select concat(p.entity_id,'p',field_topicmap_parents_target_id) AS id,p.entity_id AS source,field_topicmap_parents_target_id AS target,'parent' AS relation from taxonomy_term__field_topicmap_parents p where p.entity_id in ($tids) and field_topicmap_parents_target_id in ($tids) union select concat(n.entity_id,'n', field_topicmap_neighbours_target_id) AS id, n.entity_id AS source, field_topicmap_neighbours_target_id AS target,'neighbour' AS relation from taxonomy_term__field_topicmap_neighbours n where n.entity_id in ($tids) and field_topicmap_neighbours_target_id in ($tids) and n.entity_id > field_topicmap_neighbours_target_id";
-    $links = db_query($sql)->fetchAll();
+    $links = \Drupal::database()->query($sql)->fetchAll();
     $container_size = sqrt(sizeof($topics)) * 170;
     $output['#template'] = Term::load($block_id)->getDescription() . '<div id="legend" class="panel-default panel">
                           <div class="panel-heading">Visual representation of the topic space</div>
