@@ -43,7 +43,7 @@ function topic_map_form_alter(&$form,  &$form_state, $form_id) {
 
 // Implements hook_taxonomy_term_insert.
 function topic_map_taxonomy_term_insert($term) {
-  if ($term->bundle == "topics") {
+  if ($term->bundle() == "topic") {
     $tr = new TopicRelations();
     $tr->onInsert($term);
   }
@@ -51,7 +51,7 @@ function topic_map_taxonomy_term_insert($term) {
 
 // Implements hook_taxonomy_term_update.
 function topic_map_taxonomy_term_update($term) {
-  if ($term->bundle == "topics") {
+  if ($term->bundle() == "topic") {
     $tr = new TopicRelations();
     $tr->onUpdate($term);
   }
