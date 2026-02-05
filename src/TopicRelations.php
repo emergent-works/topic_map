@@ -4,7 +4,7 @@ namespace Drupal\topic_map;
 
 class TopicRelations {
 
-  public static function validate($form, $form_state) {
+  public function validate($form, $form_state) {
     // Stops the user from relating a term to itself
     $term_id = $form_state->getFormObject()->getEntity()->id();
     if (!$term_id) return; // this is empty when creating a new term

@@ -67,6 +67,7 @@ function topic_map_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $r
 }
 
 function topic_map_validate($form, $form_state) {
-  TopicRelations::validate($form, $form_state);
+  $tr = new TopicRelations();
+  $tr->validate($form, $form_state);
 }
 
