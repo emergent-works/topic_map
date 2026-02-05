@@ -4,13 +4,28 @@ namespace Drupal\topic_map;
 
 class TopicRelations {
 
-  /**
-   * This CSS removes the GUI elements associated with the native term hierarchy, e.g. drag-and-drop
-   * Also, due to not finding a better way to do it, the help text specific to topic-map-enabled vocabularies is added to all
-   * vocabulary edit forms, but with "display: none". This CSS shows it. 
-   */
-  static function addCSS($form) {
-    $form['#attached']['library'][] = 'topic_map/relations';
+  public static function validate($form, $form_state) {
+    // Stops the user from relating a term to itself
+    $term_id = $form_state->getFormObject()->getEntity()->id();
+    if (!$term_id) return; // this is empty when creating a new term
+    $children = $form_state->getValue('field_topicmap_children');
+    for($i = 0; $i < sizeof($children); $i++) {
+      if(isset($children[$i]) && is_array($children[$i]) && $children[$i]['target_id'] == $term_id) {
+        $form_state->setErrorByName("field_topicmap_children][$i", t('A term cannot be its own child'));
+      }
+    }
+    $parents = $form_state->getValue('field_topicmap_parents');
+    for($i = 0; $i < sizeof($parents); $i++) {
+      if(isset($parents[$i]) && is_array($parents[$i]) && $parents[$i]['target_id'] == $term_id) {
+        $form_state->setErrorByName("field_topicmap_parents][$i", t('A term cannot be its own parent'));
+      }
+    }
+    $neighbours = $form_state->getValue('field_topicmap_neighbours');
+    for($i = 0; $i < sizeof($neighbours); $i++) {
+      if(isset($neighbours[$i]) && is_array($neighbours[$i]) && $neighbours[$i]['target_id'] == $term_id) {
+        $form_state->setErrorByName("field_topicmap_neighbours][$i", t('A term cannot be its own neighbour'));
+      }
+    }
   }
 
   private $relationshipTypes = array(

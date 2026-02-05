@@ -1,0 +1,12 @@
+/* The topic relations functionality is a replacement for the standard drag-and-drop hierarchy.
+   This CSS removes the dragability and hides the edit and cancel buttons and the default help text */
+#taxonomy .tabledrag-handle, #taxonomy-overview-terms #edit-actions, #edit-help {
+  display: none;
+}
+
+/* Due to not finding a better way to do it, the help text specific to topic-map-enabled vocabularies is added to all
+   * vocabulary edit forms, but with "display: none". This CSS shows it. .*/
+#replacement_taxonomy_help {
+  display: block;
+}
+

@@ -7,7 +7,12 @@ map:
     theme:
       css/map.css: {}
 
-relations:
+taxonomy_overview:
   css:
     theme:
-      css/relations.css: {}
+      css/taxonomy_overview.css: {}
+
+single_term:
+  css:
+    theme:
+      css/single_term.css: {}

@@ -1,0 +1,5 @@
+/* Do not show expandable "relations" section when editing a term.
+   We are not using this default functionality as it is replaced by the topic relations functionality */
+.taxonomy-term-form #edit-relations {
+  display: none;
+}
