@@ -7,8 +7,6 @@ const gravity = 0.05
 const forceX = d3.forceX(width / 2).strength(gravity + 0.02)
 const forceY = d3.forceY(height / 2).strength(gravity)
 
-var dragging; // state variable to indicated whether dragging is in progress
-
 // Set the size of each node depending on how many children it has
 // and the label length depending on the number of characters (label length is used when constraining nodes to the container).
 nodes.forEach(function(node) {
@@ -54,10 +52,6 @@ var nodeElements = svg.append("g")
     .on('click', function(node) {location.href = '/taxonomy/term/' + node.id})
     .on("mouseover", hover)
     .on("mouseout", unhover)
-    .call(d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended));
 var textElements = svg.append("g")
   .attr("class", "texts")
   .selectAll("text")
@@ -76,7 +70,7 @@ var textElements = svg.append("g")
 // It starts again if you drag and drop a node.
 // It puts parent nodes above their children as much as it can, keeps everything in the container and fitting together properly.
 simulation.nodes(nodes).on('tick', () => {
-  if (!dragging) tryToPutParentsAboveChildren(); 
+  tryToPutParentsAboveChildren(); 
   constrainNodesToSVGContainer();
   positionLinksAndTextRelativeToNodes();
 })

@@ -43,24 +43,6 @@ function unhover() {
     d3.selectAll('.unrelated').classed("unrelated", false)    
 }
 
-/* Drag and drop behaviour */
-
-function dragstarted(d) {
-  dragging = true;
-  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-}
-
-function dragged(d) {
-  d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
-}
-
-function dragended(d) {
-  if (!d3.event.active) simulation.alphaTarget(0);
-  d3.event.subject.fx = null
-  d3.event.subject.fy = null
-  dragging = false;
-}
-
 /*  Positioning functions; these run on every "tick" */
 
 function tryToPutParentsAboveChildren() {
