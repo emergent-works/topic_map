@@ -63,35 +63,39 @@ class TopicRelations {
     }
   }
 
-  private function getTargetIds($base_term, $field_topicmap_name) {
+  private function getTargetIds($base_term, $relationship_field_name) {
     $target_ids = array();
-    foreach($base_term->$field_topicmap_name as $item) {
+    foreach($base_term->$relationship_field_name as $fieldItem) {
       // sometimes entity is null
-      if ($item->entity) {
-        $target_ids[] = $item->entity->id();
+      if ($fieldItem->entity) {
+        $target_ids[] = $fieldItem->entity->id();
       }
     }
     return $target_ids;
   }
 
-  private function addRelationships($base_ids, $field_topicmap_name, $target_id) {
+  // Gives each base term a relationship of the specified kind, to the term with the
+  // specified target id
+  private function addRelationships($base_ids, $relationship_field_name, $target_id) {
     foreach($base_ids as $base_id) {
       $base_term = \Drupal\taxonomy\Entity\Term::load($base_id);
       // check that the relationship does not exist already. This stops recursion
       // and goes some way towards dealing with duplicates (since Drupal doesn't check).
-      if (!in_array($target_id, $this->getTargetIds($base_term, $field_topicmap_name))) {
-        $base_term->$field_topicmap_name->appendItem($target_id);  
+      if (!in_array($target_id, $this->getTargetIds($base_term, $relationship_field_name))) {
+        $base_term->$relationship_field_name->appendItem($target_id);  
         $base_term->save();
       }
     }
   }
 
-  private function removeRelationships($base_ids, $field_topicmap_name, $target_id) {
+  // Removes from base terms any relationships of the specified kind to the term with the
+  // specified target id
+  private function removeRelationships($base_ids, $relationship_field_name, $target_id) {
     foreach($base_ids as $base_id) {
       $base_term = \Drupal\taxonomy\Entity\Term::load($base_id);
-      foreach($base_term->$field_topicmap_name->getValue() as $delta=>$value) {
+      foreach($base_term->$relationship_field_name->getValue() as $delta=>$value) {
         if ($value['target_id'] == $target_id) {
-          $base_term->$field_topicmap_name->removeItem($delta);
+          $base_term->$relationship_field_name->removeItem($delta);
           $base_term->save();
           break;
         }
