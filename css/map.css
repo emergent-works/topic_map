@@ -62,6 +62,9 @@
 .links line.related_child {
   stroke: #2d5593;
 }
+.links line.related_neighbour {
+  stroke: #cb535c;
+}
 
 .nodes .unrelated, .texts .unrelated, .links .unrelated {
   fill-opacity: 0.2;
@@ -82,7 +85,7 @@
 }
 
 .links .link_neighbour {
-  stroke: #cb535c;
+  stroke: gray;
   stroke-width: 1.7px;
 }
 

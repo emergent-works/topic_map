@@ -16,6 +16,7 @@ function hover(node) {
         d3.selectAll('.link_' + link.id).classed("related_child", true)
       } else {
         d3.selectAll('.node_' + link.source.id).classed("related_neighbour", true)
+        d3.selectAll('.link_' + link.id).classed("related_neighbour", true)
       }
       d3.selectAll('.node_' + link.source.id).classed("unrelated", false)
       d3.selectAll('.link_' + link.id).classed("unrelated", false)
@@ -25,6 +26,7 @@ function hover(node) {
         d3.selectAll('.link_' + link.id).classed("related_parent", true)
       } else {
         d3.selectAll('.node_' + link.target.id).classed("related_neighbour", true)
+        d3.selectAll('.link_' + link.id).classed("related_neighbour", true)
       }
       d3.selectAll('.node_' + link.target.id).classed("unrelated", false)
       d3.selectAll('.link_' + link.id).classed("unrelated", false)
