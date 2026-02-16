@@ -7,44 +7,25 @@ const gravity = 0.05
 const forceX = d3.forceX(width / 2).strength(gravity + 0.02)
 const forceY = d3.forceY(height / 2).strength(gravity)
 
-// Set the size of each node depending on how many descendents it has
+// Set the size of each node depending on how many children it has
 // and the label length depending on the number of characters (label length is used when constraining nodes to the container).
 nodes.forEach(function(node) {
-  node.children = [];
+  node.childCount = 0;
   links.forEach(function(link) {
     if (link.relation == "parent" && link.target == node.id) {
-      nodes.forEach(function(candidate) {
-        if (candidate.id == link.source) {
-           node.children.push(candidate)
-        }
-      })
+      node.childCount ++
     }
   })
+  node.radius = 10 + 2 * node.childCount; 
   node.labelLength = decodeEntities(node.name).length * 4
 })
-
-nodes.forEach(function(node){
-  console.log(node.name, countDescendants(node))
-  node.radius = 10 + 2 * countDescendants(node); 
-})
-
-// add ids instead of counting...
-function countDescendants(node) {
-  ct = node.children.length;
-  node.children.forEach(function (child) {
-    ct += countDescendants(child);
-  })
-  return ct;
-}
 
 // set up the force simulation parameters 
 var linkForce = d3
   .forceLink()
-  .id(function (node) {return node.id })
+  .id(function (link) { return link.id })
   .strength(function (link) { return link.relation == "parent" ? 0.7 : 0.1 })
   .distance(function (link) { return link.relation == "parent" ? 100 : 300 })
-  //   .strength(0.1)
-  // .distance(300)
 var simulation = d3
   .forceSimulation()
   .force('link', linkForce)
