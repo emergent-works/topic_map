@@ -1,10 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Drupal\topic_map;
 
+use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Form\FormState;
+
 class TopicRelations {
 
-  public function validate($form, $form_state) {
+  public function validate(array $form, FormState $form_state) {
+    error_log(get_class($form_state));
     // Stops the user from relating a term to itself
     $term_id = $form_state->getFormObject()->getEntity()->id();
     if (!$term_id) return; // this is empty when creating a new term
@@ -34,7 +38,7 @@ class TopicRelations {
     array("base"=> "field_topicmap_children", "opposite"=>"field_topicmap_parents"),
   );
 
-  public function onInsert($term) {
+  public function onInsert(Term $term) {
     foreach($this->relationshipTypes as $relationshipType) {
       // Get the other terms that the term being created is related to in one direction
       $target_ids = $this->getTargetIds($term, $relationshipType["base"]); 
@@ -43,9 +47,10 @@ class TopicRelations {
         $this->addRelationships($target_ids, $relationshipType["opposite"], $term->id());
       }
     }
+    $this->updateDescendentCount($term);
   }
 
-  public function onUpdate($term) {
+  public function onUpdate(Term $term) {
     foreach($this->relationshipTypes as $relationshipType) {
       // Get the terms to which the term in question is related to now, in one direction
       $new_target_ids = $this->getTargetIds($term, $relationshipType["base"]); 
@@ -61,9 +66,41 @@ class TopicRelations {
         $this->removeRelationships($removed_target_ids, $relationshipType["opposite"], $term->id());
       }
     }
+    $this->updateDescendentCount($term);
   }
 
-  private function getTargetIds($base_term, $relationship_field_name) {
+  /**
+   * Topics have a hidden field called field_descendants. 
+   * This updates it with the number of unique terms that are its children, grandchildren, etc.
+   */
+  private function updateDescendentCount(Term $term) {
+    $descendentCount = count($this->listDescendentIds($term));
+    if ($term->field_descendents->value != $descendentCount) {
+      $term->field_descendents = $descendentCount;
+      $term->save();
+    }
+  }
+
+  /**
+   * Gets a list of unique term ids which are the descendents of the term in question.
+   * This is a recursive function, it works by getting the children of the term and then
+   * calling itself on each child.
+   */
+  private function listDescendentIds(Term $term, array $descendent_ids = []) {
+    $child_ids = $this->getTargetIds($term, 'field_topicmap_children');
+        error_log(print_r($child_ids, true));
+
+    $descendent_ids = array_unique(array_merge($descendent_ids, $child_ids));
+    foreach ($child_ids as $child_id) {
+      $descendent_ids = array_unique(array_merge($descendent_ids, $this->listDescendentIds(Term::load($child_id))));
+    }
+    return $descendent_ids;
+  }
+
+  /**
+   * Gets the target ids from the specified field on the base term
+   */
+  private function getTargetIds(Term $base_term, string $relationship_field_name) {
     $target_ids = array();
     foreach($base_term->$relationship_field_name as $fieldItem) {
       // sometimes entity is null
@@ -74,9 +111,15 @@ class TopicRelations {
     return $target_ids;
   }
 
-  // Gives each base term a relationship of the specified kind, to the term with the
-  // specified target id
-  private function addRelationships($base_ids, $relationship_field_name, $target_id) {
+  /**
+   * Gives each base term a relationship of the specified kind, to the term with the
+   * specified target id. NB: this is kind of topsy-turvy; because it takes an 
+   * array of ids and a single id, you might expect it to append the ids in the array to
+   * the value of a field on the term represented by the single id. But it is the other
+   * way around. It takes each term in the array of base ids (hence the name) and appends the
+   * target id (hence the name) to the values of the specified field on those.
+   */
+  private function addRelationships(array $base_ids, string $relationship_field_name, string $target_id) {
     foreach($base_ids as $base_id) {
       $base_term = \Drupal\taxonomy\Entity\Term::load($base_id);
       // check that the relationship does not exist already. This stops recursion
@@ -87,12 +130,18 @@ class TopicRelations {
       }
     }
   }
-
-  // Removes from base terms any relationships of the specified kind to the term with the
-  // specified target id
-  private function removeRelationships($base_ids, $relationship_field_name, $target_id) {
+ 
+  /**
+   * Removes from base terms any relationships of the specified kind to the term with the specified target id.
+   * NB: this is kind of topsy-turvy; because it takes an 
+   * array of ids and a single id, you might expect it to remove the ids in the array from
+   * the value of a field on the term represented by the single id. But it is the other
+   * way around. It takes each term in the array of base ids (hence the name) and removes the
+   * target id (hence the name) to the values of the specified field on those.
+   */
+  private function removeRelationships(array $base_ids, string $relationship_field_name, string $target_id) {
     foreach($base_ids as $base_id) {
-      $base_term = \Drupal\taxonomy\Entity\Term::load($base_id);
+      $base_term = \Drupal\taxonomy\Entity\Term::load($base_id);  
       foreach($base_term->$relationship_field_name->getValue() as $delta=>$value) {
         if ($value['target_id'] == $target_id) {
           $base_term->$relationship_field_name->removeItem($delta);
