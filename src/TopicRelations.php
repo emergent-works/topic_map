@@ -88,16 +88,20 @@ class TopicRelations {
    */
   private function listDescendentIds(Term $term, array $descendent_ids = []) {
     $child_ids = $this->getTargetIds($term, 'field_topicmap_children');
-        error_log(print_r($child_ids, true));
-
+    $orig_descendent_ids = $descendent_ids;
     $descendent_ids = array_unique(array_merge($descendent_ids, $child_ids));
     foreach ($child_ids as $child_id) {
-      $descendent_ids = array_unique(array_merge($descendent_ids, $this->listDescendentIds(Term::load($child_id))));
+      // If the child id is once of the term ids originally passed in then its descendants
+      // will already have been included too, so we do not need to do so again.
+      // This also stops it going around in infinite cycles.
+      if (!in_array($child_id, $orig_descendent_ids)) {
+        $descendent_ids = array_unique(array_merge($descendent_ids, $this->listDescendentIds(Term::load($child_id), $descendent_ids)));
+      }
     }
     return $descendent_ids;
   }
 
-  /**
+  /** 
    * Gets the target ids from the specified field on the base term
    */
   private function getTargetIds(Term $base_term, string $relationship_field_name) {
