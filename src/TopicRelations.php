@@ -8,7 +8,6 @@ use Drupal\Core\Form\FormState;
 class TopicRelations {
 
   public function validate(array $form, FormState $form_state) {
-    error_log(get_class($form_state));
     // Stops the user from relating a term to itself
     $term_id = $form_state->getFormObject()->getEntity()->id();
     if (!$term_id) return; // this is empty when creating a new term
@@ -97,6 +96,9 @@ class TopicRelations {
       if (!in_array($child_id, $orig_descendent_ids)) {
         $descendent_ids = array_unique(array_merge($descendent_ids, $this->listDescendentIds(Term::load($child_id), $descendent_ids)));
       }
+    }
+    if (in_array($term->id(), $descendent_ids)) {
+      \Drupal::messenger()->addError('WARNING: Cycle detected! This topic is a descendent of itself.');
     }
     return $descendent_ids;
   }
