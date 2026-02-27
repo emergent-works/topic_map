@@ -73,10 +73,36 @@ class TopicRelations {
    * This updates it with the number of unique terms that are its children, grandchildren, etc.
    */
   private function updateDescendentCount(Term $term) {
-    $descendentCount = count($this->listDescendentIds($term));
+    $descendent_ids = $this->listDescendentIds($term);
+    if (in_array($term->id(), $descendent_ids)) {
+      \Drupal::messenger()->addError('WARNING: Cycle detected! This topic is a descendent of itself. Descendent counts have therefore not been updated and knowledge graph node sizes may be wrong as a result.');
+      return;
+    }
+    $descendentCount = count($descendent_ids);
+    // If the new descendent count is different from the old one then we 
+    // update it and also update the descendent count on all the ancestors
     if ($term->field_descendents->value != $descendentCount) {
+      $diff = $descendentCount - $term->field_descendents->value;
       $term->field_descendents = $descendentCount;
       $term->save();
+      $this->updateAncestorsDescendentCounts($term, $diff);
+    }
+  }
+
+  /**
+   * Updates the descendent counts of a term's ancestors. Diff is the change in descendent
+   * count of the original term. All its anscestor's descendent counts will be updated
+   * by adding or subtracting the same amount (diff can be +ve or -ve)
+   * A recursive function, it updates all the parents of a term and then calls itself
+   * to update all of their parents.
+   */
+  private function updateAncestorsDescendentCounts(Term $term, int $diff) {
+    $parent_ids = $this->getTargetIds($term, 'field_topicmap_parents');
+    foreach($parent_ids as $parent_id) {
+      $parent = Term::load($parent_id);
+      $parent->field_descendents =  $parent->field_descendents->value + $diff;
+      $parent->save();
+      $this->updateAncestorsDescendentCounts($parent, $diff); 
     }
   }
 
@@ -96,9 +122,6 @@ class TopicRelations {
       if (!in_array($child_id, $orig_descendent_ids)) {
         $descendent_ids = array_unique(array_merge($descendent_ids, $this->listDescendentIds(Term::load($child_id), $descendent_ids)));
       }
-    }
-    if (in_array($term->id(), $descendent_ids)) {
-      \Drupal::messenger()->addError('WARNING: Cycle detected! This topic is a descendent of itself.');
     }
     return $descendent_ids;
   }
