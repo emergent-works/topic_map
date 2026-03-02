@@ -7,16 +7,10 @@ const gravity = 0.05
 const forceX = d3.forceX(width / 2).strength(gravity + 0.02)
 const forceY = d3.forceY(height / 2).strength(gravity)
 
-// Set the size of each node depending on how many children it has
+// Set the size of each node depending on how many descendents it has
 // and the label length depending on the number of characters (label length is used when constraining nodes to the container).
 nodes.forEach(function(node) {
-  node.childCount = 0;
-  links.forEach(function(link) {
-    if (link.relation == "parent" && link.target == node.id) {
-      node.childCount ++
-    }
-  })
-  node.radius = 10 + 2 * node.childCount; 
+  node.radius = 10 + 1.2 * node.field_descendents_value; 
   node.labelLength = decodeEntities(node.name).length * 4
 })
 
@@ -57,7 +51,7 @@ var textElements = svg.append("g")
   .selectAll("text")
   .data(nodes)
   .enter().append("text")
-    .text(function (node) { return decodeEntities(node.name)})
+    .text(function (node) { return decodeEntities(node.name) + '-' + node.field_descendents_value})
     .attr("class", getNodeClass)
     .attr("font-size", 14)
     .attr("dx", function(node) {return 0 - node.labelLength})
