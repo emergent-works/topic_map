@@ -71,8 +71,15 @@ class TopicRelations {
   /**
    * Topics have a hidden field called field_descendants. 
    * This updates it with the number of unique terms that are its children, grandchildren, etc.
+   * If the count has changed it also updates the descendent counts of all that term's ancestors.
+   * It is not enough to simply increment or decrement each ancestor's descendent count by the same amount as the original term.
+   * This is because there can be scenarios like this:
+   *   C is added to B's list of children, so B's count goes up by 1, 
+   *   but A, the parent of B, already has C as a descendent, so A's count should stay the same.
    */
   private function updateDescendentCount(Term $term) {
+    $parentsUpdated = [];
+    error_log("updating dc for " . $term->id());
     $descendent_ids = $this->listDescendentIds($term);
     if (in_array($term->id(), $descendent_ids)) {
       \Drupal::messenger()->addError('WARNING: Cycle detected! This topic is a descendent of itself. Descendent counts have therefore not been updated and knowledge graph node sizes may be wrong as a result.');
@@ -83,6 +90,14 @@ class TopicRelations {
     if ($term->field_descendents->value != $descendentCount) {
       $term->field_descendents = $descendentCount;
       $term->save();
+      // update the term's parents (this will recurse through its ancestors)
+      $parent_ids = $this->getTargetIds($term, 'field_topicmap_parents');
+      error_log(print_r($parent_ids, true));
+      foreach($parent_ids as $parent_id) {
+        if(in_array($parent_id, $parentsUpdated)) continue;
+        $parentsUpdated[] = $parent_id;
+        $this->updateDescendentCount(Term::load($parent_id));
+      }
     }
   }
 

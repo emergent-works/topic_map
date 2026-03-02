@@ -32,7 +32,6 @@ class TopicMapBlock extends BlockBase {
     $query->condition("f.entity_id", $block_id);
 
     $topics = $query->execute()->fetchAll();
-    error_log($query->__toString());
 
     if (empty($topics)) {
       $output['#template'] = '<h1>There are no topics in this topic map yet. Edit it to add some.</h1>';
