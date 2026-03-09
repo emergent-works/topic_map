@@ -1,4 +1,14 @@
-## [1.0.0] - 2025-3-3
+## [1.0.1] - 2025-03-09
+
+Made D11-compatible
+
+### Changed
+  
+- Added Drupal 11 to core version requirement
+ 
+
+
+## [1.0.0] - 2025-03-03
   
 Start of the version developed for REAL2
  
