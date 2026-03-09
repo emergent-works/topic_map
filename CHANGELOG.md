@@ -1,3 +1,11 @@
+## [1.0.2] - 2025-03-09
+
+### Fixed
+  
+- Removed some debug code that was showing the numbers of descendents on the graph nodes
+
+
+
 ## [1.0.1] - 2025-03-09
 
 Made D11-compatible
