@@ -1,0 +1,24 @@
+<?php
+
+// Update all descendent counts.
+function topic_map_update_11120() {
+    $topics = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('topic');
+    $real2_keywords = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('real2_keywords');
+    $terms = array_merge($topics, $real2_keywords);
+    $topicRelations = new Drupal\topic_map\TopicRelations;
+    foreach($terms as $term) {
+        $tid = $term->tid;
+        // The $terms array does not contain actual Terms, so they need loading
+        $term = \Drupal\taxonomy\Entity\Term::load($tid);
+        $descendent_ids = $topicRelations->listDescendentIds($term);
+        if (in_array($tid, $descendent_ids)) {
+            error_log("Term $tid is a descendent of itself");
+        }
+        $descendentCount = count($descendent_ids);
+        // If the new descendent count is different from the old one, save the node with the new field value
+        if ($term->field_descendents->value != $descendentCount) {
+            $term->field_descendents = $descendentCount;
+            $term->save();
+        }
+    }
+}

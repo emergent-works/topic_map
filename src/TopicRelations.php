@@ -46,7 +46,7 @@ class TopicRelations {
         $this->addRelationships($target_ids, $relationshipType["opposite"], $term->id());
       }
     }
-    $this->updateDescendentCount($term);
+    $this->updateDescendentCountOfTermAndParents($term);
   }
 
   public function onUpdate(Term $term) {
@@ -65,7 +65,7 @@ class TopicRelations {
         $this->removeRelationships($removed_target_ids, $relationshipType["opposite"], $term->id());
       }
     }
-    $this->updateDescendentCount($term);
+    $this->updateDescendentCountOfTermAndParents($term);
   }
 
   /**
@@ -77,9 +77,8 @@ class TopicRelations {
    *   C is added to B's list of children, so B's count goes up by 1, 
    *   but A, the parent of B, already has C as a descendent, so A's count should stay the same.
    */
-  private function updateDescendentCount(Term $term) {
+  private function updateDescendentCountOfTermAndParents(Term $term) {
     $parentsUpdated = [];
-    error_log("updating dc for " . $term->id());
     $descendent_ids = $this->listDescendentIds($term);
     if (in_array($term->id(), $descendent_ids)) {
       \Drupal::messenger()->addError('WARNING: Cycle detected! This topic is a descendent of itself. Descendent counts have therefore not been updated and knowledge graph node sizes may be wrong as a result.');
@@ -96,7 +95,7 @@ class TopicRelations {
       foreach($parent_ids as $parent_id) {
         if(in_array($parent_id, $parentsUpdated)) continue;
         $parentsUpdated[] = $parent_id;
-        $this->updateDescendentCount(Term::load($parent_id));
+        $this->updateDescendentCountOfTermAndParents(Term::load($parent_id));
       }
     }
   }
@@ -105,8 +104,10 @@ class TopicRelations {
    * Gets a list of unique term ids which are the descendents of the term in question.
    * This is a recursive function, it works by getting the children of the term and then
    * calling itself on each child.
+   * 
+   * Public because it is called from a update_n hook
    */
-  private function listDescendentIds(Term $term, array $descendent_ids = []) {
+  public function listDescendentIds(Term $term, array $descendent_ids = []) {
     $child_ids = $this->getTargetIds($term, 'field_topicmap_children');
     $orig_descendent_ids = $descendent_ids;
     $descendent_ids = array_unique(array_merge($descendent_ids, $child_ids));
