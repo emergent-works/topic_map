@@ -23,6 +23,7 @@ class KnowledgeGraphBlock extends D3Block {
     $query->join('taxonomy_term__field_vocabulary', 'v', 't.vid = v.field_vocabulary_value');
     $query->addField('t', 'tid', 'id');
     $query->addField('t', 'name');
+    $query->addField('td', 'field_descendents_value');
     $query->leftJoin("taxonomy_term__field_descendents", "td", "td.entity_id = t.tid");    
     $query->condition("v.entity_id", $block_id);   
     return $query->execute()->fetchAll();
