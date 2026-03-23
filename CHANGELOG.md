@@ -1,3 +1,19 @@
+## [11.x-1.2] - 2025-03-03
+  
+New versioning scheme following https://www.drupal.org/docs/getting-started/understanding-drupal/understanding-drupal-version-numbers/what-do-version-numbers-mean-on-contributed-modules-and-themes
+
+ 
+### Added
+  
+- Update hook to update descendent counts on all topics and 
+
+### Fixed
+
+- Descendent count not pulling through to front end for map rendering
+- Insert and update hooks not runnning for REAL2 keywords 
+ 
+
+
 ## [1.1.0] - 2025-03-03
   
 Added knowledge graph capability as well as topic map. A knowledge graph references a vocabulary and pulls all the keywords from there, whereas a topic map, which is legacy, requires manually entering all the topics (keywords) you want to appear on it. The new way is preferable because keywords only need entering once.
