@@ -23,11 +23,11 @@ var linkForce = d3
 var simulation = d3
   .forceSimulation()
   .force('link', linkForce)
-  .force('charge', d3.forceManyBody().strength(-600))
+ // .force('charge',function(node) {return Math.pow(node.radius, 100.0)})
   .force('center', d3.forceCenter(width / 2, height / 2))
   .force('x', forceX)
   .force('y',  forceY)
-  .force('collide', d3.forceCollide(d => d.labelLength).strength(1))
+  .force('collide', d3.forceCollide(d => Math.max(d.labelLength + 30, 40, d.radius * 1.5)).strength(1))
 
 // Add the links, nodes and text elements (labels)
 var linkElements = svg.append("g")
@@ -55,14 +55,12 @@ var textElements = svg.append("g")
     .attr("class", getNodeClass)
     .attr("font-size", 14)
     .attr("dx", function(node) {return 0 - node.labelLength})
-    .attr("dy", function(node) {return 15 + node.radius})
+    .attr("dy", function(node) {return 15 + node.radius}) // distance of text below node
     .on('click', function(node) {location.href = '/taxonomy/term/' + node.id})
     .on("mouseover", hover)
     .on("mouseout", unhover)
 
 // This runs in a loop moving things around until it settles down.
-// It starts again if you drag and drop a node.
-// It puts parent nodes above their children as much as it can, keeps everything in the container and fitting together properly.
 simulation.nodes(nodes).on('tick', () => {
   constrainNodesToSVGContainer();
   positionLinksAndTextRelativeToNodes();
