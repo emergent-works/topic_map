@@ -1,3 +1,17 @@
+## [11.x-1.3] - 2025-03-03
+  
+Position nodes better on graphs
+
+### Fixed
+
+- Large nodes were overlapping or just looking messy as the graph code did not take the radius into account
+
+### Changed
+
+- No longer trying to put parent nodes above children. Instead using default sd3 behaviour which is to put nodes with more connectivity in the center
+
+
+
 ## [11.x-1.2] - 2025-03-03
   
 New versioning scheme following https://www.drupal.org/docs/getting-started/understanding-drupal/understanding-drupal-version-numbers/what-do-version-numbers-mean-on-contributed-modules-and-themes
