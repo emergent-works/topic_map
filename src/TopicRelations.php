@@ -81,8 +81,7 @@ class TopicRelations {
     $parentsUpdated = [];
     $descendent_ids = $this->listDescendentIds($term);
     if (in_array($term->id(), $descendent_ids)) {
-      \Drupal::messenger()->addError('WARNING: Cycle detected! This topic is a descendent of itself. Descendent counts have therefore not been updated and knowledge graph node sizes may be wrong as a result.');
-      return;
+      \Drupal::messenger()->addError('WARNING: Cycle detected! This topic is a descendent of itself.');
     }
     $descendentCount = count($descendent_ids);
     // If the new descendent count is different from the old one, save the node with the new field value

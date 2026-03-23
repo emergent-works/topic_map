@@ -44,23 +44,6 @@ function unhover() {
 }
 
 /*  Positioning functions; these run on every "tick" */
-
-function tryToPutParentsAboveChildren() {
-  linkElements.each(function(d) {
-    if (d.relation == "parent")  {
-      if (d.source.y < d.target.y) {
-        targy = d.target.y
-        d.target.y = d.source.y
-        d.source.y = targy
-      }
-      while (d.source.y < d.target.y + 30) {
-        d.source.y += 1
-        d.target.y -= 1
-      }
-    }
- })
-}
-
 function constrainNodesToSVGContainer() {
   nodeElements
     .attr('cx', function(node) {return node.x = Math.max(node.labelLength + 10, Math.min(width - node.labelLength + 10, node.x));})

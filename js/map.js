@@ -64,7 +64,6 @@ var textElements = svg.append("g")
 // It starts again if you drag and drop a node.
 // It puts parent nodes above their children as much as it can, keeps everything in the container and fitting together properly.
 simulation.nodes(nodes).on('tick', () => {
-  tryToPutParentsAboveChildren(); 
   constrainNodesToSVGContainer();
   positionLinksAndTextRelativeToNodes();
 })
