@@ -107,7 +107,7 @@ var simulation = d3
   .force('center', d3.forceCenter(width / 2, height / 2))
   .force('x', forceX)
   .force('y',  forceY)
-  .force('collide', d3.forceCollide(d => Math.max(d.labelLength + 30, 40, d.radius * 1.5)).strength(1))
+  .force('collide', d3.forceCollide(d => Math.max(80, d.radius * 2)).strength(1))
 
 // Add the links, nodes and text elements (labels)
 var linkElements = svg.append("g")
@@ -134,7 +134,7 @@ var textElements = svg.append("g")
     .text(function (node) { return decodeEntities(node.name)})
     .attr("class", getNodeClass)
     .attr("font-size", 14)
-    .attr("dx", function(node) {return 0 - node.labelLength})
+    .attr("text-anchor", "middle")  // Add this line
     .attr("dy", function(node) {return 15 + node.radius}) // distance of text below node
     .on('click', function(node) {location.href = '/taxonomy/term/' + node.id})
     .on("mouseover", hover)

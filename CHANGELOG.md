@@ -1,3 +1,13 @@
+## [11.x-1.4] - 2025-04-27
+  
+Improved layout of graph
+
+### Changed
+
+* Map parent container breaks out of main container and is centred
+* Improved spacing of nodes vertically and horiozontally
+* Labels positioned centrally under nodes
+
 ## [11.x-1.3] - 2025-03-03
   
 Position nodes better on graphs
