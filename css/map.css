@@ -1,4 +1,13 @@
+#map_parent {
+    width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
 #map_container {
+
   position: relative;
 
   /* not selectable - so people don't select text by mistake when dragging, and get confused */

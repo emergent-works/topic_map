@@ -47,7 +47,7 @@ abstract class D3Block extends BlockBase {
     SQL;
     $links = \Drupal::database()->query($sql)->fetchAll();
     $container_height = sqrt(sizeof($topics)) * 170;
-    $container_width = sqrt(sizeof($topics)) * 240 - 6 * sizeof($topics);
+    $container_width = sqrt(sizeof($topics)) * 200;
     $output['#template'] = Term::load($block_id)->getDescription() . '<div id="legend" class="panel-default panel">
                           <div class="panel-heading">Visual representation of the topic space</div>
                           <p>Hover over a topic to see its relationships to other topics: </p>
@@ -59,7 +59,9 @@ abstract class D3Block extends BlockBase {
                             . $this->extraInformation .
                           '<p>Click on a topic to see information about it.</p>
                         </div>
-                        <svg id="map_container" width="' . $container_width . '" height="' . $container_height . '"></svg>';
+                        <div id="map_parent">
+                          <svg id="map_container" width="' . $container_width . '" height="' . $container_height . '"></svg>
+                        </div>';
     $output[]['#attached']['library'][] = 'topic_map/d3';
     $output[]['#attached']['library'][] = 'topic_map/map';
     $output[]['#attached']['html_head'][] = [[
