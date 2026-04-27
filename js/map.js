@@ -77,23 +77,6 @@ function resizeContainerToFitContent() {
   updateElementPositions();
 }
 
-// Update all element positions on screen
-function updateElementPositions() {
-  nodeElements
-    .attr('cx', function(node) { return node.x; })
-    .attr('cy', function(node) { return node.y; });
-  
-  linkElements
-    .attr('x1', function (link) { return link.source.x; })
-    .attr('y1', function (link) { return link.source.y; })
-    .attr('x2', function (link) { return link.target.x; })
-    .attr('y2', function (link) { return link.target.y; });
-  
-  textElements
-    .attr('x', function (node) { return node.x; })
-    .attr('y', function (node) { return node.y; });
-}
-
 // set up the force simulation parameters 
 var linkForce = d3
   .forceLink()
@@ -142,15 +125,12 @@ var textElements = svg.append("g")
 
 // This runs in a loop moving things around until it settles down.
 simulation.nodes(nodes).on('tick', () => {
-  // Let nodes move freely without constraining them - this allows proper layout
-  positionLinksAndTextRelativeToNodes();
+  updateElementPositions(); // ← move everything every tick
   
-  // Once simulation has mostly settled (low alpha), resize container to fit
   if (simulation.alpha() < 0.01) {
     resizeContainerToFitContent();
-    // Now apply constraints to keep nodes in the resized container
     constrainNodesToSVGContainer();
-    updateElementPositions();
+    updateElementPositions(); // final adjustment after resize
   }
 })
 

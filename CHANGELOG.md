@@ -1,3 +1,15 @@
+## [11.x-1.5] - 2025-04-27
+  
+Improved graph display
+
+### Fixed
+
+* Nodes were starting off decoupled from lines during the automation
+
+### Changed
+
+* Graph centred on screen
+
 ## [11.x-1.4] - 2025-04-27
   
 Improved layout of graph

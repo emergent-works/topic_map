@@ -43,23 +43,29 @@ function unhover() {
     d3.selectAll('.unrelated').classed("unrelated", false)    
 }
 
-/*  Positioning functions; these run on every "tick" */
+/*  Positioning functions; run on every "tick" */
 function constrainNodesToSVGContainer() {
   nodeElements
     .attr('cx', function(node) {return node.x = Math.max(node.labelLength + 10, Math.min(width - node.labelLength + 10, node.x));})
     .attr('cy', function(node) {return node.y = Math.max(node.radius + 20, Math.min(height - node.radius - 20, node.y))})   
 }
 
-function positionLinksAndTextRelativeToNodes() {
+function updateElementPositions() {
+  nodeElements
+    .attr('cx', function(node) { return node.x; })
+    .attr('cy', function(node) { return node.y; });
+  
   linkElements
-    .attr('x1', function (link) { return link.source.x })
-    .attr('y1', function (link) { return link.source.y })
-    .attr('x2', function (link) { return link.target.x })
-    .attr('y2', function (link) { return link.target.y })
+    .attr('x1', function (link) { return link.source.x; })
+    .attr('y1', function (link) { return link.source.y; })
+    .attr('x2', function (link) { return link.target.x; })
+    .attr('y2', function (link) { return link.target.y; });
+  
   textElements
-    .attr('x', function (node) { return node.x })
-    .attr('y', function (node) { return node.y })
+    .attr('x', function (node) { return node.x; })
+    .attr('y', function (node) { return node.y; });
 }
+
 
 /* misc */
 
