@@ -1,7 +1,7 @@
 #map_parent {
-    width: 100vw;
+  width: 100vw;
   position: relative;
-  left: 50%;
+  left: 66%;
   transform: translateX(-50%);
   text-align: center;
 }
