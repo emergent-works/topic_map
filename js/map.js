@@ -1,10 +1,11 @@
 (function () {
   const svg = d3.select("#graph-svg-full");
-  drawGraph(svg);
+  let g = svg.append('g').attr('class', 'graph-root');
+  g = drawGraph(g);
   const zoom = d3.zoom()
     .scaleExtent([0.1, 10])
     .on('zoom', function() {
-      svg.attr('transform', d3.event.transform);
+      g.attr('transform', d3.event.transform);
     });
   svg.call(zoom);
 
@@ -29,11 +30,46 @@
   document.getElementById('close-modal').addEventListener('click', () => {
     document.getElementById('graph-modal').classList.add('hidden');
   });
-
-  // Close on Escape key
+  const keysHeld = {};
+  let panInterval = null;
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.getElementById('graph-modal').classList.add('hidden');
+    const modalOpen = !document.getElementById('graph-modal').classList.contains('hidden');
+    
+    if (modalOpen) {
+
+      if (e.ctrlKey || e.metaKey) {
+        if (e.key === '+' || e.key === '=') {
+          e.preventDefault();
+          svg.transition().call(zoom.scaleBy, 1.5);
+        } else if (e.key === '-') {
+          e.preventDefault();
+          svg.transition().call(zoom.scaleBy, 0.67);
+        } else if (e.key === '0') {
+          e.preventDefault();
+          svg.transition().call(zoom.transform, d3.zoomIdentity);
+        }
+      } else if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
+        e.preventDefault();
+        if (!keysHeld[e.key]) {
+          keysHeld[e.key] = true;
+          if (!panInterval) {
+            panInterval = setInterval(() => {
+              const panAmount = 10;
+              if (keysHeld['ArrowLeft'])  svg.call(zoom.translateBy,  -panAmount, 0);
+              if (keysHeld['ArrowRight']) svg.call(zoom.translateBy, panAmount, 0);
+              if (keysHeld['ArrowUp'])    svg.call(zoom.translateBy, 0,  -panAmount);
+              if (keysHeld['ArrowDown'])  svg.call(zoom.translateBy, 0, panAmount);
+            }, 16); // ~60fps
+          }
+        }
+      }
+    }
+  });
+  document.addEventListener('keyup', (e) => {
+    delete keysHeld[e.key];
+    if (!Object.keys(keysHeld).some(k => ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(k))) {
+      clearInterval(panInterval);
+      panInterval = null;
     }
   });
   //refreshPreview(svg);
@@ -49,9 +85,9 @@ function refreshPreview(svg) {
   d3.select(previewSvg).attr('viewBox', `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
 }
 
-function drawGraph(svg) {
-  let width = svg.attr('width');  
-  let height = svg.attr('height');
+function drawGraph(g) {
+  let width = g.attr('width');  
+  let height = g.attr('height');
   const padding = 80; // Padding around graph content
 
   // These are d3 force-related graph parameters
@@ -98,7 +134,11 @@ function drawGraph(svg) {
     const newWidth = contentWidth + (padding * 2);
     const newHeight = contentHeight + (padding * 2);
     
-    svg.attr('width', newWidth).attr('height', newHeight);
+    d3.select(g.node().parentNode).attr('width', newWidth).attr('height', newHeight);
+
+    g.attr('transform', `translate(${(newWidth - contentWidth) / 2 - bounds.minX}, ${(newHeight - contentHeight) / 2 - bounds.minY})`);
+
+
     width = newWidth;
     height = newHeight;
     
@@ -144,13 +184,13 @@ function drawGraph(svg) {
     .force('collide', d3.forceCollide(d => Math.max(80, d.radius * 2)).strength(1))
 
   // Add the links, nodes and text elements (labels)
-  var linkElements = svg.append("g")
+  var linkElements = g.append("g")
     .attr("class", "links")
     .selectAll("line")
     .data(links)
     .enter().append("line")
       .attr("class", getLinkClass)
-  var nodeElements = svg.append("g")
+  var nodeElements = g.append("g")
     .attr("class", "nodes")
     .selectAll("circle")
     .data(nodes)
@@ -160,7 +200,7 @@ function drawGraph(svg) {
       .on('click', function(node) {location.href = '/taxonomy/term/' + node.id})
       .on("mouseover", hover)
       .on("mouseout", unhover)
-  var textElements = svg.append("g")
+  var textElements = g.append("g")
     .attr("class", "texts")
     .selectAll("text")
     .data(nodes)
@@ -186,4 +226,5 @@ function drawGraph(svg) {
   })
 
   simulation.force("link").links(links)
+  return g
 }
