@@ -59,8 +59,25 @@ abstract class D3Block extends BlockBase {
                             . $this->extraInformation .
                           '<p>Click on a topic to see information about it.</p>
                         </div>
-                        <div id="map_parent">
-                          <svg id="map_container" width="' . $container_width . '" height="' . $container_height . '"></svg>
+                        <div class="graph-preview-wrapper">
+                          <!-- The fixed-size preview box -->
+                          <div id="graph-preview">
+                            <svg id="graph-svg-preview"></svg>
+                            <div class="spyglass-overlay">
+                              <span class="spyglass-icon">🔍</span>
+                              <p>Click to explore</p>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Fullscreen modal (hidden by default) -->
+                        <div id="graph-modal" class="graph-modal">
+                          <div class="modal-toolbar">
+                            <button id="zoom-in">＋</button>
+                            <button id="zoom-out">－</button>
+                            <button id="zoom-reset">Reset</button>
+                            <button id="close-modal">✕ Close</button>
+                          </div>
+                          <svg id="graph-svg-full"></svg>
                         </div>';
     $output[]['#attached']['library'][] = 'topic_map/d3';
     $output[]['#attached']['library'][] = 'topic_map/map';

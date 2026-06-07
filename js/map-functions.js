@@ -44,13 +44,13 @@ function unhover() {
 }
 
 /*  Positioning functions; run on every "tick" */
-function constrainNodesToSVGContainer() {
+function constrainNodesToSVGContainer(nodeElements, width, height) {
   nodeElements
     .attr('cx', function(node) {return node.x = Math.max(node.labelLength + 10, Math.min(width - node.labelLength + 10, node.x));})
     .attr('cy', function(node) {return node.y = Math.max(node.radius + 20, Math.min(height - node.radius - 20, node.y))})   
 }
 
-function updateElementPositions() {
+function updateElementPositions(nodeElements, linkElements, textElements) {
   nodeElements
     .attr('cx', function(node) { return node.x; })
     .attr('cy', function(node) { return node.y; });
