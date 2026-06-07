@@ -18,7 +18,25 @@
   document.getElementById('zoom-reset').addEventListener('click', () => {
     svg.transition().call(zoom.transform, d3.zoomIdentity);
   });
-  refreshPreview(svg);
+
+    // --- Modal open/close ---
+  document.getElementById('graph-preview').addEventListener('click', () => {
+    document.getElementById('graph-modal').classList.remove('hidden');
+    // Reset zoom when opening
+    svg.call(zoom.transform, d3.zoomIdentity);
+  });
+
+  document.getElementById('close-modal').addEventListener('click', () => {
+    document.getElementById('graph-modal').classList.add('hidden');
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.getElementById('graph-modal').classList.add('hidden');
+    }
+  });
+  //refreshPreview(svg);
 })();
 
 function refreshPreview(svg) {
