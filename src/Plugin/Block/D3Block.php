@@ -70,7 +70,7 @@ abstract class D3Block extends BlockBase {
                           </div>
                         </div>
                         <!-- Fullscreen modal (hidden by default) -->
-                        <div id="graph-modal" class="graph-modal">
+                        <div id="graph-modal" class="graph-modal hidden">
                           <div class="modal-toolbar">
                             <button id="zoom-in">＋</button>
                             <button id="zoom-out">－</button>
