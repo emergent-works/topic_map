@@ -80,12 +80,13 @@ function drawGraph(g) {
   var linkForce = d3
     .forceLink()
     .id(function (link) { return link.id })
-    .strength(function (link) { return link.relation == "parent" ? 0.7 : 0.1 })
-    .distance(function (link) { return link.relation == "parent" ? 100 : 300 })
+    .strength(function (link) { return link.relation == "parent" ? 1 : 0})
   var simulation = d3
     .forceSimulation()
+    .alpha(0.1) // lower alpha for less movement
     .force('link', linkForce)
     .force('center', d3.forceCenter(width / 2, height / 2))
+
    // .force('x', forceX)
     .force('y',  forceY)
     .force('collide', d3.forceCollide(d => Math.max(80, d.radius * 2)).strength(1))
@@ -126,7 +127,7 @@ function drawGraph(g) {
 simulation.nodes(nodes).on('tick', () => {
   updateElementPositions(nodeElements, linkElements, textElements);
 
-  if (!hoverApplied && simulation.alpha() < 0.05) {
+  if (!hoverApplied && simulation.alpha() < 0.02) { // When the simulation is almost stable, apply hover to central node
     hoverApplied = true;
     hoverCentralNode();
   }
@@ -137,8 +138,7 @@ simulation.nodes(nodes).on('tick', () => {
     const centerX = (bounds.minX + bounds.maxX) / 2;
     const centerY = (bounds.minY + bounds.maxY) / 2;
 
-    // Find the node closest to the centre of the bounding box
-    let centralNode = null;
+    // Find the nearest large node to the center
     let minDist = Infinity;
     nodes.forEach(function(node) {
       if (node.field_descendents_value < 10) return; 
