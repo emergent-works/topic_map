@@ -100,50 +100,6 @@ function drawGraph(g) {
     return {minX, maxX, minY, maxY};
   }
 
-  // Resize SVG container and update forces to match new dimensions
-  function resizeContainerToFitContent() {
-    const bounds = getNodeBounds();
-    const contentWidth = bounds.maxX - bounds.minX;
-    const contentHeight = bounds.maxY - bounds.minY;
-    
-    // New SVG dimensions with padding
-    const newWidth = contentWidth + (padding * 2);
-    const newHeight = contentHeight + (padding * 2);
-    
-    d3.select(g.node().parentNode).attr('width', newWidth).attr('height', newHeight);
-
-    g.attr('transform', `translate(${(newWidth - contentWidth) / 2 - bounds.minX}, ${(newHeight - contentHeight) / 2 - bounds.minY})`);
-
-
-    width = newWidth;
-    height = newHeight;
-    
-    // Calculate offset to center content with padding
-    const offsetX = padding - bounds.minX;
-    const offsetY = padding - bounds.minY;
-    
-    // Move all nodes to new centered position
-    nodes.forEach(function(node) {
-      node.x += offsetX;
-      node.y += offsetY;
-    });
-    
-    // Update forces to use new dimensions
-    const centerX = width / 2;
-    const centerY = height / 2;
-    
-    forceX = d3.forceX(centerX).strength(gravity + 0.02);
-    forceY = d3.forceY(centerY).strength(gravity);
-    
-    simulation
-      .force('center', d3.forceCenter(centerX, centerY))
-      .force('x', forceX)
-      .force('y', forceY);
-    
-    // Refresh positions on screen
-    updateElementPositions(nodeElements, linkElements, textElements);
-  }
-
   // set up the force simulation parameters 
   var linkForce = d3
     .forceLink()
@@ -190,16 +146,10 @@ function drawGraph(g) {
       .on("mouseover", hover)
       .on("mouseout", unhover)
 
-    // This runs in a loop moving things around until it settles down.
-    simulation.nodes(nodes).on('tick', () => {
-      updateElementPositions(nodeElements, linkElements, textElements); // ← move everything every tick
-    })
-
-  simulation.on('end', () => {
-    resizeContainerToFitContent();
-    constrainNodesToSVGContainer(nodeElements, width, height);
-    updateElementPositions(nodeElements, linkElements, textElements);
-  });
+  // This runs in a loop moving things around until it settles down.
+  simulation.nodes(nodes).on('tick', () => {
+    updateElementPositions(nodeElements, linkElements, textElements); // ← move everything every tick
+  })
 
   simulation.force("link").links(links)
   return g
