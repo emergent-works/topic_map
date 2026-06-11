@@ -1,6 +1,8 @@
 
 /* Fullscreen modal */
-.graph-modal {
+#graph {
+      width: 100vw;
+    height: 100vh;
   position: fixed;
   inset: 0;
   z-index: 9999;
@@ -9,7 +11,7 @@
   flex-direction: column;
 }
 
-.modal-toolbar {
+.graph-toolbar {
   display: flex;
   gap: 8px;
   padding: 10px 16px;
@@ -18,7 +20,7 @@
   justify-content: flex-end;
 }
 
-.modal-toolbar button {
+.graph-toolbar button {
   padding: 6px 14px;
   border: none;
   border-radius: 4px;
@@ -28,13 +30,13 @@
   font-size: 1rem;
 }
 
-#graph-modal svg {
+#graph svg {
   flex: 1;
   width: 100%;
   cursor: grab;
 }
 
-#graph-modal svg:active {
+#graph svg:active {
   cursor: grabbing;
 }
 

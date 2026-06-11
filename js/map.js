@@ -20,23 +20,9 @@
     svg.transition().call(zoom.transform, d3.zoomIdentity);
   });
 
-    // --- Modal open/close ---
-  document.getElementById('graph-preview').addEventListener('click', () => {
-    document.getElementById('graph-modal').classList.remove('hidden');
-    // Reset zoom when opening
-    svg.call(zoom.transform, d3.zoomIdentity);
-  });
-
-  document.getElementById('close-modal').addEventListener('click', () => {
-    document.getElementById('graph-modal').classList.add('hidden');
-  });
   const keysHeld = {};
   let panInterval = null;
-  document.addEventListener('keydown', (e) => {
-    const modalOpen = !document.getElementById('graph-modal').classList.contains('hidden');
-    
-    if (modalOpen) {
-
+  document.addEventListener('keydown', (e) => {    
       if (e.ctrlKey || e.metaKey) {
         if (e.key === '+' || e.key === '=') {
           e.preventDefault();
@@ -63,8 +49,7 @@
           }
         }
       }
-    }
-  });
+    });
   document.addEventListener('keyup', (e) => {
     delete keysHeld[e.key];
     if (!Object.keys(keysHeld).some(k => ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(k))) {
@@ -72,22 +57,13 @@
       panInterval = null;
     }
   });
-  //refreshPreview(svg);
 })();
 
-function refreshPreview(svg) {
-  const previewSvg = document.getElementById('graph-svg-preview');
-  previewSvg.innerHTML = ''; // clear
-  const clone = svg.node().cloneNode(true);
-  previewSvg.appendChild(clone);
-  // Fit preview to its box
-  const bbox = svg.node().getBBox();
-  d3.select(previewSvg).attr('viewBox', `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
-}
-
 function drawGraph(g) {
-  let width = g.attr('width');  
-  let height = g.attr('height');
+  // Read dimensions from the parent SVG element, with a sensible fallback
+  const svgNode = g.node().ownerSVGElement;
+  let width = svgNode.clientWidth || svgNode.getBoundingClientRect().width;
+  let height = svgNode.clientHeight || svgNode.getBoundingClientRect().height;
   const padding = 80; // Padding around graph content
 
   // These are d3 force-related graph parameters

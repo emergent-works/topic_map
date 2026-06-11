@@ -49,8 +49,8 @@ abstract class D3Block extends BlockBase {
     $container_height = sqrt(sizeof($topics)) * 170;
     $container_width = sqrt(sizeof($topics)) * 200;
     $output['#template'] = Term::load($block_id)->getDescription() . '
-                        <div id="graph-modal">
-                          <div class="modal-toolbar">
+                        <div id="graph">
+                          <div class="graph-toolbar">
                             <button id="zoom-in">＋</button>
                             <button id="zoom-out">－</button>
                             <button id="zoom-reset">Reset</button>
