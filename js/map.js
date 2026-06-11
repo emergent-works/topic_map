@@ -190,16 +190,16 @@ function drawGraph(g) {
       .on("mouseover", hover)
       .on("mouseout", unhover)
 
-  // This runs in a loop moving things around until it settles down.
-  simulation.nodes(nodes).on('tick', () => {
-    updateElementPositions(nodeElements, linkElements, textElements); // ← move everything every tick
-    
-    if (simulation.alpha() < 0.01) {
-      resizeContainerToFitContent();
-      constrainNodesToSVGContainer(nodeElements, width, height);
-      updateElementPositions(nodeElements, linkElements, textElements); // final adjustment after resize
-    }
-  })
+    // This runs in a loop moving things around until it settles down.
+    simulation.nodes(nodes).on('tick', () => {
+      updateElementPositions(nodeElements, linkElements, textElements); // ← move everything every tick
+    })
+
+  simulation.on('end', () => {
+    resizeContainerToFitContent();
+    constrainNodesToSVGContainer(nodeElements, width, height);
+    updateElementPositions(nodeElements, linkElements, textElements);
+  });
 
   simulation.force("link").links(links)
   return g
