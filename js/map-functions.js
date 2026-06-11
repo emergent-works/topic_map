@@ -86,3 +86,51 @@ function getNodeClass(node) {
   return "node_" + node.id + " " + node.field_type_of_topic_value;
 }
 
+// Calculate actual bounding box of all nodes and labels
+function getNodeBounds() {
+  let minX = Infinity, maxX = -Infinity;
+  let minY = Infinity, maxY = -Infinity;
+  
+  nodes.forEach(function(node) {
+    // Node circle bounds
+    minX = Math.min(minX, node.x - node.radius);
+    maxX = Math.max(maxX, node.x + node.radius);
+    minY = Math.min(minY, node.y - node.radius);
+    maxY = Math.max(maxY, node.y + node.radius);
+    
+    // Text label bounds (labels go left and below)
+    minX = Math.min(minX, node.x - node.labelLength);
+    maxX = Math.max(maxX, node.x);
+    minY = Math.min(minY, node.y - node.radius - 10);
+    maxY = Math.max(maxY, node.y + 20 + node.radius);
+  });
+  
+  return {minX, maxX, minY, maxY};
+}
+
+function fitGraphToScreen(svg, svgNode, padding, zoom) {
+  const bounds = getNodeBounds();
+  const contentWidth = bounds.maxX - bounds.minX;
+  const contentHeight = bounds.maxY - bounds.minY;
+
+  const svgWidth = svgNode.clientWidth || svgNode.getBoundingClientRect().width;
+  const svgHeight = svgNode.clientHeight || svgNode.getBoundingClientRect().height;
+
+  const scale = Math.min(
+    (svgWidth) / contentWidth,
+    (svgHeight) / contentHeight,
+    1
+  );
+
+  const translateX = (svgWidth - contentWidth * scale) / 2 - bounds.minX * scale;
+  const translateY = (svgHeight - contentHeight * scale) / 2 - bounds.minY * scale;
+
+  const transform = d3.zoomIdentity.translate(translateX, translateY).scale(scale);
+
+  // if (animate) {
+  //   svg.transition().duration(500).call(zoom.transform, transform);
+  // } else {
+    svg.call(zoom.transform, transform);  // instant, no transition
+  // }
+}
+

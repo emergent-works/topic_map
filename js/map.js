@@ -57,7 +57,6 @@
       panInterval = null;
     }
   });
-})();
 
 function drawGraph(g) {
   // Read dimensions from the parent SVG element, with a sensible fallback
@@ -77,28 +76,6 @@ function drawGraph(g) {
     node.radius = 10 + 1.2 * node.field_descendents_value; 
     node.labelLength = decodeEntities(node.name).length * 4
   })
-
-  // Calculate actual bounding box of all nodes and labels
-  function getNodeBounds() {
-    let minX = Infinity, maxX = -Infinity;
-    let minY = Infinity, maxY = -Infinity;
-    
-    nodes.forEach(function(node) {
-      // Node circle bounds
-      minX = Math.min(minX, node.x - node.radius);
-      maxX = Math.max(maxX, node.x + node.radius);
-      minY = Math.min(minY, node.y - node.radius);
-      maxY = Math.max(maxY, node.y + node.radius);
-      
-      // Text label bounds (labels go left and below)
-      minX = Math.min(minX, node.x - node.labelLength);
-      maxX = Math.max(maxX, node.x);
-      minY = Math.min(minY, node.y - node.radius - 10);
-      maxY = Math.max(maxY, node.y + 20 + node.radius);
-    });
-    
-    return {minX, maxX, minY, maxY};
-  }
 
   // set up the force simulation parameters 
   var linkForce = d3
@@ -149,8 +126,12 @@ function drawGraph(g) {
   // This runs in a loop moving things around until it settles down.
   simulation.nodes(nodes).on('tick', () => {
     updateElementPositions(nodeElements, linkElements, textElements); // ← move everything every tick
+    fitGraphToScreen(svg, svgNode, padding, zoom); // ← once the simulation has ended, fit everything to the screen
+
   })
 
   simulation.force("link").links(links)
   return g
 }
+
+})();
