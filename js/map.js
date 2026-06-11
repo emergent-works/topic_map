@@ -65,9 +65,8 @@ function drawGraph(g) {
   let height = svgNode.clientHeight || svgNode.getBoundingClientRect().height;
   const padding = 80; // Padding around graph content
 
-  // These are d3 force-related graph parameters
   const gravity = 0.05
-  let forceX = d3.forceX(width / 2).strength(gravity + 0.02)
+  //let forceX = d3.forceX(width / 2).strength(gravity + 0.02) -- Add this back in whebn fitting on screen
   let forceY = d3.forceY(height / 2).strength(gravity)
 
   // Set the size of each node depending on how many descendents it has
@@ -86,9 +85,8 @@ function drawGraph(g) {
   var simulation = d3
     .forceSimulation()
     .force('link', linkForce)
-  // .force('charge',function(node) {return Math.pow(node.radius, 100.0)})
     .force('center', d3.forceCenter(width / 2, height / 2))
-    .force('x', forceX)
+   // .force('x', forceX)
     .force('y',  forceY)
     .force('collide', d3.forceCollide(d => Math.max(80, d.radius * 2)).strength(1))
 
