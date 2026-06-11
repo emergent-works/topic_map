@@ -48,34 +48,12 @@ abstract class D3Block extends BlockBase {
     $links = \Drupal::database()->query($sql)->fetchAll();
     $container_height = sqrt(sizeof($topics)) * 170;
     $container_width = sqrt(sizeof($topics)) * 200;
-    $output['#template'] = Term::load($block_id)->getDescription() . '<div id="legend" class="panel-default panel">
-                          <div class="panel-heading">Visual representation of the topic space</div>
-                          <p>Hover over a topic to see its relationships to other topics: </p>
-                            <ul>
-                              <li class="parents">topics that contain it</li> 
-                              <li class="children">topics that are parts of it</li>  
-                              <li class="neighbours">related topics</li>
-                            </ul>'
-                            . $this->extraInformation .
-                          '<p>Click on a topic to see information about it.</p>
-                        </div>
-                        <div class="graph-preview-wrapper">
-                          <!-- The fixed-size preview box -->
-                          <div id="graph-preview">
-                            <svg id="graph-svg-preview"></svg>
-                            <div class="spyglass-overlay">
-                              <span class="spyglass-icon">🔍</span>
-                              <p>Click to explore</p>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- Fullscreen modal (hidden by default) -->
-                        <div id="graph-modal" class="graph-modal hidden">
+    $output['#template'] = Term::load($block_id)->getDescription() . '
+                        <div id="graph-modal">
                           <div class="modal-toolbar">
                             <button id="zoom-in">＋</button>
                             <button id="zoom-out">－</button>
                             <button id="zoom-reset">Reset</button>
-                            <button id="close-modal">✕ Close</button>
                           </div>
                           <svg id="graph-svg-full"></svg>
                         </div>';
