@@ -1,3 +1,12 @@
+## [11.x-1.6] - 2026-06-11
+  
+Made graph full screen and added zoom and pan
+
+### Changed
+
+* Graph is now full screen
+* User can zoom and pan using keyboard or mouse
+
 ## [11.x-1.5] - 2025-04-27
   
 Improved graph display
@@ -10,7 +19,7 @@ Improved graph display
 
 * Graph centred on screen
 
-## [11.x-1.4] - 2025-04-27
+## [11.x-1.4] - 2026-04-27
   
 Improved layout of graph
 
@@ -20,7 +29,7 @@ Improved layout of graph
 * Improved spacing of nodes vertically and horiozontally
 * Labels positioned centrally under nodes
 
-## [11.x-1.3] - 2025-03-03
+## [11.x-1.3] - 2026-03-03
   
 Position nodes better on graphs
 
@@ -34,7 +43,7 @@ Position nodes better on graphs
 
 
 
-## [11.x-1.2] - 2025-03-03
+## [11.x-1.2] - 2026-03-03
   
 New versioning scheme following https://www.drupal.org/docs/getting-started/understanding-drupal/understanding-drupal-version-numbers/what-do-version-numbers-mean-on-contributed-modules-and-themes
 
@@ -50,7 +59,7 @@ New versioning scheme following https://www.drupal.org/docs/getting-started/unde
  
 
 
-## [1.1.0] - 2025-03-03
+## [1.1.0] - 2026-03-03
   
 Added knowledge graph capability as well as topic map. A knowledge graph references a vocabulary and pulls all the keywords from there, whereas a topic map, which is legacy, requires manually entering all the topics (keywords) you want to appear on it. The new way is preferable because keywords only need entering once.
 
@@ -64,7 +73,7 @@ It is backwards compatible, so the old topic maps still work and you can add new
  
 
 
-## [1.0.2] - 2025-03-09
+## [1.0.2] - 2026-03-09
 
 ### Fixed
   
@@ -72,7 +81,7 @@ It is backwards compatible, so the old topic maps still work and you can add new
 
 
 
-## [1.0.1] - 2025-03-09
+## [1.0.1] - 2026-03-09
 
 Made D11-compatible
 
@@ -82,7 +91,7 @@ Made D11-compatible
  
 
 
-## [1.0.0] - 2025-03-03
+## [1.0.0] - 2026-03-03
   
 Start of the version developed for REAL2
  
