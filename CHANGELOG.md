@@ -1,11 +1,11 @@
-## [11.x-1.6] - 2026-06-11
+## [11.x-1.7] - 2026-06-11
   
-Made graph full screen and added zoom and pan
+Visual improvement
 
 ### Changed
 
-* Graph is now full screen
-* User can zoom and pan using keyboard or mouse
+* Added hover state to a large central node upon page load
+
 
 ## [11.x-1.5] - 2025-04-27
   
