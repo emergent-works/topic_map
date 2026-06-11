@@ -108,29 +108,4 @@ function getNodeBounds() {
   return {minX, maxX, minY, maxY};
 }
 
-function fitGraphToScreen(svg, svgNode, padding, zoom) {
-  const bounds = getNodeBounds();
-  const contentWidth = bounds.maxX - bounds.minX;
-  const contentHeight = bounds.maxY - bounds.minY;
-
-  const svgWidth = svgNode.clientWidth || svgNode.getBoundingClientRect().width;
-  const svgHeight = svgNode.clientHeight || svgNode.getBoundingClientRect().height;
-
-  const scale = Math.min(
-    (svgWidth) / contentWidth,
-    (svgHeight) / contentHeight,
-    1
-  );
-
-  const translateX = (svgWidth - contentWidth * scale) / 2 - bounds.minX * scale;
-  const translateY = (svgHeight - contentHeight * scale) / 2 - bounds.minY * scale;
-
-  const transform = d3.zoomIdentity.translate(translateX, translateY).scale(scale);
-
-  // if (animate) {
-  //   svg.transition().duration(500).call(zoom.transform, transform);
-  // } else {
-    svg.call(zoom.transform, transform);  // instant, no transition
-  // }
-}
 

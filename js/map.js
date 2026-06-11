@@ -123,12 +123,36 @@ function drawGraph(g) {
       .on("mouseover", hover)
       .on("mouseout", unhover)
 
-  // This runs in a loop moving things around until it settles down.
-  simulation.nodes(nodes).on('tick', () => {
-    updateElementPositions(nodeElements, linkElements, textElements); // ← move everything every tick
-    fitGraphToScreen(svg, svgNode, padding, zoom); // ← once the simulation has ended, fit everything to the screen
+  let hoverApplied = false;
 
-  })
+simulation.nodes(nodes).on('tick', () => {
+  updateElementPositions(nodeElements, linkElements, textElements);
+
+  if (!hoverApplied && simulation.alpha() < 0.05) {
+    hoverApplied = true;
+    hoverCentralNode();
+  }
+});
+
+  function hoverCentralNode() {
+    const bounds = getNodeBounds();
+    const centerX = (bounds.minX + bounds.maxX) / 2;
+    const centerY = (bounds.minY + bounds.maxY) / 2;
+
+    // Find the node closest to the centre of the bounding box
+    let centralNode = null;
+    let minDist = Infinity;
+    nodes.forEach(function(node) {
+      if (node.field_descendents_value < 10) return; 
+      const dist = Math.hypot(node.x - centerX, node.y - centerY);
+      if (dist < minDist) {
+        minDist = dist;
+        centralNode = node;
+      }
+    });
+
+    if (centralNode) hover(centralNode);
+  }
 
   simulation.force("link").links(links)
   return g
