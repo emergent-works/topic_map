@@ -1,3 +1,11 @@
+## [11.x-1.8] - 2026-06-13
+  
+Visual improvement
+
+### Changed
+
+* Arrange child nodes closer to their parents
+
 ## [11.x-1.7] - 2026-06-11
   
 Visual improvement
