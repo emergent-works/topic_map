@@ -80,18 +80,21 @@ function drawGraph(g) {
   var linkForce = d3
     .forceLink()
     .id(function (link) { return link.id })
-    .strength(function (link) { return link.relation == "parent" ? 1 : 0})
+
+.strength(function(link) { return link.relation === 'parent' ? 0.2 : 0.1; })
+.distance(function(link) { return Math.max(link.source.radius + link.target.radius + 40, 100); })
   var simulation = d3
     .forceSimulation()
     .alpha(0.1) // lower alpha for less movement
     .force('link', linkForce)
-    .force('center', d3.forceCenter(width / 2, height / 2))
+   .force('center', d3.forceCenter(width / 2, height / 2))
 
-   // .force('x', forceX)
-    .force('y',  forceY)
-    .force('collide', d3.forceCollide(d => Math.max(80, d.radius * 2)).strength(1))
+simulation.force('parentPull', parentPullForce(0.3))
+ .force('collide', d3.forceCollide(d => Math.max(d.radius + 60, d.radius *2)).strength(0.5).iterations(5))
+
 
   // Add the links, nodes and text elements (labels)
+
   var linkElements = g.append("g")
     .attr("class", "links")
     .selectAll("line")

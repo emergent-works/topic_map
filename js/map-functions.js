@@ -108,4 +108,25 @@ function getNodeBounds() {
   return {minX, maxX, minY, maxY};
 }
 
+function parentPullForce(strength) {
+  return function() {
+    nodes.forEach(function(node) {
+      const parentLinks = links.filter(l => l.target === node && l.relation === 'parent');
+      if (parentLinks.length === 0) return;
+
+      parentLinks.forEach(function(l) {
+        const dx = l.source.x - node.x;
+        const dy = l.source.y - node.y;
+
+        // Pull child toward parent
+        node.vx += dx * strength;
+        node.vy += dy * strength;
+
+        // Pull parent toward child (equal and opposite)
+        l.source.vx -= dx * strength;
+        l.source.vy -= dy * strength;
+      });
+    });
+  };
+}
 
