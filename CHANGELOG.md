@@ -1,3 +1,11 @@
+## [11.x-1.9] - 2026-06-13
+  
+Visual improvement
+
+### Changed
+
+* Fix bug that made it run infintely on large graph
+
 ## [11.x-1.8] - 2026-06-13
   
 Visual improvement
