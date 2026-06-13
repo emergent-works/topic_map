@@ -109,6 +109,15 @@ function getNodeBounds() {
 }
 
 function parentPullForce(strength) {
+  // Pre-compute child count per node
+  const childCount = {};
+  nodes.forEach(n => childCount[n.id] = 0);
+  links.forEach(l => {
+    if (l.relation === 'parent') {
+      childCount[l.target.id] = (childCount[l.target.id] || 0) + 1;
+    }
+  });
+
   return function() {
     nodes.forEach(function(node) {
       const parentLinks = links.filter(l => l.target === node && l.relation === 'parent');
@@ -117,16 +126,19 @@ function parentPullForce(strength) {
       parentLinks.forEach(function(l) {
         const dx = l.source.x - node.x;
         const dy = l.source.y - node.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const desiredDist = l.source.radius + l.target.radius + 15;
+        if (dist <= desiredDist) return;
 
-        // Pull child toward parent
-        node.vx += dx * strength;
-        node.vy += dy * strength;
+        const excess = Math.min(dist - desiredDist, 300);
+        const childMultiplier = Math.sqrt(childCount[l.target.id] || 1);
+        const force = (excess / dist) * strength * childMultiplier;
 
-        // Pull parent toward child (equal and opposite)
-        l.source.vx -= dx * strength;
-        l.source.vy -= dy * strength;
+        node.vx += dx * force;
+        node.vy += dy * force;
+        l.source.vx -= dx * force;
+        l.source.vy -= dy * force;
       });
     });
   };
 }
-

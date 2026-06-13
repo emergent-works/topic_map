@@ -81,7 +81,7 @@ function drawGraph(g) {
     .forceLink()
     .id(function (link) { return link.id })
 
-.strength(function(link) { return link.relation === 'parent' ? 0.2 : 0.1; })
+.strength(function(link) { return link.relation === 'parent' ? 0 : 0.1; })
 .distance(function(link) { return Math.max(link.source.radius + link.target.radius + 40, 100); })
   var simulation = d3
     .forceSimulation()
@@ -89,8 +89,10 @@ function drawGraph(g) {
     .force('link', linkForce)
    .force('center', d3.forceCenter(width / 2, height / 2))
 
+  .alphaMin(0.001)  // stops simulation from running forever
+
 simulation.force('parentPull', parentPullForce(0.3))
- .force('collide', d3.forceCollide(d => Math.max(d.radius + 60, d.radius *2)).strength(0.5).iterations(5))
+.force('collide', d3.forceCollide(d => d.radius + 60).strength(1).iterations(3))
 
 
   // Add the links, nodes and text elements (labels)
@@ -129,6 +131,13 @@ simulation.force('parentPull', parentPullForce(0.3))
 
 simulation.nodes(nodes).on('tick', () => {
   updateElementPositions(nodeElements, linkElements, textElements);
+   // Temporary diagnostic
+  links.filter(l => l.relation === 'parent').forEach(l => {
+    const dist = Math.hypot(l.source.x - l.target.x, l.source.y - l.target.y);
+    if (dist > 300) {
+      console.log(`Far parent link: ${l.source.id} -> ${l.target.id}, dist: ${Math.round(dist)}, sourceRadius: ${l.source.radius}, targetRadius: ${l.target.radius}, targetLinks: ${links.filter(x => x.source === l.target || x.target === l.target).length}`);
+    }
+  }); 
 
   if (!hoverApplied && simulation.alpha() < 0.02) { // When the simulation is almost stable, apply hover to central node
     hoverApplied = true;
