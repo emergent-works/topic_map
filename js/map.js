@@ -72,7 +72,7 @@ function drawGraph(g) {
   // Set the size of each node depending on how many descendents it has
   // and the label length depending on the number of characters (label length is used when constraining nodes to the container).
   nodes.forEach(function(node) {
-    node.radius = 10 + 1.2 * node.field_descendents_value; 
+    node.radius = 10 + 1 * node.field_descendents_value; 
     node.labelLength = decodeEntities(node.name).length * 4
   })
 
@@ -93,6 +93,8 @@ function drawGraph(g) {
 
 simulation.force('parentPull', parentPullForce(0.3))
 .force('collide', d3.forceCollide(d => d.radius + 60).strength(1).iterations(3))
+.force('many', d3.forceManyBody().strength(-200));
+
 
 
   // Add the links, nodes and text elements (labels)
