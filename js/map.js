@@ -1,6 +1,10 @@
 (function () {
   const svg = d3.select("#graph-svg-full");
-  let g = svg.append('g').attr('class', 'graph-root');
+  const width = svg.node().clientWidth;
+const height = svg.node().clientHeight;
+  let g = svg.append('g')
+  .attr('class', 'graph-root')
+  .attr('transform', `translate(${width / 2}, ${height / 2})`);
   g = drawGraph(g);
   const zoom = d3.zoom()
     .scaleExtent([0.1, 10])
@@ -8,6 +12,7 @@
       g.attr('transform', d3.event.transform);
     });
   svg.call(zoom);
+  svg.call(zoom.transform, d3.zoomIdentity.translate(width / 2, height / 2));
 
     // Helper buttons
   document.getElementById('zoom-in').addEventListener('click', () => {
@@ -59,41 +64,13 @@
   });
 
 function drawGraph(g) {
-  // Read dimensions from the parent SVG element, with a sensible fallback
-  const svgNode = g.node().ownerSVGElement;
-  let width = svgNode.clientWidth || svgNode.getBoundingClientRect().width;
-  let height = svgNode.clientHeight || svgNode.getBoundingClientRect().height;
-  const padding = 80; // Padding around graph content
 
-  const gravity = 0.05
-  //let forceX = d3.forceX(width / 2).strength(gravity + 0.02) -- Add this back in whebn fitting on screen
-  let forceY = d3.forceY(height / 2).strength(gravity)
-
-  // Set the size of each node depending on how many descendents it has
-  // and the label length depending on the number of characters (label length is used when constraining nodes to the container).
-  nodes.forEach(function(node) {
+// Set the size of each node depending on how many descendents it has
+// and the label length depending on the number of characters (label length is used when constraining nodes to the container).
+nodes.forEach(function(node) {
     node.radius = 10 + 1 * node.field_descendents_value; 
     node.labelLength = decodeEntities(node.name).length * 4
   })
-
-  // set up the force simulation parameters 
-  var linkForce = d3
-    .forceLink()
-    .id(function (link) { return link.id })
-
-.strength(function(link) { return link.relation === 'parent' ? 0 : 0.1; })
-.distance(function(link) { return Math.max(link.source.radius + link.target.radius + 40, 100); })
-  var simulation = d3
-    .forceSimulation()
-    .alpha(0.1) // lower alpha for less movement
-    .force('link', linkForce)
-   .force('center', d3.forceCenter(width / 2, height / 2))
-
-  .alphaMin(0.001)  // stops simulation from running forever
-
-simulation.force('parentPull', parentPullForce(0.3))
-.force('collide', d3.forceCollide(d => d.radius + 60).strength(1).iterations(3))
-.force('many', d3.forceManyBody().strength(-200));
 
 
 
@@ -123,50 +100,34 @@ simulation.force('parentPull', parentPullForce(0.3))
       .text(function (node) { return decodeEntities(node.name)})
       .attr("class", getNodeClass)
       .attr("font-size", 14)
-      .attr("text-anchor", "middle")  // Add this line
-      .attr("dy", function(node) {return 15 + node.radius}) // distance of text below node
+      .attr("text-anchor", "middle") 
+      .attr("dy", function(node) {return 15 + node.radius}) 
       .on('click', function(node) {location.href = '/taxonomy/term/' + node.id})
       .on("mouseover", hover)
       .on("mouseout", unhover)
 
-  let hoverApplied = false;
+  const simulation = d3.forceSimulation(nodes)
+      .force("link", d3.forceLink(links).id(d => d.id))
+      .force("charge", d3.forceManyBody())
+      .force("x", d3.forceX())
+      .force("y", d3.forceY())
+      .force('collide', d3.forceCollide(d => Math.max(d.radius, d.labelLength)).strength(1).iterations(3))
+    //  .force("forceManyBody", d3.forceManyBody().strength(-50))
 
-simulation.nodes(nodes).on('tick', () => {
-  updateElementPositions(nodeElements, linkElements, textElements);
-   // Temporary diagnostic
-  links.filter(l => l.relation === 'parent').forEach(l => {
-    const dist = Math.hypot(l.source.x - l.target.x, l.source.y - l.target.y);
-    if (dist > 300) {
-      console.log(`Far parent link: ${l.source.id} -> ${l.target.id}, dist: ${Math.round(dist)}, sourceRadius: ${l.source.radius}, targetRadius: ${l.target.radius}, targetLinks: ${links.filter(x => x.source === l.target || x.target === l.target).length}`);
-    }
-  }); 
+    simulation.on("tick", () => {
+    linkElements
+        .attr("x1", d => d.source.x)
+        .attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x)
+        .attr("y2", d => d.target.y);
 
-  if (!hoverApplied && simulation.alpha() < 0.02) { // When the simulation is almost stable, apply hover to central node
-    hoverApplied = true;
-    hoverCentralNode();
-  }
-});
-
-  function hoverCentralNode() {
-    const bounds = getNodeBounds();
-    const centerX = (bounds.minX + bounds.maxX) / 2;
-    const centerY = (bounds.minY + bounds.maxY) / 2;
-
-    // Find the nearest large node to the center
-    let minDist = Infinity;
-    nodes.forEach(function(node) {
-      if (node.field_descendents_value < 10) return; 
-      const dist = Math.hypot(node.x - centerX, node.y - centerY);
-      if (dist < minDist) {
-        minDist = dist;
-        centralNode = node;
-      }
-    });
-
-    if (centralNode) hover(centralNode);
-  }
-
-  simulation.force("link").links(links)
+    nodeElements
+        .attr("cx", d => d.x)
+        .attr("cy", d => d.y)
+    textElements
+        .attr("x", d => d.x)
+        .attr("y", d => d.y);
+  });
   return g
 }
 
