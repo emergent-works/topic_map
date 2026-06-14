@@ -1,3 +1,14 @@
+## [11.x-1.10] - 2026-06-14
+  
+Simplified code, less jitter, also click to highlight
+
+### Changed
+
+* Graph is now a nice circular shape
+* Code is less complex, more maintainable
+* Graph flails around less during simulation
+* Click (instead of hover) to highlight
+
 ## [11.x-1.9] - 2026-06-13
   
 Visual improvement

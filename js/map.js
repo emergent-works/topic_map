@@ -14,16 +14,32 @@ const height = svg.node().clientHeight;
   svg.call(zoom);
   svg.call(zoom.transform, d3.zoomIdentity.translate(width / 2, height / 2));
 
-    // Helper buttons
+  document.getElementById('zoom-fit').addEventListener('click', () => {
+    const bounds = getNodeBounds(); // you already have this helper
+    const fullWidth = bounds.maxX - bounds.minX;
+    const fullHeight = bounds.maxY - bounds.minY;
+    const midX = (bounds.minX + bounds.maxX) / 2;
+    const midY = (bounds.minY + bounds.maxY) / 2;
+
+    if (fullWidth === 0 || fullHeight === 0) return;
+
+    const scale = 0.9 / Math.max(fullWidth / width, fullHeight / height);
+    const translate = [width / 2 - scale * midX, height / 2 - scale * midY];
+
+    const transform = d3.zoomIdentity
+      .translate(translate[0], translate[1])
+      .scale(scale);
+
+    svg.transition().duration(750).call(zoom.transform, transform);
+  });
+
   document.getElementById('zoom-in').addEventListener('click', () => {
     svg.transition().call(zoom.scaleBy, 1.5);
   });
   document.getElementById('zoom-out').addEventListener('click', () => {
     svg.transition().call(zoom.scaleBy, 0.67);
   });
-  document.getElementById('zoom-reset').addEventListener('click', () => {
-    svg.transition().call(zoom.transform, d3.zoomIdentity);
-  });
+
 
   const keysHeld = {};
   let panInterval = null;
@@ -71,8 +87,8 @@ nodes.forEach(function(node , i) {
     node.radius = 10 + 1 * node.field_descendents_value; 
     node.labelLength = decodeEntities(node.name).length * 4
   const angle = (i / nodes.length) * 2 * Math.PI;
-  const radius = Math.sqrt(nodes.length) * 50;
-  node.x = Math.cos(angle) * radius;
+const avgSize = nodes.reduce((sum, n) => sum + Math.max(n.radius || 10, n.labelLength || 0), 0) / nodes.length;
+const radius = Math.sqrt(nodes.length) * avgSize * 0.5;  node.x = Math.cos(angle) * radius;
   node.y = Math.sin(angle) * radius;
 });
   
@@ -111,10 +127,10 @@ nodes.forEach(function(node , i) {
   const simulation = d3.forceSimulation(nodes)
       .velocityDecay(0.6)
       .alphaDecay(0.05)
-      .force("link", d3.forceLink(links).id(d => d.id).strength(d=> d.relation === 'parent' ? 0.7   : 0.1))
+      .force("link", d3.forceLink(links).id(d => d.id).strength(d=> d.relation === 'parent' ? 0.7   : 0))
       .force("charge", d3.forceManyBody().strength(-100))
-      .force("x", d3.forceX())
-      .force("y", d3.forceY())
+      .force("x", d3.forceX().strength(0.02))
+      .force("y", d3.forceY().strength(0.02))
       .force('collide', d3.forceCollide(d => Math.max(d.radius, d.labelLength)).strength(1).iterations(5))
 
     simulation.on("tick", () => {

@@ -4,11 +4,21 @@
 // The related nodes and links get css classes based on their relationship to the selected node.
 // The unrelated ones get the "unrelated" class which will make them even fainter than when nothing is selected.
 function highlight(node) {
+  // Reset all highlight-related classes first
+  d3.selectAll('.nodes circle, .texts text, .links line')
+    .classed("highlight", false)
+    .classed("related_child", false)
+    .classed("related_parent", false)
+    .classed("related_neighbour", false)
+
+  // Set the highlight class on the selected node and the unrelated class on all nodes, links and labels
   d3.selectAll('.node_' + node.id).classed("highlight", true);
   d3.selectAll('.nodes circle').classed("unrelated", true)
   d3.selectAll('.links line').classed("unrelated", true)
   d3.selectAll('.texts text').classed("unrelated", true)
   d3.selectAll('.node_' + node.id).classed("unrelated", false)
+
+  // Set the related classes on the nodes and links that are related to the selected node, based on the relationship type
   links.forEach(function(link) {
     if (link.target == node) {
       if (link.relation == "parent") {
@@ -33,30 +43,6 @@ function highlight(node) {
     }
   })
 }
-
-/*  Positioning functions; run on every "tick" */
-function constrainNodesToSVGContainer(nodeElements, width, height) {
-  nodeElements
-    .attr('cx', function(node) {return node.x = Math.max(node.labelLength + 10, Math.min(width - node.labelLength + 10, node.x));})
-    .attr('cy', function(node) {return node.y = Math.max(node.radius + 20, Math.min(height - node.radius - 20, node.y))})   
-}
-
-function updateElementPositions(nodeElements, linkElements, textElements) {
-  nodeElements
-    .attr('cx', function(node) { return node.x; })
-    .attr('cy', function(node) { return node.y; });
-  
-  linkElements
-    .attr('x1', function (link) { return link.source.x; })
-    .attr('y1', function (link) { return link.source.y; })
-    .attr('x2', function (link) { return link.target.x; })
-    .attr('y2', function (link) { return link.target.y; });
-  
-  textElements
-    .attr('x', function (node) { return node.x; })
-    .attr('y', function (node) { return node.y; });
-}
-
 
 /* misc */
 
@@ -99,37 +85,3 @@ function getNodeBounds() {
   return {minX, maxX, minY, maxY};
 }
 
-function parentPullForce(strength) {
-  // Pre-compute child count per node
-  const childCount = {};
-  nodes.forEach(n => childCount[n.id] = 0);
-  links.forEach(l => {
-    if (l.relation === 'parent') {
-      childCount[l.target.id] = (childCount[l.target.id] || 0) + 1;
-    }
-  });
-
-  return function() {
-    nodes.forEach(function(node) {
-      const parentLinks = links.filter(l => l.target === node && l.relation === 'parent');
-      if (parentLinks.length === 0) return;
-
-      parentLinks.forEach(function(l) {
-        const dx = l.source.x - node.x;
-        const dy = l.source.y - node.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const desiredDist = l.source.radius + l.target.radius + 15;
-        if (dist <= desiredDist) return;
-
-        const excess = Math.min(dist - desiredDist, 300);
-        const childMultiplier = Math.sqrt(childCount[l.target.id] || 1);
-        const force = (excess / dist) * strength * childMultiplier;
-
-        node.vx += dx * force;
-        node.vy += dy * force;
-        l.source.vx -= dx * force;
-        l.source.vy -= dy * force;
-      });
-    });
-  };
-}

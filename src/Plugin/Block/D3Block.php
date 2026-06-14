@@ -53,7 +53,7 @@ abstract class D3Block extends BlockBase {
                           <div class="graph-toolbar">
                             <button id="zoom-in">＋</button>
                             <button id="zoom-out">－</button>
-                            <button id="zoom-reset">Reset</button>
+                            <button id="zoom-fit">Fit screen</button>
                           </div>
                           <svg id="graph-svg-full"></svg>
                         </div>';
