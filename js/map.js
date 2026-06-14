@@ -111,7 +111,7 @@ nodes.forEach(function(node , i) {
   const simulation = d3.forceSimulation(nodes)
       .velocityDecay(0.6)
       .alphaDecay(0.05)
-      .force("link", d3.forceLink(links).id(d => d.id))
+      .force("link", d3.forceLink(links).id(d => d.id).strength(d=> d.relation === 'parent' ? 0.7   : 0.1))
       .force("charge", d3.forceManyBody().strength(-100))
       .force("x", d3.forceX())
       .force("y", d3.forceY())
