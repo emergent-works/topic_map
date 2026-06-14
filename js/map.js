@@ -89,9 +89,8 @@ nodes.forEach(function(node) {
     .enter().append("circle")
       .attr("r", function(node) {return node.radius})
       .attr("class", getNodeClass)
-      .on('click', function(node) {location.href = '/taxonomy/term/' + node.id})
-      .on("mouseover", hover)
-      .on("mouseout", unhover)
+      .on('click', highlight)
+
   var textElements = g.append("g")
     .attr("class", "texts")
     .selectAll("text")
@@ -102,9 +101,7 @@ nodes.forEach(function(node) {
       .attr("font-size", 14)
       .attr("text-anchor", "middle") 
       .attr("dy", function(node) {return 15 + node.radius}) 
-      .on('click', function(node) {location.href = '/taxonomy/term/' + node.id})
-      .on("mouseover", hover)
-      .on("mouseout", unhover)
+      .on("click", highlight)
 
   const simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(d => d.id))
@@ -112,7 +109,6 @@ nodes.forEach(function(node) {
       .force("x", d3.forceX())
       .force("y", d3.forceY())
       .force('collide', d3.forceCollide(d => Math.max(d.radius, d.labelLength)).strength(1).iterations(3))
-    //  .force("forceManyBody", d3.forceManyBody().strength(-50))
 
     simulation.on("tick", () => {
     linkElements

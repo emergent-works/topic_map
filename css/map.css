@@ -33,20 +33,14 @@
 #graph svg {
   flex: 1;
   width: 100%;
-  cursor: grab;
 }
 
-#graph svg:active {
-  cursor: grabbing;
+.nodes .highlight {
+    fill-opacity: 1
 }
 
-.nodes .hovering {
-  cursor: pointer;
-  fill-opacity: 1
-}
+.texts .highlight {
 
-.texts .hovering {
-  cursor: pointer;
   text-decoration: underline;
   fill: #000;
 }

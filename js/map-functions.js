@@ -1,10 +1,10 @@
-/* Behaviour when hovering over a node or not */
 
-// When hovering over a node, highlight it, the nodes it is related to and the links between them.
-// The related nodes and links get css classes based on their relationship to the hovered node.
-// The unrelated ones get the "unrelated" class which will make them even fainter than when nothing is hovered over.
-function hover(node) {
-  d3.selectAll('.node_' + node.id).classed("hovering", true);
+
+// When a node is selected, highlight it, the nodes it is related to and the links between them.
+// The related nodes and links get css classes based on their relationship to the selected node.
+// The unrelated ones get the "unrelated" class which will make them even fainter than when nothing is selected.
+function highlight(node) {
+  d3.selectAll('.node_' + node.id).classed("highlight", true);
   d3.selectAll('.nodes circle').classed("unrelated", true)
   d3.selectAll('.links line').classed("unrelated", true)
   d3.selectAll('.texts text').classed("unrelated", true)
@@ -32,15 +32,6 @@ function hover(node) {
       d3.selectAll('.link_' + link.id).classed("unrelated", false)
     }
   })
-}
-
-// When nothing is hovered over, remove all highlighting and fading classes
-function unhover() {
-    d3.selectAll('.hovering').classed("hovering", false);
-    d3.selectAll('.related_parent').classed("related_parent", false)    
-    d3.selectAll('.related_child').classed("related_child", false)    
-    d3.selectAll('.related_neighbour').classed("related_neighbour", false)    
-    d3.selectAll('.unrelated').classed("unrelated", false)    
 }
 
 /*  Positioning functions; run on every "tick" */
