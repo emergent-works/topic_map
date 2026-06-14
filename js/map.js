@@ -67,10 +67,15 @@ function drawGraph(g) {
 
 // Set the size of each node depending on how many descendents it has
 // and the label length depending on the number of characters (label length is used when constraining nodes to the container).
-nodes.forEach(function(node) {
+nodes.forEach(function(node , i) {
     node.radius = 10 + 1 * node.field_descendents_value; 
     node.labelLength = decodeEntities(node.name).length * 4
-  })
+  const angle = (i / nodes.length) * 2 * Math.PI;
+  const radius = Math.sqrt(nodes.length) * 50;
+  node.x = Math.cos(angle) * radius;
+  node.y = Math.sin(angle) * radius;
+});
+  
 
 
 
@@ -104,11 +109,13 @@ nodes.forEach(function(node) {
       .on("click", highlight)
 
   const simulation = d3.forceSimulation(nodes)
+      .velocityDecay(0.6)
+      .alphaDecay(0.05)
       .force("link", d3.forceLink(links).id(d => d.id))
-      .force("charge", d3.forceManyBody())
+      .force("charge", d3.forceManyBody().strength(-100))
       .force("x", d3.forceX())
       .force("y", d3.forceY())
-      .force('collide', d3.forceCollide(d => Math.max(d.radius, d.labelLength)).strength(1).iterations(3))
+      .force('collide', d3.forceCollide(d => Math.max(d.radius, d.labelLength)).strength(1).iterations(5))
 
     simulation.on("tick", () => {
     linkElements
