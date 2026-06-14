@@ -128,10 +128,10 @@ const radius = Math.sqrt(nodes.length) * avgSize * 0.5;  node.x = Math.cos(angle
       .velocityDecay(0.6)
       .alphaDecay(0.05)
       .force("link", d3.forceLink(links).id(d => d.id).strength(d=> d.relation === 'parent' ? 0.7   : 0))
-      .force("charge", d3.forceManyBody().strength(-100))
+      .force("charge", d3.forceManyBody().strength(-50))
       .force("x", d3.forceX().strength(0.02))
       .force("y", d3.forceY().strength(0.02))
-      .force('collide', d3.forceCollide(d => Math.max(d.radius, d.labelLength)).strength(1).iterations(5))
+      .force('collide', d3.forceCollide(d => Math.max(d.radius, d.labelLength) + 15).strength(0.8).iterations(5))
 
     simulation.on("tick", () => {
     linkElements
