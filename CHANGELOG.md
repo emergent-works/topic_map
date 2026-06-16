@@ -1,3 +1,11 @@
+## [11.x-1.11] - 2026-06-14
+  
+Open url on double click
+
+### Fixed
+
+* There was no way of reaching taxonomy term url from graph after changing hover to click. Fixed by implementing double click.
+
 ## [11.x-1.10] - 2026-06-14
   
 Simplified code, less jitter, also click to highlight

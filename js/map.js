@@ -111,6 +111,7 @@ const radius = Math.sqrt(nodes.length) * avgSize * 0.5;  node.x = Math.cos(angle
       .attr("r", function(node) {return node.radius})
       .attr("class", getNodeClass)
       .on('click', highlight)
+      .on('dblclick', function(d) { window.open("/taxonomy/term/" + d.id, '_blank'); });
 
   var textElements = g.append("g")
     .attr("class", "texts")
@@ -123,6 +124,7 @@ const radius = Math.sqrt(nodes.length) * avgSize * 0.5;  node.x = Math.cos(angle
       .attr("text-anchor", "middle") 
       .attr("dy", function(node) {return 15 + node.radius}) 
       .on("click", highlight)
+      .on('dblclick', function(d) { window.open("/taxonomy/term/" + d.id, '_blank'); });
 
   const simulation = d3.forceSimulation(nodes)
       .velocityDecay(0.6)
