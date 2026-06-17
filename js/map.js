@@ -13,33 +13,7 @@ const height = svg.node().clientHeight;
     });
   svg.call(zoom);
   svg.call(zoom.transform, d3.zoomIdentity.translate(width / 2, height / 2));
-
-  document.getElementById('zoom-fit').addEventListener('click', () => {
-    const bounds = getNodeBounds(); // you already have this helper
-    const fullWidth = bounds.maxX - bounds.minX;
-    const fullHeight = bounds.maxY - bounds.minY;
-    const midX = (bounds.minX + bounds.maxX) / 2;
-    const midY = (bounds.minY + bounds.maxY) / 2;
-
-    if (fullWidth === 0 || fullHeight === 0) return;
-
-    const scale = 0.9 / Math.max(fullWidth / width, fullHeight / height);
-    const translate = [width / 2 - scale * midX, height / 2 - scale * midY];
-
-    const transform = d3.zoomIdentity
-      .translate(translate[0], translate[1])
-      .scale(scale);
-
-    svg.transition().duration(750).call(zoom.transform, transform);
-  });
-
-  document.getElementById('zoom-in').addEventListener('click', () => {
-    svg.transition().call(zoom.scaleBy, 1.5);
-  });
-  document.getElementById('zoom-out').addEventListener('click', () => {
-    svg.transition().call(zoom.scaleBy, 0.67);
-  });
-
+  d3.select("svg").on("dblclick.zoom", null);
 
   const keysHeld = {};
   let panInterval = null;
