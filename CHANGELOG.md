@@ -1,3 +1,13 @@
+## [11.x-1.12] - 2026-06-17
+  
+Added sidebar to graph
+
+### Changed
+
+* Contains instructions on how to use the map
+* Also has links for further information
+* Removed the toolbar
+
 ## [11.x-1.11] - 2026-06-14
   
 Open url on double click

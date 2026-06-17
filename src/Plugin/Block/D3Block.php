@@ -49,13 +49,29 @@ abstract class D3Block extends BlockBase {
     $container_height = sqrt(sizeof($topics)) * 170;
     $container_width = sqrt(sizeof($topics)) * 200;
     $output['#template'] = Term::load($block_id)->getDescription() . '
-                        <div id="graph">
-                          <div class="graph-toolbar">
-                            <button id="zoom-in">＋</button>
-                            <button id="zoom-out">－</button>
-                            <button id="zoom-fit">Fit screen</button>
+                        <div id="container">
+                          <div id = "graph">
+                            <svg id="graph-svg-full"></svg>
+                            <div id="sidebar">
+                              <div id = legend>
+                                <h3>How to use this map</h3>`
+                                <p><strong>Navigate:</strong> Click on a keyword to see: </p>
+                                <ul>
+                                  <li class="parents">keywords that contain it</li> 
+                                  <li class="children">keywords that are parts of it</li>  
+                                  <li class="neighbours">related keywords</li>
+                                </ul>
+                                <p><strong>Explore the project:</strong> Double-click a keyword to open a list of relevant studies and supporting materials in a new tab.</p>
+                                <p><strong>Pan:</strong> Arrow keys, or click and drag</p>
+                                <p><strong>Zoom:</strong> Mouse wheel, two-finger swipe or Ctrl+/-</p>
+                              </div>
+                              <div id="links">
+                                <h3>Find out more</h3>`
+                                <a href="/about-map" target="_blank">About this map</a>
+                                <a href="/" target="_blank">About Emergent Works</a>
+                                <a href="/about-real2" target="_blank">About REAL2</a>
+                              </div>
                           </div>
-                          <svg id="graph-svg-full"></svg>
                         </div>';
     $output[]['#attached']['library'][] = 'topic_map/d3';
     $output[]['#attached']['library'][] = 'topic_map/map';
