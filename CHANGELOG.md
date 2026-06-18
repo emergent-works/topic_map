@@ -1,3 +1,11 @@
+## [11.x-1.14] - 2026-06-18
+  
+### Changed
+
+* Removed the template - now using default taxonomy term template
+
+## [11.x-1.12] - 2026-06-17
+
 ## [11.x-1.13] - 2026-06-18
   
 ### Changed
