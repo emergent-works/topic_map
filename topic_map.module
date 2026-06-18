@@ -14,6 +14,14 @@ function topic_map_theme($existing, $type, $theme, $path) {
       'template' => 'knowledge_graph',
       'variables' => NULL,
     ],
+    'taxonomy_term__real2_keywords' => [
+      'template' => 'real2_resource_list',
+      'variables' => NULL,
+    ],
+    'taxonomy_term__authors' => [
+      'template' => 'real2_resource_list',
+      'variables' => NULL,
+    ],
     'taxonomy_term' => [
       'template' => 'other_taxonomy_term',
       'variables' => NULL,
