@@ -1,3 +1,10 @@
+## [11.x-1.13] - 2026-06-18
+  
+### Changed
+
+* Added specific template for REAL2 resource lists (template itself in the theme)
+* Stopped zoom-in on double click
+
 ## [11.x-1.12] - 2026-06-17
   
 Added sidebar to graph
