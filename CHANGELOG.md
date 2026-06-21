@@ -1,10 +1,10 @@
-## [11.x-1.14] - 2026-06-18
+## [11.x-1.15] - 2026-06-21
   
 ### Changed
 
-* Removed the template - now using default taxonomy term template
-
-## [11.x-1.12] - 2026-06-17
+* REAL2 resource lists are now using default taxonomy term template (I've deleted the new template)
+* IKM keyword resource lists are still using the same template as before
+* Other IKM resource lists (region, etc) are currently, incorrectly, using the default one, and need updating
 
 ## [11.x-1.13] - 2026-06-18
   
