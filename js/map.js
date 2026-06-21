@@ -1,4 +1,10 @@
 (function () {
+  levelSizes = {
+    1: 120,
+    2: 80,
+    3: 40,
+    4: 15
+  };
   const svg = d3.select("#graph-svg-full");
   const width = svg.node().clientWidth;
 const height = svg.node().clientHeight;
@@ -53,18 +59,22 @@ const height = svg.node().clientHeight;
     }
   });
 
-function drawGraph(g) {
+  function drawGraph(g) {
 
-// Set the size of each node depending on how many descendents it has
-// and the label length depending on the number of characters (label length is used when constraining nodes to the container).
-nodes.forEach(function(node , i) {
-    node.radius = 10 + 1 * node.field_descendents_value; 
-    node.labelLength = decodeEntities(node.name).length * 4
-  const angle = (i / nodes.length) * 2 * Math.PI;
-const avgSize = nodes.reduce((sum, n) => sum + Math.max(n.radius || 10, n.labelLength || 0), 0) / nodes.length;
-const radius = Math.sqrt(nodes.length) * avgSize * 0.5;  node.x = Math.cos(angle) * radius;
-  node.y = Math.sin(angle) * radius;
-});
+  // Set the size of each node depending on how many descendents it has
+  // and the label length depending on the number of characters (label length is used when constraining nodes to the container).
+  nodes.forEach(function(node , i) {
+      // if node.field_level_value is not defined, set node.level to 'level4' as a default
+      if (!node.field_level_value) {
+          node.field_level_value = 4;
+      }
+      node.radius = levelSizes[node.field_level_value];
+      node.labelLength = decodeEntities(node.name).length * 4
+      const angle = (i / nodes.length) * 2 * Math.PI;
+      const avgSize = nodes.reduce((sum, n) => sum + Math.max(n.radius || 10, n.labelLength || 0), 0) / nodes.length;
+      const radius = Math.sqrt(nodes.length) * avgSize * 0.5;  node.x = Math.cos(angle) * radius;
+      node.y = Math.sin(angle) * radius;
+  });
   
 
 
