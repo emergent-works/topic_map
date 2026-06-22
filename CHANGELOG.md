@@ -1,4 +1,10 @@
-## [11.x-1.15] - 2026-06-22
+## [11.x-1.17] - 2026-06-22
+  
+### Changed
+
+* Sidebar now has toggle button to close and open it.
+
+## [11.x-1.16] - 2026-06-22
   
 ### Changed
 

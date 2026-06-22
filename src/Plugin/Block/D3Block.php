@@ -75,7 +75,10 @@ abstract class D3Block extends BlockBase {
                                 <a href="/about-real2" target="_blank">About REAL2</a>
                               </div>
                           </div>
-                        </div>';
+                        </div>
+                        <button id="sidebar-toggle" title="Close sidebar">&#x276F;</button>
+                        <button id="sidebar-toggle-open" title="Open sidebar">&#x276E;</button>
+              ';
     $output[]['#attached']['library'][] = 'topic_map/d3';
     $output[]['#attached']['library'][] = 'topic_map/map';
     $output[]['#attached']['html_head'][] = [[
