@@ -15,6 +15,7 @@ abstract class D3Block extends BlockBase {
     $output = ['#type' => 'inline_template'];
     $block_id = $this->getDerivativeId();
     $topics = $this->getTopics($block_id);
+    $description = Term::load($block_id)->getDescription();
 
     if (empty($topics)) {
       $output['#template'] = '<h1>There are no topics in this topic map yet. Edit it to add some.</h1>';
@@ -54,7 +55,9 @@ abstract class D3Block extends BlockBase {
                             <svg id="graph-svg-full"></svg>
                             <div id="sidebar">
                               <div id = legend>
-                                <h3>How to use this map</h3>`
+                                ' . $description . '
+                                <h3>How to use this map</h3>
+                          
                                 <p><strong>Navigate:</strong> Click on a keyword to see: </p>
                                 <ul>
                                   <li class="parents">keywords that contain it</li> 

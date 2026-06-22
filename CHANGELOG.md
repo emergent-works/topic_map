@@ -1,3 +1,9 @@
+## [11.x-1.15] - 2026-06-22
+  
+### Changed
+
+* The description of the topic map or knowledge graph now appears at the top of the sidebar
+
 ## [11.x-1.15] - 2026-06-21
   
 ### Changed
