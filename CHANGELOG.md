@@ -1,3 +1,9 @@
+## [11.x-1.19] - 2026-06-23
+  
+### Changed
+
+* Reverted sidebar to display taxonomy term (block id) description in sidebar rather than pulling from nodes
+
 ## [11.x-1.18] - 2026-06-23
   
 ### Changed

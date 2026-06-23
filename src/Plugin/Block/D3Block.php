@@ -15,6 +15,7 @@ abstract class D3Block extends BlockBase {
     $output = ['#type' => 'inline_template'];
     $block_id = $this->getDerivativeId();
     $topics = $this->getTopics($block_id);
+    $description = Term::load($block_id)->getDescription();
 
     if (empty($topics)) {
       $output['#template'] = '<h1>There are no topics in this topic map yet. Edit it to add some.</h1>';
@@ -48,14 +49,13 @@ abstract class D3Block extends BlockBase {
     $links = \Drupal::database()->query($sql)->fetchAll();
     $container_height = sqrt(sizeof($topics)) * 170;
     $container_width = sqrt(sizeof($topics)) * 200;
-    $teasers = $this->renderTeasers();
     $output['#template'] = '
                         <div id="container">
                           <div id = "graph">
                             <svg id="graph-svg-full"></svg>
                             <div id="sidebar">
-                              <div id="teasers">
-                                ' . $teasers . '
+                              <div id="description">
+                                ' . $description . '
                               </div>
                               <div id = legend>
                                 <h3>How to use it</h3>
