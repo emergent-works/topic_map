@@ -38,4 +38,8 @@ protected string $extraInformation = '
     $query->condition("f.entity_id", $block_id);   
     return $query->execute()->fetchAll();
   }
+
+  protected function renderTeasers() :string {
+    return '';
+  }
 }

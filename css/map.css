@@ -55,24 +55,25 @@
 }
 
 #sidebar {
-  width: 350px;
+  width: 400px;
   padding: 20px;
+  padding-top: 0;
   border-left: 2px solid navy;
   position: relative;
   transition: width 0.3s ease, padding 0.3s ease;
-  overflow: hidden;
+  overflow: auto;
+
+  a {
+    display: inline;
+            color: royalblue;
+        text-decoration: underline;
+    
+  }
 
   div{
-    margin-top: 50px;
+    margin-bottom: 20px;
   }
-  
-  a{
-    font-size: larger;
-    display: block;
-    padding: 5px 0;
-    text-decoration: underline;
-    color: navy;
-  }
+
 }
 
 #sidebar.collapsed {
@@ -86,7 +87,7 @@
   top: 50%;
   transform: translateY(-50%);
   right: 0;
-  background: navy;
+  background: royalblue ;
   color: white;
   border: none;
   cursor: pointer;

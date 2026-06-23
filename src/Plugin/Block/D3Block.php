@@ -15,7 +15,6 @@ abstract class D3Block extends BlockBase {
     $output = ['#type' => 'inline_template'];
     $block_id = $this->getDerivativeId();
     $topics = $this->getTopics($block_id);
-    $description = Term::load($block_id)->getDescription();
 
     if (empty($topics)) {
       $output['#template'] = '<h1>There are no topics in this topic map yet. Edit it to add some.</h1>';
@@ -49,14 +48,17 @@ abstract class D3Block extends BlockBase {
     $links = \Drupal::database()->query($sql)->fetchAll();
     $container_height = sqrt(sizeof($topics)) * 170;
     $container_width = sqrt(sizeof($topics)) * 200;
-    $output['#template'] = Term::load($block_id)->getDescription() . '
+    $teasers = $this->renderTeasers();
+    $output['#template'] = '
                         <div id="container">
                           <div id = "graph">
                             <svg id="graph-svg-full"></svg>
                             <div id="sidebar">
+                              <div id="teasers">
+                                ' . $teasers . '
+                              </div>
                               <div id = legend>
-                                ' . $description . '
-                                <h3>How to use this map</h3>
+                                <h3>How to use it</h3>
                           
                                 <p><strong>Navigate:</strong> Click on a keyword to see: </p>
                                 <ul>
@@ -67,12 +69,6 @@ abstract class D3Block extends BlockBase {
                                 <p><strong>Explore the project:</strong> Double-click a keyword to open a list of relevant studies and supporting materials in a new tab.</p>
                                 <p><strong>Pan:</strong> Arrow keys, or click and drag</p>
                                 <p><strong>Zoom:</strong> Mouse wheel, two-finger swipe or Ctrl+/-</p>
-                              </div>
-                              <div id="links">
-                                <h3>Find out more</h3>`
-                                <a href="/about-map" target="_blank">About this map</a>
-                                <a href="/" target="_blank">About Emergent Works</a>
-                                <a href="/about-real2" target="_blank">About REAL2</a>
                               </div>
                           </div>
                         </div>

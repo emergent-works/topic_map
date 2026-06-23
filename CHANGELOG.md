@@ -1,3 +1,12 @@
+## [11.x-1.18] - 2026-06-23
+  
+### Changed
+
+* Changes to sidebar;
+    - Wider, to show more on smaller screens
+    - Shows summaries from the About REAL2 and About the Knowledge Graph pages
+    - Scrollable vertically for very small screens
+
 ## [11.x-1.17] - 2026-06-22
   
 ### Changed

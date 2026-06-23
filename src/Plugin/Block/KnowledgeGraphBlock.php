@@ -30,4 +30,16 @@ class KnowledgeGraphBlock extends D3Block {
     $query->condition("v.entity_id", $block_id);   
     return $query->execute()->fetchAll();
   }
+
+
+  protected function renderTeasers() :string {
+    return $this->renderTeaser(3267) . $this->renderTeaser(3266); // about real2 and about the graph
+  }
+
+  protected function renderTeaser($nid): string {
+    $node = \Drupal\node\Entity\Node::load($nid);
+  $summary = $node->get('body')->first()->summary;
+
+    return '<div class="teaser"><h3>' . $node->getTitle() . '</h3><p>' . $summary . '&nbsp;<a href="' . $node->toUrl()->toString() . '" target="_blank">Read more</a></p></div>';
+  } 
 }
