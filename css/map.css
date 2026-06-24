@@ -74,6 +74,10 @@
     margin-bottom: 20px;
   }
 
+  #logo img {
+    width: 362px;
+  }
+
 }
 
 #sidebar.collapsed {

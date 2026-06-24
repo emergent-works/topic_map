@@ -53,14 +53,11 @@ abstract class D3Block extends BlockBase {
                         <div id="container">
                           <div id = "graph">
                             <svg id="graph-svg-full"></svg>
-                            <div id="sidebar">
-                              <div id="description">
-                                ' . $description . '
+                            <div id="sidebar">                              
+                            <div id="logo">
+                                <a href="/" target="_blank"><img src="/themes/ikm/logo.png"></a>
                               </div>
-                              <div id = legend>
-                                <h3>How to use it</h3>
-                          
-                                <p><strong>Navigate:</strong> Click on a keyword to see: </p>
+                              <div id = legend><p><strong>Navigate:</strong> Click on a keyword to see: </p>
                                 <ul>
                                   <li class="parents">keywords that contain it</li> 
                                   <li class="children">keywords that are parts of it</li>  
@@ -69,6 +66,9 @@ abstract class D3Block extends BlockBase {
                                 <p><strong>Explore the project:</strong> Double-click a keyword to open a list of relevant studies and supporting materials in a new tab.</p>
                                 <p><strong>Pan:</strong> Arrow keys, or click and drag</p>
                                 <p><strong>Zoom:</strong> Mouse wheel, two-finger swipe or Ctrl+/-</p>
+                              </div>
+                              <div id="description">
+                                ' . $description . '
                               </div>
                           </div>
                         </div>
