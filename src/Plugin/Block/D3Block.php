@@ -53,10 +53,8 @@ abstract class D3Block extends BlockBase {
                         <div id="container">
                           <div id = "graph">
                             <svg id="graph-svg-full"></svg>
-                            <div id="sidebar">                              
-                            <div id="logo">
-                                <a href="/" target="_blank"><img src="/themes/ikm/logo.png"></a>
-                              </div>
+                            <div id="sidebar">
+                              <h3>REAL2 - Knowledge Graph</h3>
                               <div id = legend><p><strong>Navigate:</strong> Click on a keyword to see: </p>
                                 <ul>
                                   <li class="parents">keywords that contain it</li> 
@@ -69,8 +67,11 @@ abstract class D3Block extends BlockBase {
                               </div>
                               <div id="description">
                                 ' . $description . '
+                              </div>                           
+                            <div id="logo">
+                                <a href="/" target="_blank"><img src="/themes/ikm/logo.png"></a>
                               </div>
-                          </div>
+                          </div>   
                         </div>
                         <button id="sidebar-toggle" title="Close sidebar">&#x276F;</button>
                         <button id="sidebar-toggle-open" title="Open sidebar">&#x276E;</button>
