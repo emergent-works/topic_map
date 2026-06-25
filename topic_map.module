@@ -75,3 +75,46 @@ function topic_map_validate($form, $form_state) {
   $tr->validate($form, $form_state);
 }
 
+/**
+ * Implements hook_entity_insert().
+ */
+function topic_map_entity_insert(\Drupal\Core\Entity\EntityInterface $entity) {
+  topic_map_clear_cache_for_taxonomy($entity);
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function topic_map_entity_update(\Drupal\Core\Entity\EntityInterface $entity) {
+  topic_map_clear_cache_for_taxonomy($entity);
+}
+
+/**
+ * Implements hook_entity_delete().
+ */
+function topic_map_entity_delete(\Drupal\Core\Entity\EntityInterface $entity) {
+  topic_map_clear_cache_for_taxonomy($entity);
+}
+
+/**
+ * Flush caches when taxonomy terms in topic map vocabularies are changed.
+ */
+function topic_map_clear_cache_for_taxonomy(\Drupal\Core\Entity\EntityInterface $entity) {
+  if ($entity->getEntityTypeId() !== 'taxonomy_term') {
+    return;
+  }
+
+  $watched_vocabularies = [
+    'topic',
+    'topic_maps',
+    'knowledge_graphs',
+    'real2_keywords',
+  ];
+
+  if (in_array($entity->bundle(), $watched_vocabularies)) {
+    drupal_flush_all_caches();
+    \Drupal::logger('topic_map')->info('Cache cleared due to changes in vocabulary: @vocab', [
+      '@vocab' => $entity->bundle(),
+    ]);
+  }
+}

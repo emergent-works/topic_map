@@ -1,11 +1,9 @@
-## [11.x-1.20] - 2026-06-24
+## [11.x-1.21] - 2026-06-25
   
 ### Changed
 
-* Added EW logo to sidebar
-* Rearranged sidebar so legend is at the top and will not fall off the screen if people add lots of text
+* Auto cache clear when you edit any topics, keywords, or the description of a map/graph
 
-## [11.x-1.18] - 2026-06-23
 
 ## [11.x-1.19] - 2026-06-23
   
