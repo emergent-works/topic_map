@@ -1,3 +1,9 @@
+## [11.x-1.22] - 2026-06-26
+  
+### Changed
+
+* Capitalise level 1 and 2 keywords
+
 ## [11.x-1.21] - 2026-06-25
   
 ### Changed

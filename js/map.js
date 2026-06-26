@@ -102,7 +102,11 @@ const height = svg.node().clientHeight;
     .selectAll("text")
     .data(nodes)
     .enter().append("text")
-      .text(function (node) { return decodeEntities(node.name)})
+      .text(function (node) { 
+        return node.field_level_value < 3 
+          ? decodeEntities(node.name).toUpperCase()
+          : decodeEntities(node.name)
+      })
       .attr("class", getNodeClass)
       .attr("font-size", 14)
       .attr("text-anchor", "middle") 
